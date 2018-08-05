@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jessie",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.1",
+    "bluebird": "^3.5.1",
+    "cheerio": "^1.0.0-rc.2",
+    "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "koa-session": "^5.8.1",
+    "lodash": "^4.17.10",
+    "mongoose": "^5.1.7",
+    "puppeteer-cn": "^0.1.7",
+    "sha1": "^1.1.1",
+    "socket.io": "^2.1.1",
+    "speakeasy": "^2.0.0",
+    "superagent": "^3.8.3",
+    "uuid": "^3.3.2",
+    "xss": "^1.0.3"
+  }
+}

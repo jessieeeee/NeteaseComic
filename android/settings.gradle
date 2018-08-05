@@ -1,0 +1,3 @@
+rootProject.name = 'NeteaseComic'
+
+include ':app'

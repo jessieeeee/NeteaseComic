@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "puppeteer": "^1.7.0",
     "react": "16.4.1",
     "react-native": "0.56.0"
   },

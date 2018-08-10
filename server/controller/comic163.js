@@ -1,8 +1,10 @@
 'use strict'
-const puppeteer = require('puppeteer-cn')
-var tagetUrl = 'https://manhua.163.com'
-
-exports.test3 = (async (ctx, next) => {
+const puppeteer = require('puppeteer-cn')　//web抓取工具类
+var tagetUrl = 'https://manhua.163.com' //网易漫画地址
+const devices = require('puppeteer/DeviceDescriptors')
+const iphone = devices['iPhone 6 Plus']
+// 抓取免费漫画列表
+exports.getComic = (async (ctx, next) => {
     let result = await getComic();
     ctx.body = {
         success: true,
@@ -10,15 +12,23 @@ exports.test3 = (async (ctx, next) => {
     }
 })
 
-exports.test4 = (async (ctx, next) => {
+// 抓取漫画详情
+exports.getComicDetail = (async (ctx, next) => {
     let result = await getComicDetail('https://manhua.163.com/source/4317076104890059052');
     ctx.body = {
         success: true,
         msg: result
     }
 })
-
-exports.test5 = (async (ctx, next) => {
+exports.getComicDetailMore = (async(ctx, next) => {
+    let result = await getComicDetailMore('https://manhua.163.com/source/4317076104890059052')
+    ctx.body = {
+        success: true,
+        msg: result
+    }
+})
+// 抓取漫画内容
+exports.getComicContent = (async (ctx, next) => {
     let result = await getComicContent('https://manhua.163.com/reader/4317076104890059052/4317076104890059053');
     ctx.body = {
         success: true,
@@ -26,7 +36,8 @@ exports.test5 = (async (ctx, next) => {
     }
 })
 
-exports.test6 = (async (ctx, next) => {
+// 抓取漫画弹幕
+exports.getComicComment = (async (ctx, next) => {
     let result = await getComicComment('https://manhua.163.com/reader/4317076104890059052/4317076104890059053', 15)
     ctx.body = {
         success: true,
@@ -34,7 +45,6 @@ exports.test6 = (async (ctx, next) => {
     }
 })
 
-var num = 0
 var commentData //当前评论数据
 var commentNum = 0//评论数量
 // 直接取对应图片的评论
@@ -54,19 +64,18 @@ var getComment = async function (page,index) {
         return comments
     },index)
     console.log(commentData.pop())
-    // 如果上一次获取的数量与当前数量一致，就不用获取了
-    if (commentNum == commentData) {
+    // 如果上一次获取的数量与当前数量一致，获取完了，停止
+    if (commentNum === commentData.length) {
         return
     } else {
+        // 记录获取的数量
+        commentNum = commentData.length
         await getComment(page,index)
     }
-    // 记录获取的数量
-    commentNum = commentData.length
 }
 
 // 获取漫画评论
 var getComicComment = async function (url, index) {
-    num = 0
     // 启动了一个Chrome实例
     var browser = await puppeteer.launch({ headless: false })
     // 浏览器中创建一个新的页面
@@ -93,14 +102,14 @@ var getComicContent = async function (url) {
 
     const result = await page.evaluate((tagetUrl) => {
         let data = []
-        let elements = document.querySelectorAll('.img-box-wrapper') // 获取评论和图片
+        let elements = document.querySelectorAll('.img-box-wrapper') // 获取图片
         for (var element of elements) { // 循环
             let src = element.querySelector('div.img-box').querySelector('img').src // 获取图片地址
             data.push({ src }); // 存入数组
         }
 
         return {
-            elements: data
+            data: data
         }
     }, tagetUrl)
 
@@ -108,28 +117,71 @@ var getComicContent = async function (url) {
     return result
 }
 
+// 获取漫画详情所有章节
+var getComicDetailMore = async function (url){
+    // 启动了一个Chrome实例
+    var browser = await puppeteer.launch({ headless: false ,slowMo: 250})
+    // 浏览器中创建一个新的页面
+    const page = await browser.newPage()
+    // 模拟iphone访问
+    await page.emulate(iphone)
+    // 跳转到目标网站
+    await page.goto(url)
+    // 等待
+    await page.waitFor(100)
+    await page.evaluate(() => {
+        document.querySelector('.js-flag.load-more').click()
+    })
+    await page.waitFor(200)
+    const result = await page.evaluate((tagetUrl) => {
+        let data = []
+        let elements = document.querySelectorAll('a.m-chapter-item')
+        for (var element of elements) { // 循环
+            let order = element.querySelector('div.f-toe').innerText // 获取序号
+            let link = element.getAttribute('href') //　获取链接
+            link = tagetUrl + link
+            data.push({ order, link }); // 存入数组
+        }
+        return {
+            data: data
+        }
+    },tagetUrl)
+    await browser.close()
+    return result
+}
 // 获取漫画详情(章节)
 var getComicDetail = async function (url) {
     // 启动了一个Chrome实例
-    var browser = await puppeteer.launch({ headless: false })
+    var browser = await puppeteer.launch({ headless: false ,slowMo: 250})
+
     // 浏览器中创建一个新的页面
     const page = await browser.newPage()
+    // 模拟iphone访问
+    await page.emulate(iphone)
     // 跳转到目标网站
     await page.goto(url)
     // 等待
     await page.waitFor(100)
     const result = await page.evaluate((tagetUrl) => {
         let data = []
-        let elements = document.querySelectorAll('div.m-chapter-item') // 获取所有章节元素
+        let cover = document.querySelector('#cover-info').src //获取封面
+        let infoNode = document.querySelector('#info')
+        let title = infoNode.querySelector('h1').innerText // 标题
+        let author = infoNode.querySelector('h2').innerText // 作者名称
+        let category = infoNode.querySelector('h3').innerText // 分类
+        let elements = document.querySelectorAll('a.m-chapter-item') // 获取所有章节元素
+        let intro = document.querySelector('#intro').innerHTML //获取介绍
+        let stateNode = document.querySelector('.source-state-wrap')
+        let state = stateNode.querySelector('div.source-state').innerText //状态
+        let updateTime = stateNode.querySelector('div.source-updateTime').innerText　//更新时间
         for (var element of elements) { // 循环
-            let order = element.querySelector('.sr-torder').innerText // 获取序号
-            let title = element.querySelector('.sr-ttext').innerText　// 获取章节标题
-            let link = element.querySelector('a').getAttribute('href') //　获取链接
+            let order = element.querySelector('div.f-toe').innerText // 获取序号
+            let link = element.getAttribute('href') //　获取链接
             link = tagetUrl + link
-            data.push({ order, title, link }); // 存入数组
+            data.push({ order, link }); // 存入数组
         }
         return {
-            elements: data
+            data: {cover,title,author,category,intro,state,updateTime,data}
         }
     }, tagetUrl)
     await browser.close()
@@ -137,6 +189,13 @@ var getComicDetail = async function (url) {
 }
 
 //　获取可看免费漫画
+/*
+sort　排序方式　1更新时间 2全站热门 3新作人气 4新作上架 5读者打赏
+jd　1连载中　2已完结
+dq  0中国　1日本　2韩国　3欧美
+tc　8热血　16恋爱　15后宫　2恐怖　24治愈　11玄幻　26唯美　4悬疑　7搞笑 36古风 13萌系 14穿越
+3校园　1都市　10魔幻　9冒险　5科幻　17武侠　32战斗　3001儿童
+ */
 var getComic = async function () {
     // 启动了一个Chrome实例
     var browser = await puppeteer.launch({ headless: false })

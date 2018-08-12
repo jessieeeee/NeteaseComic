@@ -1,38 +1,26 @@
-import React from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
-import { StackNavigator } from 'react-navigation'
-import Launch from './js/Launch'
-class HomeScreen extends React.Component {
-    render() {
-        const { navigate } = this.props.navigation;
-        return (
-            <View>
-                <Text>Hello, Chat App!</Text>
-                <Button
-                    onPress={() => navigate('Chat')}
-                    title="Chat with Lucy"
-                />
-            </View>
-        );
-    }
-}
+/**
+ * @date :2018/8/12
+ * @author :JessieKate
+ * @email :lyj1246505807@gmail.com
+ * @description : 导航注册
+ */
 
-const SimpleApp = StackNavigator({
-    Home: { screen: HomeScreen },
-    Chat: { screen: Launch }
-});
+import React from 'react'
+import {AppRegistry, StyleSheet, Text, View, Button,} from 'react-native'
+import {createStackNavigator} from 'react-navigation'
+import Launch from './js/Launch'
+import Main from './js/Main'
+const SimpleApp = createStackNavigator({
+        Launch: {screen: Launch, navigationOptions:{header: null}},
+        Main: {screen: Main,  navigationOptions: {
+            header: null
+        }},
+    });
 
 export default class App extends React.Component {
     render() {
-        return <SimpleApp />;
+        return <SimpleApp/>;
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-});
+AppRegistry.registerComponent('SimpleApp', () => App);

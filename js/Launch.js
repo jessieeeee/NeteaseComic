@@ -1,24 +1,25 @@
-import {Component} from "react"
-import {
-    StackNavigator,
-} from 'react-navigation'
-import {Platform, StyleSheet, Text, View} from 'react-native';
 /**
- * @author : JessieK
- * @email : lyj1246505807@gmail.com
+ * @date :2018/8/12
+ * @author :JessieKate
+ * @email :lyj1246505807@gmail.com
  * @description : 欢迎界面
  */
 
+import React,{Component} from 'react'
+import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 
 class Launch extends Component<Props>{
+
     render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>Welcome to React Native!</Text>
                 <Text style={styles.instructions}>To get started, edit App.js</Text>
-                <Text style={styles.instructions}>{instructions}</Text>
+                <Button title={"跳转"} onPress={()=>{
+                    this.props.navigation.navigate('Main')
+                }}/>
             </View>
-        );
+        )
     }
 }
 const styles = StyleSheet.create({

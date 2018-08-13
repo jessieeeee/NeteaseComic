@@ -6,21 +6,12 @@
  */
 
 import React from 'react'
-import {AppRegistry, StyleSheet, Text, View, Button,} from 'react-native'
-import {createStackNavigator} from 'react-navigation'
-import Launch from './js/Launch'
-import Main from './js/Main'
-const SimpleApp = createStackNavigator({
-        Launch: {screen: Launch, navigationOptions:{header: null}},
-        Main: {screen: Main,  navigationOptions: {
-            header: null
-        }},
-    });
-
+import {AppRegistry} from 'react-native'
+import NavigatorApp from './js/navigator/StackNavigator'
 export default class App extends React.Component {
     render() {
-        return <SimpleApp/>;
+        return <NavigatorApp/>;
     }
 }
 
-AppRegistry.registerComponent('SimpleApp', () => App);
+AppRegistry.registerComponent('App', () => App);

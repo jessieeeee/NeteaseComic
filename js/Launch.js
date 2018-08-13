@@ -5,39 +5,44 @@
  * @description : 欢迎界面
  */
 
-import React,{Component} from 'react'
-import {Platform, StyleSheet, Text, View, Button} from 'react-native';
+import React, {Component} from 'react'
+import {Image, View, StyleSheet, Platform} from 'react-native';
+import CommonStyle from './constant/CommonStyle'
+import Config from './constant/Config'
+let iconLogo = require('./img/ic_logo.png')
+let iconLogoGirl = require('./img/ic_logo_girl.png')
 
-class Launch extends Component<Props>{
+class Launch extends Component<Props> {
+
+    componentDidMount() {
+        // ２秒后跳转
+        setTimeout(() => {
+            this.props.navigation.navigate('Main')
+        }, 2000)
+    }
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome to React Native!</Text>
-                <Text style={styles.instructions}>To get started, edit App.js</Text>
-                <Button title={"跳转"} onPress={()=>{
-                    this.props.navigation.navigate('Main')
-                }}/>
+            <View style={CommonStyle.styles.container}>
+                  <View style={{alignItems:'center',marginTop:Config.sreenW*0.24}}>
+                    <Image source={iconLogoGirl} style={styles.iconLogoGirl}/>
+                    <Image source={iconLogo} style={styles.iconLogo}/>
+                  </View>
             </View>
         )
     }
 }
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+    iconLogoGirl: {
+        width: Platform.OS === 'ios' ? CommonStyle.dimensions.ios.iconLogoGirlW : CommonStyle.dimensions.android.iconLogoGirlW,
+        height: Platform.OS === 'ios' ? CommonStyle.dimensions.ios.iconLogoGirlH : CommonStyle.dimensions.android.iconLogoGirlH,
+        resizeMode:'contain'
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+    iconLogo: {
+        width: Platform.OS === 'ios' ? CommonStyle.dimensions.ios.iconLogoW : CommonStyle.dimensions.android.iconLogoW,
+        height: Platform.OS === 'ios' ? CommonStyle.dimensions.ios.iconLogoH : CommonStyle.dimensions.android.iconLogoH,
+        resizeMode:'contain'
+    }
 })
 export default Launch

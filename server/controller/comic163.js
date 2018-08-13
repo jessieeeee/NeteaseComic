@@ -198,7 +198,7 @@ tc　8热血　16恋爱　15后宫　2恐怖　24治愈　11玄幻　26唯美　
  */
 var getComic = async function () {
     // 启动了一个Chrome实例
-    var browser = await puppeteer.launch({ headless: false })
+    var browser = await puppeteer.launch({ headless: true })
     // 浏览器中创建一个新的页面
     const page = await browser.newPage()
     // 跳转到目标网站

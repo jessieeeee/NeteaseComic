@@ -217,11 +217,11 @@ var getComic = async function () {
             let link = element.querySelector('.comic-info a').getAttribute('href')
             link = tagetUrl + link
             let cover = element.querySelector('.cover img').getAttribute('src')
-            data.push({ title, chapter, clickNum, link, cover }); // 存入数组
+            // let id = link.replace('https://manhua.163.com/source/','')
+            let id = link.substring(link.lastIndexOf('/')+1,link.length)
+            data.push({ id, title, chapter, clickNum, link, cover }) // 存入数组
         }
-        return {
-            elements: data
-        }
+        return data
     }, tagetUrl)
 
     await browser.close()

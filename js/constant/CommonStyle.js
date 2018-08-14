@@ -8,18 +8,9 @@ import Config from './Config'
 const dimensions = {
     android:{
         tabBarImageSize: Config.sreenW*0.08,
-        iconLogoGirlW:Config.sreenW*0.6,
-        iconLogoGirlH:Config.sreenW,
-        iconLogoW:Config.sreenW*1,
-        iconLogoH:Config.sreenW*0.3,
     },
     ios:{
         tabBarImageSize: Config.sreenW*0.08,
-        iconLogoGirlW:Config.sreenW*0.6,
-        iconLogoGirlH:Config.sreenW,
-        iconLogoW:Config.sreenW*1,
-        iconLogoH:Config.sreenW*0.3,
-
     }
 }
 

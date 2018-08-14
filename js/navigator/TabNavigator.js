@@ -12,7 +12,7 @@ import TencentPage from '../tencent/TencentPage'
 import Mine from '../mine/Mine'
 import CommonStyle from '../constant/CommonStyle'
 import React,{Component} from "react"
-
+import Config from '../constant/Config'
 /**
  * 底部图标资源加载
  */
@@ -34,9 +34,9 @@ class TabBarItem extends Component<Props> {
     }
 }
 const TabRouteConfigs = {
-    Home: {
+    Netease: {
         screen: NeteasePage,
-        navigationOptions: ({navigation}) => ({
+        navigationOptions: {
             header:null,
             tabBarLabel: '网易',
             tabBarIcon:(({tintColor,focused}) => {
@@ -44,9 +44,9 @@ const TabRouteConfigs = {
                     <TabBarItem focused={focused} selectedIcon={tabBarNeteaseSelected} unSelectedIcon={tabBarNeteaseUnselected}/>
                 )
             }),
-        }),
+        },
     },
-    NearBy: {
+    Tencent: {
         screen: TencentPage,
         navigationOptions: {
             header:null,
@@ -73,19 +73,19 @@ const TabRouteConfigs = {
     }
 };
 const TabNavigatorConfigs = {
-    initialRouteName: 'Home',
+    initialRouteName: 'Netease',
     tabBarPosition: 'bottom',
     lazy: true,
     swipeEnabled:false, // 是否允许在标签之间进行滑动。
     tabBarOptions:{
         style:{
-            backgroundColor:'#ffffff'
+            backgroundColor:Config.backgroundColor
         },
-        activeTintColor:'#fb887d', // label和icon的前景色 活跃状态下（选中）。
-        inactiveTintColor:'#666666', // label和icon的前景色 不活跃状态下(未选中)。
+        activeTintColor:Config.themeColor, // label和icon的前景色 活跃状态下（选中）
+        inactiveTintColor:Config.gray, // label和icon的前景色 不活跃状态下(未选中)
         labelStyle:{
             fontSize: 12,
-        }, //label的样式。
+        },
     }
 };
 const Tab = createBottomTabNavigator(TabRouteConfigs, TabNavigatorConfigs);

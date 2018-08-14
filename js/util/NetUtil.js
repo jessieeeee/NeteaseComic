@@ -5,6 +5,14 @@
  */
 export default class NetUtils {
 
+    static onResult(json,callbackSuccess,callbackError){
+        if(json.success){
+            console.log('server--------->' + json.msg)
+            callbackSuccess(json.msg)
+        }else{
+            callbackError('server---------> 服务器出错')
+        }
+    }
     /**
      * 普通的get请求
      * @param {*} url 地址
@@ -13,7 +21,7 @@ export default class NetUtils {
      * @param {*} callbackError  失败后的回调
      */
     static get(url,params,callbackSuccess,callbackError){
-        console.log('NetUtil----'+url);
+        console.log('server--------->' + url);
         fetch(url,{
             method:'GET',
             body:params
@@ -24,7 +32,7 @@ export default class NetUtils {
                 }
             })
             .then((json) => {
-                callbackSuccess(json);
+                this.onResult(json,callbackSuccess,callbackError)
             }).catch(error => {
             console.log(url+':'+error);
             callbackError(error);
@@ -39,6 +47,7 @@ export default class NetUtils {
      * @param {*} callbackError  失败后的回调
      */
     static post(url,params,callbackSuccess,callbackError){
+        console.log('server--------->' + url);
         fetch(url,{
             method:'POST',
             headers:{
@@ -52,7 +61,7 @@ export default class NetUtils {
                 }
             })
             .then((json) => {
-                callbackSuccess(json);
+                this.onResult(json,callbackSuccess,callbackError)
             }).catch(error => {
             console.log(url+':'+error);
             callbackError(error);
@@ -67,6 +76,7 @@ export default class NetUtils {
      * @param {*} callbackError  失败后的回调
      */
     static postJson(url,jsonObj,callbackSuccess,callbackError){
+        console.log('server--------->' + url);
         fetch(url,{
             method:'POST',
             headers:{
@@ -80,7 +90,7 @@ export default class NetUtils {
                 }
             })
             .then((json) => {
-                callbackSuccess(json);
+                this.onResult(json,callbackSuccess,callbackError)
             }).catch(error => {
             console.log(url+':'+error);
             callbackError(error);

@@ -7,7 +7,11 @@ let Dimensions = require('Dimensions')
 
 const object = {
     sreenW: Dimensions.get('window').width,
-    sreenH: Dimensions.get('window').height
+    sreenH: Dimensions.get('window').height,
+    themeColor:'#fb887d',
+    backgroundColor:'#ffffff',
+    normalTextColor:'#333333',
+    gray:'#666666'
 }
 
 export default object

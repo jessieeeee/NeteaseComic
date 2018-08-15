@@ -13,6 +13,7 @@ import NetUtil from '../util/NetUtil'
 import ServerApi from '../constant/ServerApi'
 import CommicItem from './ComicItem'
 import FlatListView from '../widget/FlatListView'
+import FooterState from '../widget/FooterState'
 
 let numColumns = 3 // 3列
 let cellW = Config.sreenW / numColumns // 单个item的宽度
@@ -27,7 +28,11 @@ class NeteasePage extends Component<Props> {
     }
 
     componentDidMount() {
-        NetUtil.get(ServerApi.netease.getComic, null, (result) => {
+        let params = {
+            "abc":123,
+            "name":"Jessie"
+        }
+        NetUtil.post(ServerApi.netease.getComic, params, (result) => {
             this.setState({
                 data: result
             })
@@ -39,26 +44,35 @@ class NeteasePage extends Component<Props> {
     render() {
         return (
             <View style={CommonStyle.styles.container}>
-                {this.state.data == null ?
-                    null :
-                    <FlatListView data={this.state.data}
+                {this.state.data ?
+                    <FlatListView ref={(ref) => {this.listView = ref}}
+                                  data={this.state.data}
                                   renderItem={({item}) => (
                                       <CommicItem size={cellW} data={item}/>
                                   )}
                                   keyExtractor={item => item.id}
                                   numColumns={numColumns}
-                                  renderRefresh={}
-                                  renderLoadMore={}
-                    />}
+                                  onRefresh={() => this.onRefresh()}
+                                  onLoadMore={() => this.onLoadMore()}
+                    />:  null}
             </View>
         )
     }
 
-    renderRefresh(){
-
+    /**
+     * 下拉刷新回调
+     */
+    onRefresh() {
+        let footerState = FooterState.Idle;
+        if(this.listView !== undefined){
+            this.listView.endRefreshing(footerState)
+        }
     }
 
-    renderLoadMore(){
+    /**
+     * 加载更多回调
+     */
+    onLoadMore() {
 
     }
 }

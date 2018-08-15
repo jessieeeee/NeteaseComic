@@ -1,11 +1,11 @@
 /**
  * @author : JessieK
  * @email : lyj1246505807@gmail.com
- * @description :
+ * @description :列表尾部加载更多视图
  */
 import React, {Component} from 'react';
 import {View, Text, ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
-import RefreshState from './State';
+import FooterState from './FooterState';
 import PropTypes from 'prop-types';
 
 export default class Footer extends Component {
@@ -15,6 +15,10 @@ export default class Footer extends Component {
         onRetryLoading: PropTypes.func, // 重新加载回调
     };
 
+    /**
+     * 文字提示
+     * @type {{footerRefreshingText: string, footerLoadMoreText: string, footerFailureText: string, footerNoMoreDataText: string}}
+     */
     static defaultProps = {
         footerRefreshingText: "努力加载中",
         footerLoadMoreText: "上拉加载更多",
@@ -22,33 +26,37 @@ export default class Footer extends Component {
         footerNoMoreDataText: "已全部加载完毕"
     };
 
+    /**
+     * 根据加载更多状态展示
+     * @returns {*}
+     */
     render() {
         let {state} = this.props;
         let footer = null;
         switch (state) {
-            case RefreshState.Idle:
-                // Idle情况下为null，不显示尾部组件
+            case FooterState.Idle:
+                // 不显示尾部组件
                 break;
-            case RefreshState.Loading:
+            case FooterState.Loading:
                 footer =
                     <View style={styles.loadingView}>
                         <ActivityIndicator size="small"/>
                         <Text style={styles.refreshingText}>{this.props.footerRefreshingText}</Text>
                     </View>;
                 break;
-            case RefreshState.CanLoadMore:
+            case FooterState.CanLoadMore:
                 footer =
                     <View style={styles.loadingView}>
                         <Text style={styles.footerText}>{this.props.footerLoadMoreText}</Text>
                     </View>;
                 break;
-            case RefreshState.NoMoreData:
+            case FooterState.NoMoreData:
                 footer =
                     <View style={styles.loadingView}>
                         <Text style={styles.footerText}>{this.props.footerNoMoreDataText}</Text>
                     </View>;
                 break;
-            case RefreshState.Failure:
+            case FooterState.Failure:
                 footer =
                     <TouchableOpacity style={styles.loadingView} onPress={()=>{
                         this.props.onRetryLoading && this.props.onRetryLoading();

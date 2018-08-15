@@ -4,9 +4,9 @@
  * @description : flatlist的二次封装
  */
 import React, {Component} from 'react';
-import {FlatList,ActivityIndicator,View,Text} from 'react-native';
+import {FlatList,View,Text} from 'react-native';
 import PropTypes from 'prop-types';
-import State from './State';
+import State from './FooterState';
 import Footer from './Footer';
 
 export default class FlatListView extends Component {
@@ -15,8 +15,6 @@ export default class FlatListView extends Component {
         onRefresh: PropTypes.func, // 下拉刷新回调
         onLoadMore: PropTypes.func, // 上拉加载回调
         renderEmptyView: PropTypes.func, // 空界面渲染
-        renderRefresh: PropTypes.func, //　头部渲染
-        renderLoadMore: PropTypes.func, // 尾部渲染
     };
 
     constructor(props) {
@@ -37,9 +35,7 @@ export default class FlatListView extends Component {
                 onEndReached={() => { this.beginLoadMore() }}
                 onEndReachedThreshold={0.1}  // 距离内容最底部还有多远时触发onEndReached回调
                 ListFooterComponent={this.renderFooter}
-                ListEmptyComponent={this.props.renderEmptyView == null ? this.renderEmptyView : this.props.renderEmptyView()}
-                onHeaderRefresh={this.props.renderRefresh == null ? null : this.props.renderRefresh()}
-                onFooterRefresh={this.props.renderLoadMore == null ? null : this.props.renderLoadMore()}
+                ListEmptyComponent={this.props.renderEmptyView ? this.props.renderEmptyView() :this.renderEmptyView }
             />
         )
     }
@@ -56,7 +52,7 @@ export default class FlatListView extends Component {
         return (
             <Footer
                 state={this.state.footerState}
-                onRetryLoading={()=>{
+                onRetryLoading={() => {
                     this.beginLoadMore()
                 }}
             />
@@ -148,10 +144,12 @@ export default class FlatListView extends Component {
         if (this.props.data.length === 0) {
             footerRefreshState = State.Idle;
         }
+
         this.setState({
             footerState: footerRefreshState,
             refresh: false,
             loadmore: false
         })
+
     }
 }

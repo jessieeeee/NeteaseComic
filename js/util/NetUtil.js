@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 /**
  * @author : JessieK
  * @email : lyj1246505807@gmail.com
@@ -7,7 +8,7 @@ export default class NetUtils {
 
     static onResult(json,callbackSuccess,callbackError){
         if(json.success){
-            console.log('server--------->' + json.msg)
+            console.log('server--------->' + JSON.stringify(json.msg))
             callbackSuccess(json.msg)
         }else{
             callbackError('server---------> 服务器出错')
@@ -21,10 +22,19 @@ export default class NetUtils {
      * @param {*} callbackError  失败后的回调
      */
     static get(url,params,callbackSuccess,callbackError){
+        if (params) {
+            let paramsArray = [];
+            //拼接参数
+            Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
+            if (url.search(/\?/) === -1) {
+                url += '?' + paramsArray.join('&')
+            } else {
+                url += '&' + paramsArray.join('&')
+            }
+        }
         console.log('server--------->' + url);
         fetch(url,{
             method:'GET',
-            body:params
         })
             .then((response) => {
                 if(response.ok){//如果相应码为200
@@ -53,7 +63,7 @@ export default class NetUtils {
             headers:{
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'//key-value形式
             },
-            body:params
+            body:queryString.stringify(params)
         })
             .then((response) => {
                 if(response.ok){

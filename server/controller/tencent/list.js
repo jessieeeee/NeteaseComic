@@ -22,24 +22,35 @@ http://ac.qq.com/Comic/all/search/hot/vip/1/copyright/first/page/1
 /copyright/first/　first首发　sole独家
  */
 //　获取可看免费漫画
-exports.getComic = async function () {
+exports.getComic = async function (pageNo) {
     let targetUrl = Spider.tencentUrl
-    let page = Spider.init()
+    let page =await Spider.init()
     await Spider.switchPc(page)
     // 跳转到目标网站
-    await page.goto(targetUrl + '/Comic/all/search/time/vip/1/page/1')
+    await page.goto(targetUrl + '/Comic/all/search/time/vip/1/page/'+ pageNo)
+    // 滚到底部
+    await page.evaluate(() => {
+        window.scrollTo(0, document.body.scrollHeight)
+    })
     // 等待
-    await page.waitFor(100)
-
+    await page.waitFor(200)
     return await page.evaluate((targetUrl) => {
         let data = []
-
         let elements = document.querySelectorAll('.ret-search-item') // 获取所有漫画元素
         for (let element of elements) { // 循环
-            let title = element.querySelector('.ret-works-title').innerText // 获取标题
+            let titleNode = element.querySelector('.ret-works-title')
+            let title = titleNode.querySelector('a').innerText // 获取标题
+            let labelsNode = titleNode.querySelectorAll('i') // 获取标签
+            let labels = []
+            for (let labelNode of labelsNode) {
+                labels.push(labelNode.innerText)
+            }
             let author = element.querySelector('.ret-works-author').getAttribute("title")　// 获取作者
             let tagsNode = element.querySelector('.ret-works-tags')
-            let clickNum = tagsNode.querySelector('span').innerText//　获取点击量
+            let clickNum = '' //　获取点击量
+            if(tagsNode.querySelector('span')){
+                clickNum = tagsNode.querySelector('span').innerText
+            }
             let categorysNode = tagsNode.querySelectorAll('a') //获取分类标签
             let categorys = []
             for (let categoryNode of categorysNode) {
@@ -48,11 +59,11 @@ exports.getComic = async function () {
             let link = element.querySelector('.ret-works-title').querySelector('a').getAttribute('href')//获取链接
             link = targetUrl + link
             let cover = element.querySelector('.mod-cover-list-thumb').querySelector('img').getAttribute('src')
-            data.push({title, author, clickNum, categorys, link, cover}); // 存入数组
+            let intro = element.querySelector('.ret-works-decs').innerText
+            let id = link.substring(link.lastIndexOf('/')+1,link.length)
+            data.push({id, title, author,  categorys, labels, intro, clickNum, link, cover}); // 存入数组
         }
-        return {
-            elements: data
-        }
+        return data
     }, targetUrl)
 
 }

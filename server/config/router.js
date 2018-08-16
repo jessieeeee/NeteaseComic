@@ -16,18 +16,17 @@ module.exports = function(){
     router.post('/u/signature', bodyParser(), App.hasBody, App.hasToken, App.signature)
     // 抓取网易漫画接口
     router.post('/163/getComic', bodyParser(), Comic163.getComic)
-    // 抓取网易漫画接口
     router.post('/163/getComicMore', bodyParser(), Comic163.getComicMore)
-    router.get('/163/getComicDetail',Comic163.getComicDetail)
-    router.get('/163/getComicContent',Comic163.getComicContent)
-    router.get('/163/getComicComment',Comic163.getComicComment)
-    router.get('/163/getComicDetailMore',Comic163.getComicDetailMore)
+    router.post('/163/getComicDetail', bodyParser(), Comic163.getComicDetail)
+    router.post('/163/getComicContent', bodyParser(), Comic163.getComicContent)
+    router.post('/163/getComicComment', bodyParser(), Comic163.getComicComment)
+    router.post('/163/getComicDetailMore', bodyParser(), Comic163.getComicDetailMore)
     // 抓取腾讯漫画接口
-    router.get('/tencent/getComic',ComicTencent.getComic)
-    router.get('/tencent/getComicDetail',ComicTencent.getComicDetail)
-    router.get('/tencent/getComicContent',ComicTencent.getComicContent)
-    router.get('/tencent/getComicComment',ComicTencent.getComicComment)
-    router.get('/tencent/getComicDetailMore',ComicTencent.getComicDetailMore)
+    router.post('/tencent/getComic', bodyParser(), ComicTencent.getComic)
+    router.post('/tencent/getComicDetail', bodyParser(), ComicTencent.getComicDetail)
+    router.post('/tencent/getComicContent', bodyParser(), ComicTencent.getComicContent)
+    router.post('/tencent/getComicComment',bodyParser(), ComicTencent.getComicComment)
+    router.post('/tencent/getComicDetailMore', bodyParser(), ComicTencent.getComicDetailMore)
 
     return router 
 }

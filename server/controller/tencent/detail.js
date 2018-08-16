@@ -5,7 +5,7 @@
  */
 let Spider = require('../spider')
 exports.getComicDetailMore = async function (url) {
-    let page = Spider.init()
+    let page =await Spider.init()
     let targetUrl = Spider.tencentUrl
     await Spider.switchMobile(page)
     // 跳转到目标网站
@@ -31,7 +31,7 @@ exports.getComicDetailMore = async function (url) {
 // 获取漫画详情(章节)
 exports.getComicDetail = async function (url) {
     let targetUrl = Spider.tencentUrl
-    let page = Spider.init()
+    let page =await Spider.init()
     await Spider.switchMobile(page)
     // 跳转到目标网站
     await page.goto(url)

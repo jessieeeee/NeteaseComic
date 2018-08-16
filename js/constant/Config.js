@@ -11,7 +11,12 @@ const object = {
     themeColor:'#fb887d',
     backgroundColor:'#ffffff',
     normalTextColor:'#333333',
-    gray:'#666666'
+    gray:'#666666',
+    lightBlue:'#2daafa',
+    orange:'#ee7c25',
+    greenBlue:'#43b0cf',
+    hotRed:'#f87763',
+    DEBUG: true,
 }
 
 export default object

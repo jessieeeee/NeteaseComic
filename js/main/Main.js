@@ -28,6 +28,7 @@ class Main extends Component<Props> {
                 welcome: false
             })
         }, 2000)
+
     }
 
     render() {

@@ -60,6 +60,11 @@ exports.getComicDetailMore = (async(ctx, next) => {
 
 // 抓取漫画内容
 exports.getComicContent = (async (ctx, next) => {
+    //请求的参数
+    const body = ctx.request.body
+    for (let key in body) {
+        console.log("body 参数 key is: ", key, " , value is: ", body[key])
+    }
     let result = await content.getComicContent('https://manhua.163.com/reader/4317076104890059052/4317076104890059053')
     ctx.body = {
         success: true,
@@ -69,6 +74,11 @@ exports.getComicContent = (async (ctx, next) => {
 
 // 抓取漫画弹幕
 exports.getComicComment = (async (ctx, next) => {
+    //请求的参数
+    const body = ctx.request.body
+    for (let key in body) {
+        console.log("body 参数 key is: ", key, " , value is: ", body[key])
+    }
     let result = await comment.getComicComment('https://manhua.163.com/reader/4317076104890059052/4317076104890059053', 15)
     ctx.body = {
         success: true,

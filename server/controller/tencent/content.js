@@ -6,7 +6,7 @@
 let Spider = require('../spider')
 //　获取漫画内容
 exports.getComicContent = async function (url) {
-    let page = Spider.init()
+    let page =await Spider.init()
     await Spider.switchPc(page)
     // 跳转到目标网站
     await page.goto(url)

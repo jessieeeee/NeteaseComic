@@ -8,12 +8,16 @@ import Config from "../constant/Config"
  */
 const dimensions = {
     android: {
-        titleFont: Config.sreenW * 0.03,
-        subTitleFont: Config.sreenW * 0.024,
+        titleFont: Config.sreenW * 0.034,
+        subTitleFont: Config.sreenW * 0.028,
+        marginTop: Config.sreenW * 0.01,
+        subMarginTop: Config.sreenW * 0.002
     },
     ios: {
-        titleFont: Config.sreenW * 0.03,
-        subTitleFont: Config.sreenW * 0.024,
+        titleFont: Config.sreenW * 0.034,
+        subTitleFont: Config.sreenW * 0.028,
+        marginTop: Config.sreenW * 0.01,
+        subMarginTop: Config.sreenW * 0.002
     }
 }
 const styles = StyleSheet.create({
@@ -28,14 +32,17 @@ const styles = StyleSheet.create({
         fontSize: Platform.OS === 'ios' ? dimensions.ios.titleFont : dimensions.android.titleFont,
         color: Config.normalTextColor,
         fontWeight:'bold',
+        marginTop: Platform.OS === 'ios' ? dimensions.ios.subMarginTop : dimensions.android.subMarginTop
     },
     chapter: {
         fontSize: Platform.OS === 'ios' ? dimensions.ios.subTitleFont : dimensions.android.subTitleFont,
-        color: Config.gray
+        color: Config.gray,
+        marginTop: Platform.OS === 'ios' ? dimensions.ios.marginTop : dimensions.android.marginTop
     },
     clickNum: {
         fontSize: Platform.OS === 'ios' ? dimensions.ios.subTitleFont : dimensions.android.subTitleFont,
-        color: Config.gray
+        color: Config.gray,
+        marginTop: Platform.OS === 'ios' ? dimensions.ios.subMarginTop : dimensions.android.subMarginTop
     }
 })
 

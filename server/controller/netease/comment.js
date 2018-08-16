@@ -32,7 +32,7 @@ exports.getComment = async function (page,index) {
 
 // 获取漫画评论
 exports.getComicComment = async function (url, index) {
-    let page = Spider.init()
+    let page =await Spider.init()
     await Spider.switchPc(page)
     let urlStr = url + '#imgIndex=' + index
     // 跳转到目标网站

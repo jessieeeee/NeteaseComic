@@ -8,7 +8,7 @@ export default class NetUtils {
 
     static onResult(json,callbackSuccess,callbackError){
         if(json.success){
-            console.log('server--------->' + JSON.stringify(json.msg))
+            console.log('server--------->',json.msg)
             callbackSuccess(json.msg)
         }else{
             callbackError('server---------> 服务器出错')

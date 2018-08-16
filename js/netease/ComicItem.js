@@ -28,9 +28,9 @@ class ComicItem extends Component<Props> {
                         width: this.props.size*0.97,
                         height: this.props.size*1.3
                     }}/>
-                    <Text style={NeteaseStyle.styles.title}>{this.props.data.title}</Text>
-                    <Text style={NeteaseStyle.styles.chapter}>{this.props.data.chapter}</Text>
-                    <Text style={NeteaseStyle.styles.clickNum}>{this.props.data.clickNum}</Text>
+                    <Text numberOfLines={1} style={NeteaseStyle.styles.title}>{this.props.data.title}</Text>
+                    <Text numberOfLines={1} style={NeteaseStyle.styles.chapter}>{'最新:' + this.props.data.chapter}</Text>
+                    <Text numberOfLines={1} style={NeteaseStyle.styles.clickNum}>{this.props.data.clickNum}</Text>
                 </View>
             </View>
         )

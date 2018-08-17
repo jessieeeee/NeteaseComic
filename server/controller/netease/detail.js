@@ -31,9 +31,7 @@ exports.getComicDetail = async function (url) {
             link = targetUrl + link
             data.push({ order, link }); // 存入数组
         }
-        return {
-            data: {cover,title,author,category,intro,state,updateTime,data}
-        }
+        return {cover,title,author,category,intro,state,updateTime,data}
     }, targetUrl)
 }
 
@@ -59,9 +57,7 @@ exports.getComicDetailMore = async function (url){
             link = targetUrl + link
             data.push({ order, link }); // 存入数组
         }
-        return {
-            data: data
-        }
+        return data
     },targetUrl)
 
 }

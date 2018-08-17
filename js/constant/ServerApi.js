@@ -13,6 +13,7 @@ const object = {
     netease:{
         getComic:server_host + netease + '/getComic',
         getComicMore:server_host + netease + '/getComicMore',
+        getDetail:server_host + netease + '/getComicDetail'
     },
     //　腾讯漫画
     tencent:{

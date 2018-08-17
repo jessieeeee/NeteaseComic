@@ -4,8 +4,9 @@
  * @description : 网易漫画单个item
  */
 import React, {Component} from 'react'
-import {Text, View, Image} from 'react-native'
+import {Text, View, Image,TouchableOpacity} from 'react-native'
 import PropTypes from 'prop-types'
+import NavigationService from '../navigator/NavigationService'
 import NeteaseStyle from './Style'
 
 class ComicItem extends Component<Props> {
@@ -13,7 +14,7 @@ class ComicItem extends Component<Props> {
     static propTypes = {
         data: PropTypes.object.isRequired, // 数据源,
         size: PropTypes.number, // 大小
-    };
+    }
 
     static defaultProps = {
         data: null, // 默认数据源为空
@@ -23,7 +24,9 @@ class ComicItem extends Component<Props> {
     render() {
         return (
             <View style={{width: this.props.size*0.97, height: this.props.size * 1.8}}>
-                <View style={NeteaseStyle.styles.itemView}>
+                <TouchableOpacity style={NeteaseStyle.styles.itemView} onPress={() => {
+                    NavigationService.navigate('NeteaseDetail',{link:this.props.data.link})
+                }}>
                     <Image source={{uri: this.props.data.cover}} style={{
                         width: this.props.size*0.97,
                         height: this.props.size*1.3
@@ -31,7 +34,7 @@ class ComicItem extends Component<Props> {
                     <Text numberOfLines={1} style={NeteaseStyle.styles.title}>{this.props.data.title}</Text>
                     <Text numberOfLines={1} style={NeteaseStyle.styles.chapter}>{'最新:' + this.props.data.chapter}</Text>
                     <Text numberOfLines={1} style={NeteaseStyle.styles.clickNum}>{this.props.data.clickNum}</Text>
-                </View>
+                </TouchableOpacity>
             </View>
         )
     }

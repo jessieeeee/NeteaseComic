@@ -37,7 +37,8 @@ exports.getComicDetail = (async (ctx, next) => {
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let result = await detail.getComicDetail('https://manhua.163.com/source/4317076104890059052')
+    let link = body.link
+    let result = await detail.getComicDetail(link)
     ctx.body = {
         success: true,
         msg: result
@@ -51,7 +52,8 @@ exports.getComicDetailMore = (async(ctx, next) => {
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let result = await detail.getComicDetailMore('https://manhua.163.com/source/4317076104890059052')
+    let link = body.link
+    let result = await detail.getComicDetailMore(link)
     ctx.body = {
         success: true,
         msg: result

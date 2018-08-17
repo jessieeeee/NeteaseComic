@@ -5,9 +5,11 @@
  */
 import {createStackNavigator} from 'react-navigation'
 import Main from '../main/Main'
+import NeteaseDetail from '../netease/ComicDetail'
 // this.props.navigation.navigate('Main')
 const App = createStackNavigator({
     Main: {screen: Main, navigationOptions: {header: null}},
+    NeteaseDetail: {screen:NeteaseDetail, navigationOptions:{header: null}}
 });
 
 export default App

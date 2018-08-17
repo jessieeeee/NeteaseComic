@@ -11,7 +11,7 @@ import Config from '../constant/Config'
 import CommonStyle from '../constant/CommonStyle'
 import NetUtil from '../util/NetUtil'
 import ServerApi from '../constant/ServerApi'
-import CommicItem from './ComicItem'
+import ComicItem from './ComicItem'
 import FlatListView from '../widget/FlatListView'
 import FooterState from '../widget/FooterState'
 
@@ -88,7 +88,7 @@ class NeteasePage extends Component<Props> {
                                   data={this.state.data}
                                   showsVerticalScrollIndicator = {false}
                                   renderItem={({item}) => (
-                                      <CommicItem size={cellW} data={item}/>
+                                      <ComicItem size={cellW} data={item} navigation={this.props.navigation}/>
                                   )}
                                   keyExtractor={item => item.id}
                                   numColumns={numColumns}

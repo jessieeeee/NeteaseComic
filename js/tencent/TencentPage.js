@@ -5,6 +5,7 @@ import ServerApi from '../constant/ServerApi'
 import CommicItem from './ComicItem'
 import FlatListView from '../widget/FlatListView'
 import FooterState from '../widget/FooterState'
+import TencentStyle from './Style'
 import {View} from 'react-native';
 
 
@@ -77,6 +78,7 @@ class TencentPage extends Component<Props> {
                                   keyExtractor={item => item.id}
                                   onRefresh={() => this.onRefresh()}
                                   onLoadMore={() => this.onLoadMore()}
+                                  style={TencentStyle.styles.listView}
                     />:  null}
             </View>
         )

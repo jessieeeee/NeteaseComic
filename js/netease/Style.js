@@ -52,6 +52,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: Config.backgroundColor
     },
+    listView:{
+        marginTop: Platform.OS === 'ios' ? Config.sreenW * 0.06 : 0
+    },
     title: {
         fontSize: Platform.OS === 'ios' ? dimensions.ios.titleFont : dimensions.android.titleFont,
         color: Config.normalTextColor,

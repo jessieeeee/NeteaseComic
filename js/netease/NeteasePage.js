@@ -9,6 +9,7 @@ import React, {Component} from 'react'
 import {View} from 'react-native'
 import Config from '../constant/Config'
 import CommonStyle from '../constant/CommonStyle'
+import NeteaseStyle from './Style'
 import NetUtil from '../util/NetUtil'
 import ServerApi from '../constant/ServerApi'
 import ComicItem from './ComicItem'
@@ -104,6 +105,7 @@ class NeteasePage extends Component<Props> {
                                   numColumns={numColumns}
                                   onRefresh={() => this.onRefresh()}
                                   onLoadMore={() => this.onLoadMore()}
+                                  style={NeteaseStyle.styles.listView}
                     />:  null}
                 {this.state.welcome ? <Welcome/> : null}
             </View>

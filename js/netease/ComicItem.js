@@ -23,13 +23,13 @@ class ComicItem extends Component<Props> {
 
     render() {
         return (
-            <View style={{width: this.props.size*0.97, height: this.props.size * 1.8}}>
+            <View style={{width: this.props.size * 0.97, height: this.props.size * 1.8}}>
                 <TouchableOpacity style={NeteaseStyle.styles.itemView} onPress={() => {
                     NavigationService.navigate('NeteaseDetail',{link:this.props.data.link})
                 }}>
                     <Image source={{uri: this.props.data.cover}} style={{
-                        width: this.props.size*0.97,
-                        height: this.props.size*1.3
+                        width: this.props.size * 0.94,
+                        height: this.props.size * 1.3
                     }}/>
                     <Text numberOfLines={1} style={NeteaseStyle.styles.title}>{this.props.data.title}</Text>
                     <Text numberOfLines={1} style={NeteaseStyle.styles.chapter}>{'最新:' + this.props.data.chapter}</Text>

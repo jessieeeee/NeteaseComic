@@ -13,6 +13,7 @@ import Mine from '../mine/Mine'
 import CommonStyle from '../constant/CommonStyle'
 import React,{Component} from "react"
 import Config from '../constant/Config'
+import CustomTabComponent from './CustomTabComponent'
 /**
  * 底部图标资源加载
  */
@@ -77,10 +78,9 @@ const TabNavigatorConfigs = {
     tabBarPosition: 'bottom',
     lazy: true,
     swipeEnabled:false, // 是否允许在标签之间进行滑动。
+    tabBarComponent:CustomTabComponent,
     tabBarOptions:{
-        style:{
-            backgroundColor:Config.backgroundColor
-        },
+        style:CommonStyle.styles.tabBarView,
         activeTintColor:Config.themeColor, // label和icon的前景色 活跃状态下（选中）
         inactiveTintColor:Config.gray, // label和icon的前景色 不活跃状态下(未选中)
         labelStyle:{

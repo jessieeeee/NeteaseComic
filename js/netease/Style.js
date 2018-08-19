@@ -29,8 +29,8 @@ const dimensions = {
         titleFont: Config.sreenW * 0.034,
         subTitleFont: Config.sreenW * 0.028,
         clickNumFont: Config.sreenW * 0.022,
-        marginTop: Config.sreenW * 0.01,
-        subMarginTop: Config.sreenW * 0.002,
+        marginTop: Config.sreenW * 0.02,
+        subMarginTop: Config.sreenW * 0.01,
         barHeight: Config.sreenW * 0.14,
         iconBarSize: Config.sreenW * 0.06,
         iconBarMargin: Config.sreenW * 0.04,
@@ -47,7 +47,7 @@ const dimensions = {
 const styles = StyleSheet.create({
     itemView: {
         flex: 1,
-        margin: Platform.OS === 'ios' ? 4 : 4,
+        padding: Platform.OS === 'ios' ? 4 : 4,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Config.backgroundColor
@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
         fontSize: Platform.OS === 'ios' ? dimensions.ios.titleFont : dimensions.android.titleFont,
         color: Config.normalTextColor,
         fontWeight: 'bold',
-        marginTop: Platform.OS === 'ios' ? dimensions.ios.subMarginTop : dimensions.android.subMarginTop
+        marginTop: Platform.OS === 'ios' ? dimensions.ios.marginTop : dimensions.android.marginTop
     },
     chapter: {
         fontSize: Platform.OS === 'ios' ? dimensions.ios.subTitleFont : dimensions.android.subTitleFont,
         color: Config.gray,
-        marginTop: Platform.OS === 'ios' ? dimensions.ios.marginTop : dimensions.android.marginTop
+        marginTop: Platform.OS === 'ios' ? dimensions.ios.subMarginTop : dimensions.android.subMarginTop
     },
     clickNum: {
         fontSize: Platform.OS === 'ios' ? dimensions.ios.clickNumFont : dimensions.android.clickNumFont,

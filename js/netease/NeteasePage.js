@@ -12,9 +12,10 @@ import CommonStyle from '../constant/CommonStyle'
 import NetUtil from '../util/NetUtil'
 import ServerApi from '../constant/ServerApi'
 import ComicItem from './ComicItem'
+import Welcome from '../welcome/Welcome'
 import FlatListView from '../widget/FlatListView'
 import FooterState from '../widget/FooterState'
-
+import  {DeviceEventEmitter} from 'react-native'
 let numColumns = 3 // 3列
 let cellW = Config.sreenW / numColumns // 单个item的宽度
 
@@ -25,11 +26,20 @@ class NeteasePage extends Component<Props> {
         this.lastNum= 0 //上一次的数据个数
         this.state = {
             data: null,
+            welcome: true
         }
     }
 
     componentDidMount() {
        this.getFreeComicList()
+        // ２秒后移除欢迎界面
+        setTimeout(() => {
+            this.setState({
+                welcome: false
+            })
+            //调用事件通知
+            DeviceEventEmitter.emit('showBar',null);
+        }, 2000)
     }
 
     /**
@@ -95,6 +105,7 @@ class NeteasePage extends Component<Props> {
                                   onRefresh={() => this.onRefresh()}
                                   onLoadMore={() => this.onLoadMore()}
                     />:  null}
+                {this.state.welcome ? <Welcome/> : null}
             </View>
         )
     }

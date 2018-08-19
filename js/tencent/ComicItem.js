@@ -21,7 +21,7 @@ class ComicItem extends Component<Props> {
 
     render() {
         return (
-            <View style={{width: Config.sreenW, height: Config.sreenW * 0.4}}>
+            <View style={{width: Config.sreenW, height: Config.sreenW * 0.44}}>
                 <View style={TencentStyle.styles.itemView}>
                     <Image source={{uri: this.props.data.cover}} style={{
                         width: Config.sreenW * 0.26,

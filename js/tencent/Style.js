@@ -28,7 +28,7 @@ const dimensions = {
 const styles = StyleSheet.create({
     itemView: {
         flex: 1,
-        margin: Platform.OS === 'ios' ? 4 : 4,
+        padding: Platform.OS === 'ios' ? 4 : 4,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',

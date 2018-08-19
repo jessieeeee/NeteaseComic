@@ -7,10 +7,12 @@ import Config from './Config'
  */
 const dimensions = {
     android:{
-        tabBarImageSize: Config.sreenW*0.08,
+        tabBarImageSize: Config.sreenW * 0.08,
+        tabBarHeight: Config.sreenW * 0.15
     },
     ios:{
-        tabBarImageSize: Config.sreenW*0.08,
+        tabBarImageSize: Config.sreenW * 0.08,
+        tabBarHeight: Config.sreenW * 0.15
     }
 }
 
@@ -21,10 +23,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
     tabBarImage: {
-        width: Platform.OS === 'ios' ? dimensions.android.tabBarImageSize: dimensions.ios.tabBarImageSize,
-        height: Platform.OS === 'ios' ? dimensions.android.tabBarImageSize: dimensions.ios.tabBarImageSize,
+        width: Platform.OS === 'ios' ? dimensions.ios.tabBarImageSize: dimensions.android.tabBarImageSize,
+        height: Platform.OS === 'ios' ? dimensions.ios.tabBarImageSize: dimensions.android.tabBarImageSize,
     },
-　　
+　　tabBarView:{
+      backgroundColor:Config.backgroundColor,
+      height: Platform.OS === 'ios' ? dimensions.ios.tabBarHeight : dimensions.android.tabBarHeight,
+      padding: 4
+    }
 })
 
 

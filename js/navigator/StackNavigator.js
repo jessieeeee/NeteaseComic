@@ -4,11 +4,11 @@
  * @description : App导航注册
  */
 import {createStackNavigator} from 'react-navigation'
-import Main from '../main/Main'
+import TabNavigator from '../navigator/TabNavigator'
 import NeteaseDetail from '../netease/ComicDetail'
-// this.props.navigation.navigate('Main')
+// this.props.navigation.navigate('Welcome')
 const App = createStackNavigator({
-    Main: {screen: Main, navigationOptions: {header: null}},
+    Main: {screen:TabNavigator, navigationOptions:{header: null}},
     NeteaseDetail: {screen:NeteaseDetail, navigationOptions:{header: null}}
 });
 

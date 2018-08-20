@@ -6,7 +6,7 @@
  */
 
 import React, {Component} from 'react'
-import {View} from 'react-native'
+import {View,TouchableOpacity} from 'react-native'
 import Config from '../constant/Config'
 import CommonStyle from '../constant/CommonStyle'
 import NeteaseStyle from './Style'
@@ -124,6 +124,13 @@ class NeteasePage extends Component<Props> {
      */
     onLoadMore() {
         this.getListMore()
+    }
+
+    /**
+     * 返回顶部，返回底部
+     */
+    renderControlBtn(){
+　　　　
     }
 }
 

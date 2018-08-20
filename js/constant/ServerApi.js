@@ -5,7 +5,7 @@
  */
 
 // 服务器主机ip
-const server_host = 'http://192.168.1.6:1234/api'
+const server_host = 'http://192.168.0.158:1234/api'
 const netease = '/163'
 const tencent = '/tencent'
 const object = {
@@ -13,7 +13,8 @@ const object = {
     netease:{
         getComic:server_host + netease + '/getComic',
         getComicMore:server_host + netease + '/getComicMore',
-        getDetail:server_host + netease + '/getComicDetail'
+        getDetail:server_host + netease + '/getComicDetail',
+        getDetailMore:server_host + netease + '/getComicDetailMore'
     },
     //　腾讯漫画
     tencent:{

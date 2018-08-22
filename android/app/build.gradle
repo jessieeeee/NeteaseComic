@@ -105,6 +105,8 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        renderscriptTargetApi 21
+        renderscriptSupportModeEnabled true
     }
     splits {
         abi {
@@ -137,7 +139,7 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-blur')
+    api project(':react-native-blur')
     api fileTree(dir: "libs", include: ["*.jar"])
     api "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     api "com.facebook.react:react-native:+"  // From node_modules

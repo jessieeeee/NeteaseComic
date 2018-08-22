@@ -5,13 +5,14 @@
  */
 
 import React, {Component} from 'react'
-import {View,  ScrollView} from 'react-native'
+import {View,  ScrollView, Image, findNodeHandle} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
 import ServerApi from "../constant/ServerApi"
 import NetUtil from "../util/NetUtil"
 import DetailHeader from '../common/DetailHeader'
 import DetailChapters from '../common/DetailChapters'
 import DetailInfo from './DetailInfo'
+import {BlurView} from 'react-native-blur'
 class ComicDetail extends Component<Props>{
     constructor(props) {
         super(props)
@@ -19,7 +20,8 @@ class ComicDetail extends Component<Props>{
             follow: false,
             data: null,
             loadMore: false,
-            refresh: false
+            refresh: false,
+            viewRef: null
         }
     }
 
@@ -50,13 +52,13 @@ class ComicDetail extends Component<Props>{
      */
     getDetailMore() {
         let params = {
-            link: this.props.navigation.getParam('id', '')
+            id: this.props.navigation.getParam('id', '')
         }
         this.setState({
             loadMore: false,
             refresh: true
         })
-        NetUtil.post(ServerApi.netease.getDetailMore, params, (result) => {
+        NetUtil.post(ServerApi.tencent.getDetailMore, params, (result) => {
             if (result.length !== 0) {
                 Array.prototype.push.apply(this.state.data.data, result)
                 this.setState({
@@ -73,10 +75,33 @@ class ComicDetail extends Component<Props>{
         })
     }
 
+    /**
+     * 图片加载完成回调
+     */
+    imageLoaded() {
+        this.setState({viewRef: findNodeHandle(this.cover)});
+    }
+
     render() {
         return (
             <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
                 <View style={CommonStyle.styles.container}>
+                    {this.state.data ?
+                        <Image
+                            ref={(img) => {
+                                this.cover = img
+                            }}
+                            source={{uri: this.state.data.cover}}
+                            style={CommonStyle.styles.absolute}
+                            onLoadEnd={this.imageLoaded.bind(this)}
+                        /> : null }
+                    {this.state.viewRef ?
+                        <BlurView
+                            style={CommonStyle.styles.absolute}
+                            viewRef={this.state.viewRef}
+                            blurType="dark"
+                            blurAmount={2}
+                        /> : null}
                     {/*渲染头部*/}
                     <DetailHeader follow={this.state.follow} onBack={() => {
                         this.props.navigation.goBack()

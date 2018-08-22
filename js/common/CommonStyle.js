@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
         height: Platform.OS === 'ios' ? dimensions.ios.controlBtnBg : dimensions.android.controlBtnBg,
         right: Platform.OS === 'ios' ? dimensions.ios.controlBtnR : dimensions.android.controlBtnR,
         bottom: Platform.OS === 'ios' ? dimensions.ios.controlBtnB : dimensions.android.controlBtnB,
-
     },
     detailHeader: {
         width: Config.sreenW,
@@ -192,11 +191,9 @@ const styles = StyleSheet.create({
         width: Platform.OS === 'ios' ? dimensions.ios.btnWidth : dimensions.android.btnWidth,
         height: Platform.OS === 'ios' ? dimensions.ios.btnHeight : dimensions.android.btnHeight,
     },
-
     detailView:{
         padding: Platform.OS === 'ios' ? dimensions.ios.iconBarMargin : dimensions.android.iconBarMargin,
     },
-
     infoView:{
         flexDirection:'row',
         alignItems:'center',
@@ -231,19 +228,29 @@ const styles = StyleSheet.create({
     },
     titleText:{
         fontSize: Platform.OS === 'ios' ? dimensions.ios.detailTitleFont : dimensions.android.detailTitleFont,
-        color: Config.normalTextColor,
+        color: 'white',
         fontWeight: 'bold',
     },
     firstSubText:{
         fontSize: Platform.OS === 'ios' ? dimensions.ios.detailSubTitleFont : dimensions.android.detailSubTitleFont,
-        color: Config.gray,
+        color: 'white',
         marginTop: Platform.OS === 'ios' ? dimensions.ios. marginTop * 4: dimensions.android.marginTop * 4,
     },
     subText:{
         fontSize: Platform.OS === 'ios' ? dimensions.ios.detailSubTitleFont : dimensions.android.detailSubTitleFont,
-        color: Config.gray,
+        color: 'white',
         marginTop: Platform.OS === 'ios' ? dimensions.ios. marginTop: dimensions.android.marginTop,
     },
+    absolute: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        width: Config.sreenW,
+        height: Config.sreenW * 0.44
+    },
+
 })
 
 

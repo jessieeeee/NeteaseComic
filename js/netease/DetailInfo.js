@@ -5,11 +5,11 @@
  */
 import React, {Component} from 'react'
 import {Text, View, Image, TouchableOpacity} from 'react-native'
-import NeteaseStyle from './Style'
 import PropTypes from 'prop-types'
 import ExpandableText from '../widget/ExpandableText'
 import CommonStyle from "../common/CommonStyle"
-class DetailInfo extends Component<Props>{
+
+class DetailInfo extends Component<Props> {
 
     static propTypes = {
         data: PropTypes.object, // 数据源,
@@ -18,8 +18,9 @@ class DetailInfo extends Component<Props>{
     static defaultProps = {
         data: null,
     }
+
     render() {
-        return(
+        return (
             <View style={CommonStyle.styles.detailView}>
                 <View style={CommonStyle.styles.infoView}>
                     <Image source={{uri: this.props.data.cover}} style={CommonStyle.styles.infoCover}/>
@@ -46,4 +47,5 @@ class DetailInfo extends Component<Props>{
         )
     }
 }
+
 export default DetailInfo

@@ -81,7 +81,18 @@ const styles = StyleSheet.create({
         color: Config.gray,
         marginTop: Platform.OS === 'ios' ? dimensions.ios.subMarginTop : dimensions.android.subMarginTop
     },
-
+    detailRowView: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    score: {
+        color: 'white',
+        fontSize: Platform.OS === 'ios' ? dimensions.ios.subTitleFont * 0.8 : dimensions.android.subTitleFont * 0.8,
+        backgroundColor: Config.orange,
+        borderRadius: 20,
+        padding: Platform.OS === 'ios' ? dimensions.ios.labelPadding*2 : dimensions.android.labelPadding*2,
+        marginLeft: Platform.OS === 'ios' ? dimensions.ios.labelMargin : dimensions.android.labelMargin,
+    }
 })
 
 export default {dimensions, styles}

@@ -5,11 +5,12 @@
  */
 import React, {Component} from 'react'
 import {Text, View, Image, TouchableOpacity} from 'react-native'
-import TencentStyle from './Style'
 import PropTypes from 'prop-types'
 import ExpandableText from '../widget/ExpandableText'
 import CommonStyle from "../common/CommonStyle"
-class DetailInfo extends Component<Props>{
+import TencentStyle from './Style'
+
+class DetailInfo extends Component<Props> {
     static propTypes = {
         data: PropTypes.object, // 数据源,
     }
@@ -19,20 +20,26 @@ class DetailInfo extends Component<Props>{
     }
 
     render() {
-        return(
+        return (
             <View style={CommonStyle.styles.detailView}>
                 <View style={CommonStyle.styles.infoView}>
                     <Image source={{uri: this.props.data.cover}} style={CommonStyle.styles.infoCover}/>
                     <View style={CommonStyle.styles.infoRightView}>
                         <View style={CommonStyle.styles.infoTextView}>
-                            <Text numberOfLines={1}
-                                  style={CommonStyle.styles.titleText}>{this.props.data.title}</Text>
+                            <View style={TencentStyle.styles.detailRowView}>
+                                <Text numberOfLines={1}
+                                      style={CommonStyle.styles.titleText}>{this.props.data.title}</Text>
+                                <Text numberOfLines={1} style={TencentStyle.styles.score}>{this.props.data.score}</Text>
+                            </View>
                             <Text numberOfLines={1}
                                   style={CommonStyle.styles.firstSubText}>{this.props.data.tags}</Text>
                             <Text numberOfLines={1}
                                   style={CommonStyle.styles.subText}>{this.props.data.author}</Text>
-                            <Text numberOfLines={1}
-                                  style={CommonStyle.styles.subText}>{this.props.data.hot}</Text>
+                            <View style={TencentStyle.styles.detailRowView}>
+                                <Text style={CommonStyle.styles.subText}>人气：</Text>
+                                <Text numberOfLines={1}
+                                      style={[CommonStyle.styles.subText,{color:'yellow'}]}>{this.props.data.hot}</Text>
+                            </View>
                         </View>
                         <TouchableOpacity style={{position: 'absolute', bottom: 0,}} onPress={() => {
                             console.log('点击了')
@@ -47,6 +54,7 @@ class DetailInfo extends Component<Props>{
             </View>
         )
     }
+
 }
 
 export default DetailInfo

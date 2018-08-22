@@ -4,13 +4,15 @@
  * @description : 漫画详情展示
  */
 import React, {Component} from 'react'
-import {View,  ScrollView} from 'react-native'
+import {View, ScrollView, Image, findNodeHandle} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
 import ServerApi from "../constant/ServerApi"
 import NetUtil from "../util/NetUtil"
 import DetailHeader from '../common/DetailHeader'
 import DetailChapters from '../common/DetailChapters'
 import DetailInfo from './DetailInfo'
+import {BlurView} from 'react-native-blur'
+
 class ComicDetail extends Component<Props> {
 
     constructor(props) {
@@ -19,7 +21,8 @@ class ComicDetail extends Component<Props> {
             follow: false,
             data: null,
             loadMore: false,
-            refresh: false
+            refresh: false,
+            viewRef: null
         }
     }
 
@@ -73,10 +76,33 @@ class ComicDetail extends Component<Props> {
         })
     }
 
+    /**
+     * 图片加载完成回调
+     */
+    imageLoaded() {
+        this.setState({viewRef: findNodeHandle(this.cover)});
+    }
+
     render() {
         return (
             <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
                 <View style={CommonStyle.styles.container}>
+                    {this.state.data ?
+                        <Image
+                            ref={(img) => {
+                                this.cover = img
+                            }}
+                            source={{uri: this.state.data.cover}}
+                            style={CommonStyle.styles.absolute}
+                            onLoadEnd={this.imageLoaded.bind(this)}
+                        /> : null }
+                    {this.state.viewRef ?
+                        <BlurView
+                            style={CommonStyle.styles.absolute}
+                            viewRef={this.state.viewRef}
+                            blurType="dark"
+                            blurAmount={2}
+                        /> : null}
                     {/*渲染头部*/}
                     <DetailHeader follow={this.state.follow} onBack={() => {
                         this.props.navigation.goBack()
@@ -86,7 +112,7 @@ class ComicDetail extends Component<Props> {
                         })
                     }}/>
                     {/*渲染漫画信息*/}
-                    {this.state.data ? <DetailInfo data={this.state.data} /> : null}
+                    {this.state.data ? <DetailInfo data={this.state.data}/> : null}
                     {/*渲染可看漫画章节*/}
                     {this.state.data ?
                         <DetailChapters data={this.state.data}

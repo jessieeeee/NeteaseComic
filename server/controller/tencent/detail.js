@@ -5,14 +5,14 @@
  */
 let Spider = require('../spider')
 exports.getComicDetailMore = async function (url) {
-    let page =await Spider.init()
+    let page = await Spider.init()
     let targetUrl = Spider.tencentUrl
     await Spider.switchMobile(page)
     // 跳转到目标网站
     await page.goto(url)
     // 等待
     await page.waitFor(100)
-    return await page.evaluate((targetUrl) => {
+    let result = await page.evaluate((targetUrl) => {
         let data = []
         let elements = document.querySelector('ul.chapter-list.normal').querySelectorAll('.chapter-item')
         for (let element of elements) { // 循环
@@ -22,10 +22,9 @@ exports.getComicDetailMore = async function (url) {
             link = targetUrl + link
             data.push({order, link}); // 存入数组
         }
-        return {
-            data: data
-        }
+        return data
     }, targetUrl)
+    return result.splice(9, result.length)
 }
 
 // 获取漫画详情(章节)
@@ -45,7 +44,8 @@ exports.getComicDetail = async function (url) {
         let score = titleNode.querySelector('span').innerText
         let tags = document.querySelector('.head-info-tags').innerText
         let author = document.querySelector('.head-info-author').innerText
-        let hot = document.querySelector('.head-info-hot').innerText
+        let hot = document.querySelector('.head-info-hot').innerText.split('：')
+        hot = hot[1]
         let summary = document.querySelector('.detail-summary').innerText.replace(/[\r\n]/g,'')
         document.querySelector('.tab-list-item').click() // 点击章节按钮
         let elements = document.querySelectorAll('.chapter-item') // 获取所有章节元素
@@ -56,7 +56,11 @@ exports.getComicDetail = async function (url) {
             link = targetUrl + link
             data.push({order, link}); // 存入数组
         }
-        return {cover, title, score, tags, author, hot, summary, data}
+        let loadMore = false
+        if (document.querySelector('.btn-expand-chapter-list')){
+            loadMore = true
+        }
+        return {cover, title, score, tags, author, hot, summary, data ,loadMore}
     }, targetUrl)
 
 }

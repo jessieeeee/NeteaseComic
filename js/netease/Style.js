@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
         color: Config.gray,
         marginTop: Platform.OS === 'ios' ? dimensions.ios.subMarginTop : dimensions.android.subMarginTop
     },
-
 })
 
 export default {dimensions, styles}

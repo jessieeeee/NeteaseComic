@@ -21,12 +21,10 @@ import {DeviceEventEmitter} from 'react-native'
 
 let numColumns = 3 // 3列
 let cellW = Config.sreenW / numColumns // 单个item的宽度
-let page
 class NeteasePage extends Component<Props> {
 
     constructor(props) {
         super(props)
-        page = this
         this.lastNum = 0 //上一次的数据个数
         this.state = {
             data: null,
@@ -106,7 +104,7 @@ class NeteasePage extends Component<Props> {
                                   data={this.state.data}
                                   showsVerticalScrollIndicator={false}
                                   renderItem={({item}) => (
-                                      <ComicItem size={cellW} data={item} navigation={this.props.navigation}/>
+                                      <ComicItem size={cellW} data={item}/>
                                   )}
                                   keyExtractor={item => item.id}
                                   numColumns={numColumns}
@@ -122,7 +120,7 @@ class NeteasePage extends Component<Props> {
                                           btnState: ControlBtn.States.Down
                                       })
                                   }}
-                                  style={NeteaseStyle.styles.listView}
+                                  style={CommonStyle.styles.listView}
                     /> : null}
                 {this.state.btnState === ControlBtn.States.Default ?  null : <ControlBtn btnState={this.state.btnState} callback={() => this.scrollTopBottom()}/>}
                 {this.state.welcome ? <Welcome/> : null}

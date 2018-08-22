@@ -6,7 +6,6 @@ import ServerApi from '../constant/ServerApi'
 import CommicItem from './ComicItem'
 import FlatListView from '../widget/FlatListView'
 import FooterState from '../widget/FooterState'
-import TencentStyle from './Style'
 import ControlBtn from '../widget/ControlBtn'
 
 class TencentPage extends Component<Props> {
@@ -79,7 +78,7 @@ class TencentPage extends Component<Props> {
                                   keyExtractor={item => item.id}
                                   onRefresh={() => this.onRefresh()}
                                   onLoadMore={() => this.onLoadMore()}
-                                  style={TencentStyle.styles.listView}
+                                  style={CommonStyle.styles.listView}
                                   onUp={() => {
                                       this.setState({
                                           btnState: ControlBtn.States.Up

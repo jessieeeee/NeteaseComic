@@ -250,7 +250,9 @@ const styles = StyleSheet.create({
         width: Config.sreenW,
         height: Config.sreenW * 0.44
     },
-
+    listView:{
+        marginTop: Platform.OS === 'ios' ? Config.sreenW * 0.06 : 0
+    },
 })
 
 

@@ -38,9 +38,6 @@ const styles = StyleSheet.create({
         width: Config.sreenW,
         height: Config.sreenW * 0.44
     },
-    listView:{
-        marginTop: Platform.OS === 'ios' ? Config.sreenW * 0.06 : 0
-    },
     textView: {
         flex: 1,
         margin: Platform.OS === 'ios' ? 10 : 10,

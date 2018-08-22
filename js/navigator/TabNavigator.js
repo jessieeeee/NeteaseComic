@@ -10,7 +10,7 @@ import {
 import NeteasePage from '../netease/NeteasePage'
 import TencentPage from '../tencent/TencentPage'
 import Mine from '../mine/Mine'
-import CommonStyle from '../constant/CommonStyle'
+import CommonStyle from '../common/CommonStyle'
 import React,{Component} from "react"
 import Config from '../constant/Config'
 import CustomTabComponent from './CustomTabComponent'

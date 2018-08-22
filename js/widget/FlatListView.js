@@ -15,21 +15,27 @@ export default class FlatListView extends Component {
         onRefresh: PropTypes.func, // 下拉刷新回调
         onLoadMore: PropTypes.func, // 上拉加载回调
         renderEmptyView: PropTypes.func, // 空界面渲染
+        onUp: PropTypes.func, //向上滑动
+        onDown: PropTypes.func, //向下滑动
     };
 
     constructor(props) {
         super(props);
+        this.onScroll = this.onScroll.bind(this)
         this.state = {
             refresh: false,  // 头部是否正在刷新
             loadmore: false,  // 尾部是否正在加载更多
             footerState: State.Idle, // 列表尾部状态，默认不显示控件
         }
+        this.lastY = 0
     }
 
     render() {
         return (
             <FlatList
+                ref={"list"}
                 {...this.props}
+                onScroll={this.onScroll}
                 onRefresh={()=>{ this.beginRefresh() }}
                 refreshing={this.state.refresh}
                 onEndReached={() => { this.beginLoadMore() }}
@@ -38,6 +44,29 @@ export default class FlatListView extends Component {
                 ListEmptyComponent={this.props.renderEmptyView ? this.props.renderEmptyView() :this.renderEmptyView }
             />
         )
+    }
+
+    scrollToEnd(){
+        this.refs.list.scrollToEnd()
+    }
+
+    scrollToIndex(params){
+        this.refs.list.scrollToIndex(params)
+    }
+
+    onScroll(event){
+        if (this.lastY - event.nativeEvent.contentOffset.y > 4){
+            console.log('向下滑动')
+            if (this.props.onUp){
+                this.props.onUp()
+            }
+        } else if(this.lastY - event.nativeEvent.contentOffset.y < -4){
+            console.log('向上滑动')
+            if (this.props.onDown){
+                this.props.onDown()
+            }
+        }
+        this.lastY = event.nativeEvent.contentOffset.y
     }
 
     renderEmptyView = () => {
@@ -78,7 +107,7 @@ export default class FlatListView extends Component {
         }
     }
 
-    //　下拉刷新，设置刷新状态，调用刷新回调
+    // 下拉刷新，设置刷新状态，调用刷新回调
     startRefresh() {
         this.setState(
             {

@@ -28,7 +28,8 @@ exports.getComicDetail = (async (ctx, next) => {
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let result = await detail.getComicDetail('https://m.ac.qq.com/comic/index/id/542724');
+    let id = body.id
+    let result = await detail.getComicDetail('https://m.ac.qq.com/comic/index/id/'+ id);
     ctx.body = {
         success: true,
         msg: result
@@ -42,7 +43,8 @@ exports.getComicDetailMore = (async (ctx, next) => {
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let result = await detail.getComicDetailMore('https://m.ac.qq.com/comic/chapterList/id/542724')
+    let id = body.id
+    let result = await detail.getComicDetailMore('https://m.ac.qq.com/comic/chapterList/id/' + id)
     ctx.body = {
         success: true,
         msg: result

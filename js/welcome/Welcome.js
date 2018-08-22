@@ -6,7 +6,7 @@
 import React, {Component} from "react"
 import {View, Image, } from "react-native"
 import Config from "../constant/Config"
-import CommonStyle from "../constant/CommonStyle"
+import CommonStyle from "../common/CommonStyle"
 import MainStyle from './Style'
 let iconLogo = require('../img/ic_logo.png')
 let iconLogoGirl = require('../img/ic_logo_girl.png')

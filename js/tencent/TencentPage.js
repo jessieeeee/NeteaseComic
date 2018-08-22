@@ -1,12 +1,12 @@
 import React,{Component} from 'react'
-import CommonStyle from '../constant/CommonStyle'
+import CommonStyle from '../common/CommonStyle'
 import NetUtil from '../util/NetUtil'
 import ServerApi from '../constant/ServerApi'
 import CommicItem from './ComicItem'
 import FlatListView from '../widget/FlatListView'
 import FooterState from '../widget/FooterState'
 import TencentStyle from './Style'
-import {View} from 'react-native';
+import {View} from 'react-native'
 
 
 class TencentPage extends Component<Props> {

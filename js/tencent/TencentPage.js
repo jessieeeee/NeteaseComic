@@ -1,4 +1,5 @@
 import React,{Component} from 'react'
+import {View} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
 import NetUtil from '../util/NetUtil'
 import ServerApi from '../constant/ServerApi'
@@ -6,8 +7,7 @@ import CommicItem from './ComicItem'
 import FlatListView from '../widget/FlatListView'
 import FooterState from '../widget/FooterState'
 import TencentStyle from './Style'
-import {View} from 'react-native'
-
+import ControlBtn from '../widget/ControlBtn'
 
 class TencentPage extends Component<Props> {
 
@@ -17,6 +17,7 @@ class TencentPage extends Component<Props> {
         this.pageNo = 1 //当前页数
         this.state = {
             data: null,
+            btnState: ControlBtn.States.Default,
         }
     }
 
@@ -79,7 +80,18 @@ class TencentPage extends Component<Props> {
                                   onRefresh={() => this.onRefresh()}
                                   onLoadMore={() => this.onLoadMore()}
                                   style={TencentStyle.styles.listView}
+                                  onUp={() => {
+                                      this.setState({
+                                          btnState: ControlBtn.States.Up
+                                      })
+                                  }}
+                                  onDown={() => {
+                                      this.setState({
+                                          btnState: ControlBtn.States.Down
+                                      })
+                                  }}
                     />:  null}
+                {this.state.btnState === ControlBtn.States.Default ?  null : <ControlBtn btnState={this.state.btnState} callback={() => this.scrollTopBottom()}/>}
             </View>
         )
     }
@@ -97,6 +109,18 @@ class TencentPage extends Component<Props> {
      */
     onLoadMore() {
         this.getFreeComicList()
+    }
+
+    /**
+     * 滚动到顶部
+     */
+    scrollTopBottom() {
+        if (this.state.btnState === ControlBtn.States.Up && this.listView){
+            this.listView.scrollToEnd()
+        }
+        else if (this.state.btnState === ControlBtn.States.Down && this.listView){
+            this.listView.scrollToIndex({ viewPosition: 0, index: 0 })
+        }
     }
 }
 

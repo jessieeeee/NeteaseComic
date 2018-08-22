@@ -18,7 +18,9 @@ const object = {
     },
     //　腾讯漫画
     tencent:{
-        getComic:server_host + tencent + '/getComic'
+        getComic:server_host + tencent + '/getComic',
+        getDetail:server_host + tencent + '/getComicDetail',
+        getDetailMore:server_host + tencent + '/getComicDetailMore'
     }
 }
 export default object

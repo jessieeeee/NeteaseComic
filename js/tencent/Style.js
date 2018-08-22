@@ -14,6 +14,7 @@ const dimensions = {
         subMarginTop: Config.sreenW * 0.01,
         labelMargin: Config.sreenW * 0.014,
         labelPadding: Config.sreenW * 0.004,
+
     },
     ios: {
         titleFont: Config.sreenW * 0.04,
@@ -22,6 +23,7 @@ const dimensions = {
         subMarginTop: Config.sreenW * 0.01,
         labelMargin: Config.sreenW * 0.014,
         labelPadding: Config.sreenW * 0.004,
+
     }
 }
 
@@ -32,7 +34,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        backgroundColor: Config.backgroundColor
+        backgroundColor: Config.backgroundColor,
+        width: Config.sreenW,
+        height: Config.sreenW * 0.44
     },
     listView:{
         marginTop: Platform.OS === 'ios' ? Config.sreenW * 0.06 : 0
@@ -57,7 +61,7 @@ const styles = StyleSheet.create({
         color: Config.normalTextColor,
         fontWeight: 'bold',
     },
-    chapter: {
+    author: {
         fontSize: Platform.OS === 'ios' ? dimensions.ios.subTitleFont : dimensions.android.subTitleFont,
         color: Config.gray,
         marginTop: Platform.OS === 'ios' ? dimensions.ios.marginTop : dimensions.android.marginTop
@@ -77,6 +81,7 @@ const styles = StyleSheet.create({
         color: Config.gray,
         marginTop: Platform.OS === 'ios' ? dimensions.ios.subMarginTop : dimensions.android.subMarginTop
     },
+
 })
 
 export default {dimensions, styles}

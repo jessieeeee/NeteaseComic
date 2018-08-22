@@ -46,7 +46,7 @@ exports.getComicDetail = async function (url) {
         let tags = document.querySelector('.head-info-tags').innerText
         let author = document.querySelector('.head-info-author').innerText
         let hot = document.querySelector('.head-info-hot').innerText
-        let summary = document.querySelector('.detail-summary').innerText
+        let summary = document.querySelector('.detail-summary').innerText.replace(/[\r\n]/g,'')
         document.querySelector('.tab-list-item').click() // 点击章节按钮
         let elements = document.querySelectorAll('.chapter-item') // 获取所有章节元素
         for (let element of elements) { // 循环
@@ -56,9 +56,7 @@ exports.getComicDetail = async function (url) {
             link = targetUrl + link
             data.push({order, link}); // 存入数组
         }
-        return {
-            elements: {cover, title, score, tags, author, hot, summary, data}
-        }
+        return {cover, title, score, tags, author, hot, summary, data}
     }, targetUrl)
 
 }

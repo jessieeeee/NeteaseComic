@@ -4,10 +4,11 @@
  * @description : 详情章节
  */
 import React, {Component} from 'react'
-import {View, TouchableOpacity, FlatList ,Text} from 'react-native'
+import {View, TouchableOpacity, FlatList, Text} from 'react-native'
 import PropTypes from 'prop-types'
 import CommonStyle from "./CommonStyle"
-class DetailChapters extends Component<Props>{
+
+class DetailChapters extends Component<Props> {
 
     static propTypes = {
         data: PropTypes.object, // 数据源,
@@ -24,24 +25,29 @@ class DetailChapters extends Component<Props>{
         refresh: false
     }
 
-    render(){
+    render() {
         // console.log('刷新了'+this.props.data.length)
         return (
             <View style={CommonStyle.styles.chapterViews}>
                 <Text style={CommonStyle.styles.chapterTitle}>目录</Text>
-                <View style={CommonStyle.styles.chapterHeadView}>
-                    <Text style={CommonStyle.styles.stateView}>{this.props.data.state}</Text>
-                    <Text style={CommonStyle.styles.updateView}>{this.props.data.updateTime}</Text>
-                </View>
-                <FlatList ref={(ref) => {this.listView = ref}}
+                {this.props.data.state || this.props.data.updateTime ?
+                    <View style={CommonStyle.styles.chapterHeadView}>
+                        <Text style={CommonStyle.styles.stateView}>{this.props.data.state}</Text>
+                        <Text style={CommonStyle.styles.updateView}>{this.props.data.updateTime}</Text>
+                    </View> : null
+                }
+
+                <FlatList ref={(ref) => {
+                    this.listView = ref
+                }}
                           data={this.props.data.data}
                           refreshing={this.props.refresh}
                           onRefresh={this.onRefresh}
-                          showsVerticalScrollIndicator = {false}
+                          showsVerticalScrollIndicator={false}
                           extraData={this.props.state}
                           renderItem={({item}) => (
                               <TouchableOpacity onPress={() => {
-                                  if(this.props.onClick){
+                                  if (this.props.onClick) {
                                       this.props.onClick()
                                   }
                               }}>
@@ -57,7 +63,7 @@ class DetailChapters extends Component<Props>{
 
                 {this.props.loadMore ?
                     <TouchableOpacity style={CommonStyle.styles.moreTextView} onPress={() => {
-                        if(this.props.onMore){
+                        if (this.props.onMore) {
                             this.props.onMore()
                         }
                     }}>

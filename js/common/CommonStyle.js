@@ -18,14 +18,21 @@ const dimensions = {
         iconBarMargin: Config.sreenW * 0.04,
         iconBarSize: Config.sreenW * 0.06,
         titleFont: Config.sreenW * 0.034,
-        infoMargin:Config.sreenW * 0.04,
+        subTitleFont: Config.sreenW * 0.028,
         chapterTextW: Config.sreenW * 0.18,
         chapterTextH: Config.sreenW * 0.08,
         chapterTextMargin: Config.sreenW * 0.016,
-        detailSubTitleFont: Config.sreenW * 0.03,
         btnWidth: Config.sreenW * 0.6,
         btnHeight: Config.sreenW * 0.08,
         introMargin:Config.sreenW * 0.08,
+        infoCoverW:Config.sreenW * 0.3,
+        infoCoverH:Config.sreenW * 0.42,
+        infoMargin:Config.sreenW * 0.04,
+        readTextW:Config.sreenW * 0.4,
+        readTextH:Config.sreenW * 0.08,
+        detailTitleFont: Config.sreenW * 0.04,
+        detailSubTitleFont: Config.sreenW * 0.03,
+        marginTop: Config.sreenW * 0.01,
     },
     ios:{
         tabBarImageSize: Config.sreenW * 0.08,
@@ -39,14 +46,21 @@ const dimensions = {
         iconBarMargin: Config.sreenW * 0.04,
         iconBarSize: Config.sreenW * 0.06,
         titleFont: Config.sreenW * 0.034,
-        infoMargin:Config.sreenW * 0.04,
+        subTitleFont: Config.sreenW * 0.028,
         chapterTextW: Config.sreenW * 0.18,
         chapterTextH: Config.sreenW * 0.08,
         chapterTextMargin: Config.sreenW * 0.016,
-        detailSubTitleFont: Config.sreenW * 0.03,
         btnWidth: Config.sreenW * 0.6,
         btnHeight: Config.sreenW * 0.08,
         introMargin:Config.sreenW * 0.08,
+        infoCoverW:Config.sreenW * 0.3,
+        infoCoverH:Config.sreenW * 0.42,
+        infoMargin:Config.sreenW * 0.04,
+        readTextW:Config.sreenW * 0.4,
+        readTextH:Config.sreenW * 0.08,
+        detailTitleFont: Config.sreenW * 0.04,
+        detailSubTitleFont: Config.sreenW * 0.03,
+        marginTop: Config.sreenW * 0.01,
     }
 }
 
@@ -87,6 +101,7 @@ const styles = StyleSheet.create({
         height: Platform.OS === 'ios' ? dimensions.ios.controlBtnBg : dimensions.android.controlBtnBg,
         right: Platform.OS === 'ios' ? dimensions.ios.controlBtnR : dimensions.android.controlBtnR,
         bottom: Platform.OS === 'ios' ? dimensions.ios.controlBtnB : dimensions.android.controlBtnB,
+
     },
     detailHeader: {
         width: Config.sreenW,
@@ -159,7 +174,7 @@ const styles = StyleSheet.create({
         alignSelf:'flex-end'
     },
     detailListView:{
-        marginTop: Platform.OS === 'ios' ? Config.sreenW * 0.06 : 0
+        marginTop: Platform.OS === 'ios' ? dimensions.ios.infoMargin : dimensions.android.infoMargin
     },
     moreTextView:{
         marginTop: Platform.OS === 'ios' ? dimensions.ios.infoMargin : dimensions.android.infoMargin
@@ -178,6 +193,57 @@ const styles = StyleSheet.create({
         height: Platform.OS === 'ios' ? dimensions.ios.btnHeight : dimensions.android.btnHeight,
     },
 
+    detailView:{
+        padding: Platform.OS === 'ios' ? dimensions.ios.iconBarMargin : dimensions.android.iconBarMargin,
+    },
+
+    infoView:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    infoCover:{
+        width:Platform.OS === 'ios' ? dimensions.ios.infoCoverW : dimensions.android.infoCoverW,
+        height:Platform.OS === 'ios' ? dimensions.ios.infoCoverH : dimensions.android.infoCoverH,
+        marginRight:Platform.OS === 'ios' ? dimensions.ios.infoMargin*2 : dimensions.android.infoMargin*2,
+    },
+    infoRightView:{
+        justifyContent:'center',
+        height:Platform.OS === 'ios' ? dimensions.ios.infoCoverH : dimensions.android.infoCoverH,
+        width:Platform.OS === 'ios' ? dimensions.ios.readTextW : dimensions.android.readTextW,
+    },
+    infoTextView:{
+        position: 'absolute',
+        top: 0,
+        width:Platform.OS === 'ios' ? dimensions.ios.readTextW : dimensions.android.readTextW,
+    },
+    readText:{
+        fontSize: Platform.OS === 'ios' ? dimensions.ios.subTitleFont : dimensions.android.subTitleFont,
+        color:'white',
+        backgroundColor:Config.redText,
+        width:Platform.OS === 'ios' ? dimensions.ios.readTextW : dimensions.android.readTextW,
+        height:Platform.OS === 'ios' ? dimensions.ios.readTextH : dimensions.android.readTextH,
+        textAlign:'center',
+        alignItems:'center',
+        justifyContent:'center',
+        textAlignVertical:'center',
+        borderRadius:2
+    },
+    titleText:{
+        fontSize: Platform.OS === 'ios' ? dimensions.ios.detailTitleFont : dimensions.android.detailTitleFont,
+        color: Config.normalTextColor,
+        fontWeight: 'bold',
+    },
+    firstSubText:{
+        fontSize: Platform.OS === 'ios' ? dimensions.ios.detailSubTitleFont : dimensions.android.detailSubTitleFont,
+        color: Config.gray,
+        marginTop: Platform.OS === 'ios' ? dimensions.ios. marginTop * 4: dimensions.android.marginTop * 4,
+    },
+    subText:{
+        fontSize: Platform.OS === 'ios' ? dimensions.ios.detailSubTitleFont : dimensions.android.detailSubTitleFont,
+        color: Config.gray,
+        marginTop: Platform.OS === 'ios' ? dimensions.ios. marginTop: dimensions.android.marginTop,
+    },
 })
 
 

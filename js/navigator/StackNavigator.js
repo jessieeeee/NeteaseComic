@@ -6,10 +6,12 @@
 import {createStackNavigator} from 'react-navigation'
 import TabNavigator from '../navigator/TabNavigator'
 import NeteaseDetail from '../netease/ComicDetail'
+import TencentDetail from '../tencent/ComicDetail'
 // this.props.navigation.navigate('Welcome')
 const App = createStackNavigator({
     Main: {screen:TabNavigator, navigationOptions:{header: null}},
-    NeteaseDetail: {screen:NeteaseDetail, navigationOptions:{header: null}}
+    NeteaseDetail: {screen:NeteaseDetail, navigationOptions:{header: null}},
+    TencentDetail: {screen:TencentDetail, navigationOptions:{header: null}}
 });
 
 export default App

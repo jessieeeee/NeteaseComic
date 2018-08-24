@@ -10,6 +10,7 @@ exports.getComicDetailMore = async function (url) {
     await Spider.switchMobile(page)
     // 跳转到目标网站
     await page.goto(url)
+    console.log('catch------>', url)
     // 等待
     await page.waitFor(100)
     let result = await page.evaluate((targetUrl) => {
@@ -34,6 +35,7 @@ exports.getComicDetail = async function (url) {
     await Spider.switchMobile(page)
     // 跳转到目标网站
     await page.goto(url)
+    console.log('catch------>', url)
     // 等待
     await page.waitFor(100)
     return await page.evaluate((targetUrl) => {

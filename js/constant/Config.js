@@ -18,6 +18,8 @@ const object = {
     greenBlue:'#43b0cf',
     hotRed:'#f87763',
     DEBUG: true,
+    platformNetease: 'netease',
+    platformTencent: 'tencent'
 }
 
 export default object

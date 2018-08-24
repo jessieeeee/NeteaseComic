@@ -26,8 +26,10 @@ exports.getComic = async function (pageNo) {
     let targetUrl = Spider.tencentUrl
     let page =await Spider.init()
     await Spider.switchPc(page)
+    let url = targetUrl + '/Comic/all/search/time/vip/1/page/'+ pageNo
     // 跳转到目标网站
-    await page.goto(targetUrl + '/Comic/all/search/time/vip/1/page/'+ pageNo)
+    await page.goto(url)
+    console.log('catch------>',url)
     // 滚到底部
     await page.evaluate(() => {
         window.scrollTo(0, document.body.scrollHeight)

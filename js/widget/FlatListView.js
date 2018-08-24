@@ -169,16 +169,24 @@ export default class FlatListView extends Component {
      * 如果刷新完成，当前列表是空的，不显示尾部组件了。
      */
     endRefreshing(footerState: State) {
-        let footerRefreshState = footerState;
-        if (this.props.data.length === 0) {
-            footerRefreshState = State.Idle;
+        if (arguments.length > 0){
+            console.log('刷新尾部')
+            let footerRefreshState = footerState;
+            if (this.props.data.length === 0) {
+                footerRefreshState = State.Idle;
+            }
+
+            this.setState({
+                footerState: footerRefreshState,
+                refresh: false,
+                loadmore: false
+            })
+        } else {
+            console.log('加载上一页完毕')
+            this.setState({
+                refresh: false,
+                loadmore: false
+            })
         }
-
-        this.setState({
-            footerState: footerRefreshState,
-            refresh: false,
-            loadmore: false
-        })
-
     }
 }

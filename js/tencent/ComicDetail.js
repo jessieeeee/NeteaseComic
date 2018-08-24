@@ -13,6 +13,7 @@ import DetailHeader from '../common/DetailHeader'
 import DetailChapters from '../common/DetailChapters'
 import DetailInfo from './DetailInfo'
 import {BlurView} from 'react-native-blur'
+import NavigationService from "../navigator/NavigationService"
 class ComicDetail extends Component<Props>{
     constructor(props) {
         super(props)
@@ -117,8 +118,8 @@ class ComicDetail extends Component<Props>{
                         <DetailChapters data={this.state.data}
                                         refresh={this.state.refresh}
                                         state={this.state}
-                                        loadMore={this.state.loadMore} onClick={() => {
-                            console.log('点击了item')
+                                        loadMore={this.state.loadMore} onClick={(item) => {
+                            NavigationService.navigate('ComicContent',{link:item.link})
                         }} onMore={() => {
                             this.getDetailMore()
                         }}/> : null}

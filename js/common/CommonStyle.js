@@ -253,6 +253,22 @@ const styles = StyleSheet.create({
     listView:{
         marginTop: Platform.OS === 'ios' ? Config.sreenW * 0.06 : 0
     },
+    imgPlaceholder:{
+        width: Config.sreenW,
+        height: Config.sreenW * 1.2,
+        backgroundColor: Config.normalTextColor,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    imgPlaceholderText:{
+        color:'white',
+        fontSize: Platform.OS === 'ios' ? dimensions.ios.detailTitleFont * 2 : dimensions.android.detailTitleFont * 2,
+    },
+    divider:{
+        height: 2,
+        width: Config.sreenW,
+        backgroundColor: Config.gray
+    }
 })
 
 

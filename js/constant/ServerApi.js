@@ -15,14 +15,16 @@ const object = {
         getComicMore:server_host + netease + '/getComicMore',
         getDetail:server_host + netease + '/getComicDetail',
         getDetailMore:server_host + netease + '/getComicDetailMore',
-        getComicContent: server_host + netease + '/getComicContent'
+        getComicContent: server_host + netease + '/getComicContent',
+        getComicContentLastOrNext: server_host + netease + '/getComicContentLastOrNext'
     },
     //　腾讯漫画
     tencent:{
         getComic:server_host + tencent + '/getComic',
         getDetail:server_host + tencent + '/getComicDetail',
         getDetailMore:server_host + tencent + '/getComicDetailMore',
-        getComicContent: server_host + tencent + '/getComicContent'
+        getComicContent: server_host + tencent + '/getComicContent',
+        getComicContentLastOrNext: server_host + tencent + '/getComicContentLastOrNext'
     }
 }
 export default object

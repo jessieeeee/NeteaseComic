@@ -17,10 +17,12 @@ tc　8热血　16恋爱　15后宫　2恐怖　24治愈　11玄幻　26唯美　
 exports.getComic = async function () {
     page = await Spider.init()
     await Spider.switchPc(page)
+    let url = Spider.neteaseUrl + '/category?sort=2&sf=1'
     // 跳转到目标网站
-    await page.goto(Spider.neteaseUrl + '/category?sort=2&sf=1')
+    await page.goto(url)
+    console.log('catch------>',url)
     // 等待
-    await page.waitFor(100)
+    await page.waitFor(200)
     return await this.getListResult(page)
 }
 

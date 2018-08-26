@@ -3,6 +3,7 @@ let list = require('./list')
 let detail = require('./detail')
 let content = require('./content')
 let comment = require('./comment')
+
 // 抓取免费漫画列表
 exports.getComic = (async (ctx, next) => {
     //请求的参数
@@ -58,7 +59,8 @@ exports.getComicContent = (async (ctx, next) => {
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let link = body.link
+    let tencentUrl = 'http://ac.qq.com/ComicView/'
+    let link = tencentUrl + body.link
     // http://ac.qq.com/chapter/index/id/627861/cid/57
     let result = await content.getComicContent(link);
     ctx.body = {

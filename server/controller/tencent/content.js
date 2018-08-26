@@ -41,7 +41,7 @@ exports.getImgs = async function () {
         });
         return images;
     });
-    let node = await page.$eval('#mainControlNext', node => node)
+    let node = await page.$('#mainControlNext')
     let loadMore = false
     if (node !== null) {
         loadMore = true

@@ -14,6 +14,7 @@ import DetailChapters from '../common/DetailChapters'
 import DetailInfo from './DetailInfo'
 import {BlurView} from 'react-native-blur'
 import NavigationService from "../navigator/NavigationService"
+import Config from "../constant/Config"
 class ComicDetail extends Component<Props>{
     constructor(props) {
         super(props)
@@ -119,13 +120,20 @@ class ComicDetail extends Component<Props>{
                                         refresh={this.state.refresh}
                                         state={this.state}
                                         loadMore={this.state.loadMore} onClick={(item) => {
-                            NavigationService.navigate('ComicContent',{link:item.link})
+                            NavigationService.navigate('ComicContent',{link:this.getLink(item.link), platform:Config.platformTencent})
                         }} onMore={() => {
                             this.getDetailMore()
                         }}/> : null}
                 </View>
             </ScrollView>
         )
+    }
+
+    getLink(link){
+        let start = link.lastIndexOf('index')
+        let result = link.substring(start,link.length)
+        console.log(result)
+        return result
     }
 
 }

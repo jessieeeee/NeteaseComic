@@ -24,7 +24,7 @@ class ComicItem extends Component<Props> {
         return (
             <TouchableOpacity style={TencentStyle.styles.itemView}
                               onPress={() => {
-                                  NavigationService.navigate('TencentDetail', {id: this.props.data.id})
+                                  NavigationService.navigate('TencentDetail', {id: this.props.data.id })
                               }}>
                 <Image source={{uri: this.props.data.cover}} style={{
                     width: Config.sreenW * 0.26,

@@ -63,7 +63,7 @@ exports.getImgs = async function () {
         return images;
     });
 
-    let node = await page.$eval('#J-turnPageNext', node => node)
+    let node = await page.$('#J-turnPageNext')
     let loadMore = false
     if (node !== null) {
         loadMore = true

@@ -29,23 +29,24 @@ exports.getImgs = async function () {
         // 每次滚动一个张图片的高度
         await page.evaluate(`window.scrollTo(0, ${i * imgHeight * step})`);
         // 为确保懒加载触发，需要等待一下
-        await page.waitFor(100)
+        await page.waitFor(500)
     }
     // 获取图片url
     let data = await page.$$eval('#comicContain img[data-h]', imgs => {
         const images = [];
         imgs.forEach(img => {
-            if (img.src.lastIndexOf('.gif') !== img.src.length - 4) {
-                images.push(img.src);
-            }
+            // if (img.src.lastIndexOf('.gif') !== img.src.length - 4) {
+                images.push(img.src)
+            // }
         });
         return images;
     });
-    let node = await page.$('#mainControlNext')
+    let nextBtnText = await page.$eval('#mainControlNext', node => node.innerText)
     let loadMore = false
-    if (node.innerText !== '点击进入书末页') {
+
+    if (nextBtnText === '点击进入书末页') {
         loadMore = false
-    } else if(node.innerText !== '点击进入下一话'){
+    } else if(nextBtnText === '点击进入下一话'){
         loadMore = true
     }
     return {data, loadMore}

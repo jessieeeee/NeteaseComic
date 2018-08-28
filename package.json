@@ -8,6 +8,7 @@
     "rn-start": "react-native start"
   },
   "dependencies": {
+    "jsc-android": "224109.x.x",
     "mobx": "^5.0.5",
     "mobx-react": "^5.2.5",
     "puppeteer": "^1.7.0",
@@ -16,8 +17,7 @@
     "react-native": "0.56.0",
     "react-native-blur": "^3.2.2",
     "react-navigation": "^2.12.1",
-    "react-navigation-tabs": "^0.6.0",
-    "jsc-android": "224109.x.x"
+    "react-navigation-tabs": "^0.6.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "7.0.0-beta.47",

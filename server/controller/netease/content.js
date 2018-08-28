@@ -39,7 +39,7 @@ exports.getComicContentLastOrNext = async function (nextChapter) {
 // 抓取图片
 exports.getImgs = async function () {
     // 等待
-    await page.waitFor(800)
+    await page.waitFor(700)
     let imgHeight
     try{
          imgHeight = await page.$eval('div.portrait-player .img-box', img => img.style.height.replace('px',''))
@@ -57,13 +57,15 @@ exports.getImgs = async function () {
         await page.evaluate(`window.scrollTo(0, ${i * imgHeight * step})`);
         console.log('滚动步长'+ i * imgHeight * step)
         // 为确保懒加载触发，需要等待一下
-        await page.waitFor(400)
+        await page.waitFor(1300)
     }
     // 获取图片url
     let data = await page.$$eval('div.portrait-player .img-box img', imgs => {
         const images = [];
         imgs.forEach(img => {
-            images.push(img.src);
+            // if (img.src.substring(0,5) !== 'data'){
+                images.push(img.src);
+            // }
         });
         return images;
     });

@@ -61,6 +61,7 @@ exports.getComicContent = (async (ctx, next) => {
     }
     let tencentUrl = 'http://ac.qq.com/ComicView/'
     let link = tencentUrl + body.link
+    // http://ac.qq.com/ComicView/index/id/522924/cid/287
     // http://ac.qq.com/chapter/index/id/627861/cid/57
     let result = await content.getComicContent(link);
     ctx.body = {

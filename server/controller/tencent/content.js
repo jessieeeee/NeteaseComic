@@ -43,7 +43,9 @@ exports.getImgs = async function () {
     });
     let node = await page.$('#mainControlNext')
     let loadMore = false
-    if (node !== null) {
+    if (node.innerText !== '点击进入书末页') {
+        loadMore = false
+    } else if(node.innerText !== '点击进入下一话'){
         loadMore = true
     }
     return {data, loadMore}
@@ -65,5 +67,6 @@ exports.getComicContentLastOrNext = async function (nextChapter) {
         }
     }, nextChapter)
     console.log(result)
+
     return this.getImgs()
 }

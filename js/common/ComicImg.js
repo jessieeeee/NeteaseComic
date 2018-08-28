@@ -27,9 +27,13 @@ class ComicImg extends Component<Props> {
 
     }
     componentWillMount() {
+        this.unmount = false
         this.meaureImg()
     }
 
+    componentWillUnmount(){
+        this.unmount = true
+    }
     render() {
         return (
 
@@ -45,11 +49,13 @@ class ComicImg extends Component<Props> {
 
     meaureImg() {
         Image.getSize(this.props.imgUrl, (width, height) => {
-            this.setState({
-                    originalW: width,
-                    originalH: height
-                }
-            );
+           if (!this.unmount){
+               this.setState({
+                       originalW: width,
+                       originalH: height
+                   }
+               );
+           }
         });
     }
 

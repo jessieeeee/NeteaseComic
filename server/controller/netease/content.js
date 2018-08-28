@@ -38,11 +38,16 @@ exports.getComicContentLastOrNext = async function (nextChapter) {
 
 // 抓取图片
 exports.getImgs = async function () {
-// 等待
+    // 等待
     await page.waitFor(800)
-    // 获取图片数目和高度
+    let imgHeight
+    try{
+         imgHeight = await page.$eval('div.portrait-player .img-box', img => img.style.height.replace('px',''))
+    }catch (error){
+        return{loadMore:false}
+    }
     const imagesLen = await page.$$eval('div.portrait-player .img-box', imgs => imgs.length)
-    const imgHeight = await page.$eval('div.portrait-player .img-box', img => img.style.height.replace('px',''))
+
     console.log('图片数量为' + imagesLen)
     console.log('图片高度为' + imgHeight)
     // 自动滚动，使懒加载图片加载
@@ -58,15 +63,13 @@ exports.getImgs = async function () {
     let data = await page.$$eval('div.portrait-player .img-box img', imgs => {
         const images = [];
         imgs.forEach(img => {
-            images.push({src: img.src});
+            images.push(img.src);
         });
         return images;
     });
 
-    let node = await page.$('#J-turnPageNext')
-    let loadMore = false
-    if (node !== null) {
-        loadMore = true
-    }
+    let loadMore = true
+
     return {data, loadMore}
+
 }

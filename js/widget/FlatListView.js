@@ -56,12 +56,12 @@ export default class FlatListView extends Component {
 
     onScroll(event){
         if (this.lastY - event.nativeEvent.contentOffset.y > 4){
-            console.log('向下滑动')
+            // console.log('向下滑动')
             if (this.props.onUp){
                 this.props.onUp()
             }
         } else if(this.lastY - event.nativeEvent.contentOffset.y < -4){
-            console.log('向上滑动')
+            // console.log('向上滑动')
             if (this.props.onDown){
                 this.props.onDown()
             }

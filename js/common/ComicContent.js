@@ -12,12 +12,13 @@ import CommonStyle from "./CommonStyle"
 import NetUtil from "../util/NetUtil"
 import ServerApi from "../constant/ServerApi"
 import Config from '../constant/Config'
+
 class ComicContent extends Component<Props> {
 
     constructor(props) {
         super(props)
         this.state = {
-            data: null,
+            data: null
         }
     }
 
@@ -35,17 +36,17 @@ class ComicContent extends Component<Props> {
             link: this.props.navigation.getParam('link', '')
         }
         let url
-        if (this.props.navigation.getParam('platform', '') === Config.platformNetease){
+        if (this.props.navigation.getParam('platform', '') === Config.platformNetease) {
             url = ServerApi.netease.getComicContent
         }
-        else if(this.props.navigation.getParam('platform', '') === Config.platformTencent){
+        else if (this.props.navigation.getParam('platform', '') === Config.platformTencent) {
             url = ServerApi.tencent.getComicContent
         }
         NetUtil.post(url, params, (result) => {
             this.setState({
-                data:  result,
+                data: result
             })
-            this.endRefresh(true)
+
         }, (error) => {
             if (this.listView) {
                 let footerState = FooterState.Failure
@@ -59,21 +60,19 @@ class ComicContent extends Component<Props> {
         // 结束刷新
         if (this.listView && next) {
             let footerState
-            if (this.state.data.loadMore) {
+            if (this.loadMore) {
                 footerState = FooterState.CanLoadMore;
             } else {
                 footerState = FooterState.NoMoreData;
             }
-            console.log('下一页加载完成')
             this.listView.endRefreshing(footerState)
-        } else {
-            console.log('上一页加载完成')
+        } else if (this.listView) {
             this.listView.endRefreshing()
         }
     }
 
-    space(){
-        return(<View style={CommonStyle.styles.divider}/>)
+    space() {
+        return (<View style={CommonStyle.styles.divider}/>)
     }
 
     render() {
@@ -86,11 +85,11 @@ class ComicContent extends Component<Props> {
                                   data={this.state.data.data}
                                   showsVerticalScrollIndicator={false}
                                   ItemSeparatorComponent={this.space}
-                                  renderItem={({item,index}) => (
-                                      <ComicImg imgUrl={item.src} index={index} />
+                                  renderItem={({item, index}) => (
+                                      <ComicImg imgUrl={item} index={index}/>
                                   )}
 
-                                  keyExtractor={item => item.src}
+                                  keyExtractor={item => item}
                                   numColumns={1}
                                   onRefresh={() => this.onRefresh()}
                                   onLoadMore={() => this.onLoadMore()}
@@ -100,45 +99,48 @@ class ComicContent extends Component<Props> {
         )
     }
 
-    onRefresh(){
+    onRefresh() {
         this.getContentMore(false)
     }
 
-    onLoadMore(){
-       this.getContentMore(true)
+    onLoadMore() {
+        this.getContentMore(true)
     }
 
     /**
      * 加载更多
      * @param next
      */
-    getContentMore(next){
+    getContentMore(next) {
         console.log(next ? '加载下一页' : '加载上一页')
         let params = {
             next: next
         }
         let url
-        if (this.props.navigation.getParam('platform', '') === Config.platformNetease){
+        if (this.props.navigation.getParam('platform', '') === Config.platformNetease) {
             url = ServerApi.netease.getComicContentLastOrNext
         }
-        else if(this.props.navigation.getParam('platform', '') === Config.platformTencent){
+        else if (this.props.navigation.getParam('platform', '') === Config.platformTencent) {
             url = ServerApi.tencent.getComicContentLastOrNext
         }
         NetUtil.post(url, params, (result) => {
-            // 加载下一页,数据拼接在末尾
-            if (next && result.data.toString() !== this.state.data.data.toString()){
-                Array.prototype.push.apply(this.state.data.data, result.data)
-                this.setState({
-                    ['data.loadMore']:result.loadMore
-                })
-            }
-            // 加载上一页,数据添加在头部
-            else {
-                if (result.data.toString() !== this.state.data.data.toString()){
-                    this.state.data.data.splice(0,0,result.data)
-                }
+            // 没有下一页了
+            if (!result.data) {
+                this.loadMore = false
+                return
             }
 
+            // 加载下一页,数据与最后一条数据不同，拼接在末尾
+            if (next && JSON.stringify(result.data[result.data.length - 1]) !== JSON.stringify(this.state.data.data[this.state.data.data.length - 1])) {
+                Array.prototype.push.apply(this.state.data.data, result.data)
+                console.log(this.state.data.data)
+                this.loadMore = result.loadMore
+            }
+            // 加载上一页,数据与第一条数据不同，数据添加在头部
+            else if (!next && JSON.stringify(result.data[0]) !== JSON.stringify(this.state.data.data[0])) {
+                result.data.unshift(0, 0)
+                Array.prototype.splice.apply(this.state.data.data, result.data)
+            }
             this.endRefresh(next)
         }, (error) => {
             if (this.listView) {
@@ -149,5 +151,6 @@ class ComicContent extends Component<Props> {
         })
     }
 }
+
 
 export default ComicContent

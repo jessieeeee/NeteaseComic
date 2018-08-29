@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
         color: 'white',
         marginTop: Platform.OS === 'ios' ? dimensions.ios. marginTop: dimensions.android.marginTop,
     },
-    absolute: {
+    detailAbsolute: {
         position: "absolute",
         top: 0,
         left: 0,
@@ -249,6 +249,17 @@ const styles = StyleSheet.create({
         right: 0,
         width: Config.sreenW,
         height: Config.sreenW * 0.44
+    },
+
+    absolute: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        width: Config.sreenW,
+        height: Config.sreenW * 0.5,
+
     },
     listView:{
         marginTop: Platform.OS === 'ios' ? Config.sreenW * 0.06 : 0
@@ -267,7 +278,7 @@ const styles = StyleSheet.create({
     divider:{
         height: 2,
         width: Config.sreenW,
-        backgroundColor: Config.gray
+        backgroundColor: Config.dividerColor
     }
 })
 

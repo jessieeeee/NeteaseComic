@@ -94,12 +94,12 @@ class ComicDetail extends Component<Props>{
                                 this.cover = img
                             }}
                             source={{uri: this.state.data.cover}}
-                            style={CommonStyle.styles.absolute}
+                            style={CommonStyle.styles.detailAbsolute}
                             onLoadEnd={this.imageLoaded.bind(this)}
                         /> : null }
                     {this.state.viewRef ?
                         <BlurView
-                            style={CommonStyle.styles.absolute}
+                            style={CommonStyle.styles.detailAbsolute}
                             viewRef={this.state.viewRef}
                             blurType="dark"
                             blurAmount={2}

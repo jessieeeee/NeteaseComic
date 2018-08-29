@@ -13,6 +13,8 @@ const object = {
     backgroundColor:'#ffffff',
     normalTextColor:'#333333',
     gray:'#666666',
+    bgGray:'#f2f2f2',
+    dividerColor:'#f5f5f5',
     lightBlue:'#2daafa',
     orange:'#ee7c25',
     greenBlue:'#43b0cf',

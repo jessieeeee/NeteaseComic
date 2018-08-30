@@ -7,7 +7,11 @@ import CommicItem from './ComicItem'
 import FlatListView from '../widget/FlatListView'
 import FooterState from '../widget/FooterState'
 import ControlBtn from '../widget/ControlBtn'
-
+import StatusManager from '../util/StatusManager'
+import {observer} from "mobx-react/native"
+import {BaseComponent} from "../common/BaseComponent"
+import Status from "../util/Status"
+@observer
 class TencentPage extends Component<Props> {
 
     constructor(props){
@@ -18,12 +22,16 @@ class TencentPage extends Component<Props> {
             data: null,
             btnState: ControlBtn.States.Default,
         }
+        this.statusManager = new StatusManager(this.retry)
     }
 
     componentDidMount() {
         this.getFreeComicList()
     }
 
+    retry(){
+        this.getFreeComicList()
+    }
     /**
      * 获取免费漫画列表
      */
@@ -31,7 +39,7 @@ class TencentPage extends Component<Props> {
         let params = {
             pageNo: this.pageNo
         }
-        NetUtil.post(ServerApi.tencent.getComic, params, (result) => {
+        this.props.request(ServerApi.tencent.getComic,params,this.statusManager,(result) => {
             console.log('data----->'+'当前第'+this.pageNo+ '页')
             if(this.pageNo === 1){
                 this.setState({
@@ -48,6 +56,7 @@ class TencentPage extends Component<Props> {
             }
             console.log(error)
         })
+
     }
 
     endRefresh(result){
@@ -65,9 +74,9 @@ class TencentPage extends Component<Props> {
         }
     }
 
-    render(){
+    renderNormal(){
         return (
-            <View style={CommonStyle.styles.container}>
+            <View>
                 {this.state.data ?
                     <FlatListView ref={(ref) => {this.listView = ref}}
                                   data={this.state.data}
@@ -91,6 +100,14 @@ class TencentPage extends Component<Props> {
                                   }}
                     />:  null}
                 {this.state.btnState === ControlBtn.States.Default ?  null : <ControlBtn btnState={this.state.btnState} callback={() => this.scrollTopBottom()}/>}
+            </View>
+        )
+    }
+    render(){
+        return (
+            <View style={CommonStyle.styles.container}>
+                {this.statusManager.Status === Status.Normal ?  this.renderNormal() :null}
+                {this.props.displayStatus(this.statusManager)}
             </View>
         )
     }
@@ -123,4 +140,4 @@ class TencentPage extends Component<Props> {
     }
 }
 
-export default TencentPage
+export default BaseComponent(TencentPage)

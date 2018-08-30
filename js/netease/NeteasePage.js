@@ -9,7 +9,6 @@ import React, {Component} from 'react'
 import {View} from 'react-native'
 import Config from '../constant/Config'
 import CommonStyle from '../common/CommonStyle'
-import NeteaseStyle from './Style'
 import NetUtil from '../util/NetUtil'
 import ServerApi from '../constant/ServerApi'
 import ComicItem from './ComicItem'
@@ -17,10 +16,14 @@ import Welcome from '../welcome/Welcome'
 import FlatListView from '../widget/FlatListView'
 import FooterState from '../widget/FooterState'
 import ControlBtn from '../widget/ControlBtn'
+import {BaseComponent} from '../common/BaseComponent'
 import {DeviceEventEmitter} from 'react-native'
-
+import StatusManager from '../util/StatusManager'
+import Status from "../util/Status"
+import {observer} from "mobx-react/native"
 let numColumns = 3 // 3列
 let cellW = Config.sreenW / numColumns // 单个item的宽度
+@observer
 class NeteasePage extends Component<Props> {
 
     constructor(props) {
@@ -31,6 +34,7 @@ class NeteasePage extends Component<Props> {
             welcome: true,
             btnState: ControlBtn.States.Default,
         }
+        this.statusManager = new StatusManager(this.retry)
     }
 
     componentDidMount() {
@@ -43,14 +47,56 @@ class NeteasePage extends Component<Props> {
             //调用事件通知
             DeviceEventEmitter.emit('showBar', null);
         }, 2000)
-
     }
 
+    /**
+     * 正常显示渲染
+     * @returns {*}
+     */
+    renderNormal(){
+        return (
+            <View>
+                {this.state.data ?
+                    <FlatListView ref={(ref) => {
+                        this.listView = ref
+                    }}
+                                  data={this.state.data}
+                                  showsVerticalScrollIndicator={false}
+                                  renderItem={({item}) => (
+                                      <ComicItem size={cellW} data={item}/>
+                                  )}
+                                  keyExtractor={item => item.id}
+                                  numColumns={numColumns}
+                                  onRefresh={() => this.onRefresh()}
+                                  onLoadMore={() => this.onLoadMore()}
+                                  onUp={() => {
+                                      this.setState({
+                                          btnState: ControlBtn.States.Up
+                                      })
+                                  }}
+                                  onDown={() => {
+                                      this.setState({
+                                          btnState: ControlBtn.States.Down
+                                      })
+                                  }}
+                                  style={CommonStyle.styles.listView}
+                    /> : null}
+                {this.state.btnState === ControlBtn.States.Default ?  null : <ControlBtn btnState={this.state.btnState} callback={() => this.scrollTopBottom()}/>}
+            </View>
+        )
+    }
+
+    /**
+     * 重试回调
+     */
+    retry(){
+        this.getFreeComicList()
+    }
     /**
      * 获取免费漫画列表
      */
     getFreeComicList() {
-        NetUtil.post(ServerApi.netease.getComic, null, (result) => {
+        this.props.request(ServerApi.netease.getComic,null,this.statusManager,(result) => {
             this.setState({
                 data: result,
             })
@@ -97,32 +143,8 @@ class NeteasePage extends Component<Props> {
     render() {
         return (
             <View style={CommonStyle.styles.container}>
-                {this.state.data ?
-                    <FlatListView ref={(ref) => {
-                        this.listView = ref
-                    }}
-                                  data={this.state.data}
-                                  showsVerticalScrollIndicator={false}
-                                  renderItem={({item}) => (
-                                      <ComicItem size={cellW} data={item}/>
-                                  )}
-                                  keyExtractor={item => item.id}
-                                  numColumns={numColumns}
-                                  onRefresh={() => this.onRefresh()}
-                                  onLoadMore={() => this.onLoadMore()}
-                                  onUp={() => {
-                                      this.setState({
-                                          btnState: ControlBtn.States.Up
-                                      })
-                                  }}
-                                  onDown={() => {
-                                      this.setState({
-                                          btnState: ControlBtn.States.Down
-                                      })
-                                  }}
-                                  style={CommonStyle.styles.listView}
-                    /> : null}
-                {this.state.btnState === ControlBtn.States.Default ?  null : <ControlBtn btnState={this.state.btnState} callback={() => this.scrollTopBottom()}/>}
+                {this.statusManager.Status === Status.Normal ?  this.renderNormal() :null}
+                {this.props.displayStatus(this.statusManager)}
                 {this.state.welcome ? <Welcome/> : null}
             </View>
         )
@@ -155,4 +177,4 @@ class NeteasePage extends Component<Props> {
     }
 }
 
-export default NeteasePage
+export default BaseComponent(NeteasePage)

@@ -14,6 +14,11 @@ import DetailInfo from './DetailInfo'
 import {BlurView} from 'react-native-blur'
 import Config from '../constant/Config'
 import NavigationService from '../navigator/NavigationService'
+import StatusManager from "../util/StatusManager"
+import FooterState from "../widget/FooterState"
+import Status from "../util/Status"
+import {BaseComponent} from "../common/BaseComponent"
+import DefaultDisplay from '../widget/DefaultDisplay'
 class ComicDetail extends Component<Props> {
 
     constructor(props) {
@@ -25,6 +30,14 @@ class ComicDetail extends Component<Props> {
             refresh: false,
             viewRef: null
         }
+        this.statusManager = new StatusManager(this.retry)
+    }
+
+    /**
+     * 重试回调
+     */
+    retry(){
+        this.getDetail()
     }
 
     componentDidMount() {
@@ -39,7 +52,7 @@ class ComicDetail extends Component<Props> {
         let params = {
             link: this.props.navigation.getParam('link', '')
         }
-        NetUtil.post(ServerApi.netease.getDetail, params, (result) => {
+        this.props.request(ServerApi.netease.getDetail,params,this.statusManager,(result) => {
             this.setState({
                 data: result,
                 loadMore: result.loadMore
@@ -84,8 +97,12 @@ class ComicDetail extends Component<Props> {
         this.setState({viewRef: findNodeHandle(this.cover)});
     }
 
-    render() {
-        return (
+    /**
+     * 正常显示渲染
+     * @returns {*}
+     */
+    renderNormal(){
+        return(
             <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
                 <View style={CommonStyle.styles.container}>
                     {this.state.data ?
@@ -124,12 +141,25 @@ class ComicDetail extends Component<Props> {
                         }} onMore={() => {
                             this.getDetailMore()
                         }}/> : null}
+
                 </View>
+
             </ScrollView>
+
+        )
+    }
+
+    render() {
+        return (
+            <View style={CommonStyle.styles.container}>
+                {this.statusManager.Status === Status.Normal ?  this.renderNormal() :null}
+                {this.props.displayStatus(this.statusManager)}
+            </View>
+
         )
     }
 
 
 }
 
-export default ComicDetail
+export default BaseComponent(ComicDetail)

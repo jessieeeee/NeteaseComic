@@ -13,11 +13,6 @@ class StatusManager {
     status = Status.Loading
 
     targetEmptyKey: null //目标空数据
-    retryCallback: null //重试回调
-
-    constructor(retryCallback){
-      this.retryCallback = retryCallback
-    }
 
     @action
     setStatus = (status) => {
@@ -47,13 +42,6 @@ class StatusManager {
         this.targetEmptyKey = targetEmptyKey
     }
 
-    /**
-     * 设置重试回调
-     * @param retryCallback
-     */
-    setRetryCallback(retryCallback){
-        this.retryCallback = retryCallback
-    }
 }
 
 autorun(() => {

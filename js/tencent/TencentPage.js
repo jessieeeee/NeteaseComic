@@ -22,7 +22,7 @@ class TencentPage extends Component<Props> {
             data: null,
             btnState: ControlBtn.States.Default,
         }
-        this.statusManager = new StatusManager(this.retry)
+        this.statusManager = new StatusManager()
     }
 
     componentDidMount() {

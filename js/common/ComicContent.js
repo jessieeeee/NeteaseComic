@@ -12,6 +12,9 @@ import CommonStyle from "./CommonStyle"
 import NetUtil from "../util/NetUtil"
 import ServerApi from "../constant/ServerApi"
 import Config from '../constant/Config'
+import StatusManager from "../util/StatusManager"
+import Status from "../util/Status"
+import {BaseComponent} from "./BaseComponent"
 
 class ComicContent extends Component<Props> {
 
@@ -20,11 +23,19 @@ class ComicContent extends Component<Props> {
         this.state = {
             data: null
         }
+        this.statusManager = new StatusManager()
     }
 
     componentDidMount() {
         console.log(this.props.navigation.getParam('link', ''))
         console.log(this.props.navigation.getParam('platform', ''))
+        this.getComicContent()
+    }
+
+    /**
+     * 重试回调
+     */
+    retry(){
         this.getComicContent()
     }
 
@@ -42,11 +53,10 @@ class ComicContent extends Component<Props> {
         else if (this.props.navigation.getParam('platform', '') === Config.platformTencent) {
             url = ServerApi.tencent.getComicContent
         }
-        NetUtil.post(url, params, (result) => {
+        this.props.request(url,params,this.statusManager,(result) => {
             this.setState({
                 data: result
             })
-
         }, (error) => {
             if (this.listView) {
                 let footerState = FooterState.Failure
@@ -75,9 +85,13 @@ class ComicContent extends Component<Props> {
         return (<View style={CommonStyle.styles.divider}/>)
     }
 
-    render() {
-        return (
-            <View style={CommonStyle.styles.container}>
+    /**
+     * 正常显示渲染
+     * @returns {*}
+     */
+    renderNormal(){
+        return(
+            <View>
                 {this.state.data ?
                     <FlatListView ref={(ref) => {
                         this.listView = ref
@@ -95,6 +109,14 @@ class ComicContent extends Component<Props> {
                                   onLoadMore={() => this.onLoadMore()}
                                   style={CommonStyle.styles.listView}
                     /> : null}
+            </View>
+        )
+    }
+    render() {
+        return (
+            <View style={CommonStyle.styles.container}>
+                {this.statusManager.Status === Status.Normal ?  this.renderNormal() :null}
+                {this.props.displayStatus(this.statusManager)}
             </View>
         )
     }
@@ -153,4 +175,4 @@ class ComicContent extends Component<Props> {
 }
 
 
-export default ComicContent
+export default BaseComponent(ComicContent)

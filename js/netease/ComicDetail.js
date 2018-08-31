@@ -15,10 +15,8 @@ import {BlurView} from 'react-native-blur'
 import Config from '../constant/Config'
 import NavigationService from '../navigator/NavigationService'
 import StatusManager from "../util/StatusManager"
-import FooterState from "../widget/FooterState"
 import Status from "../util/Status"
 import {BaseComponent} from "../common/BaseComponent"
-import DefaultDisplay from '../widget/DefaultDisplay'
 class ComicDetail extends Component<Props> {
 
     constructor(props) {
@@ -30,7 +28,7 @@ class ComicDetail extends Component<Props> {
             refresh: false,
             viewRef: null
         }
-        this.statusManager = new StatusManager(this.retry)
+        this.statusManager = new StatusManager()
     }
 
     /**

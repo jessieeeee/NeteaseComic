@@ -34,7 +34,7 @@ class NeteasePage extends Component<Props> {
             welcome: true,
             btnState: ControlBtn.States.Default,
         }
-        this.statusManager = new StatusManager(this.retry)
+        this.statusManager = new StatusManager()
     }
 
     componentDidMount() {
@@ -47,6 +47,7 @@ class NeteasePage extends Component<Props> {
             //调用事件通知
             DeviceEventEmitter.emit('showBar', null);
         }, 2000)
+
     }
 
     /**

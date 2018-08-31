@@ -4,7 +4,7 @@
  * @description : 高阶组件基类- 处理界面公共逻辑
  */
 import React, {Component} from 'react'
-import {View} from 'react-native'
+import {DeviceEventEmitter, View} from 'react-native'
 import {observer} from "mobx-react/native"
 import NetUtil from "../util/NetUtil"
 import Status from '../util/Status'
@@ -61,14 +61,22 @@ export const BaseComponent = (WrapComponent) => {
             }
             console.log('显示异常界面')
             return (
-                <DefaultDisplay status={statusManager.Status} onRetry={() => statusManager.retryCallback()}/>
+                <DefaultDisplay status={statusManager.Status} onRetry={() => this.retryCallback() }/>
             )
+        }
+
+        retryCallback(){
+            if(this.component.retry){
+                this.component.retry()
+            }
         }
 
         render() {
             return (
                 <View style={{flex: 1}}>
-                    <WrapComponent {...this.props} request={(url, params, statusManager, next ,err) => {
+                    <WrapComponent ref={(ref) => {
+                        this.component = ref
+                    }} {...this.props} request={(url, params, statusManager, next ,err) => {
                         this.request(url, params, statusManager ,next, err)
                     }} displayStatus={(statusManager) => {return this.displayStatus(statusManager)}}
                     />

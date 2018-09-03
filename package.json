@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "jsc-android": "224109.x.x",
+    "lottie-react-native": "^2.5.8",
     "mobx": "^5.0.5",
     "mobx-react": "^5.2.5",
     "puppeteer": "^1.7.0",

@@ -5,7 +5,7 @@
  */
 import React, {Component} from 'react'
 import {Text, View, Image, TouchableOpacity} from 'react-native'
-import FlatListView from '../widget/FlatListView'
+import FlatListView from '../widget/PullFlatList'
 import ComicImg from './ComicImg'
 import FooterState from '../widget/FooterState'
 import CommonStyle from "./CommonStyle"

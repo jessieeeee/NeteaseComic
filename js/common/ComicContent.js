@@ -5,9 +5,8 @@
  */
 import React, {Component} from 'react'
 import {Text, View, Image, TouchableOpacity} from 'react-native'
-import FlatListView from '../widget/PullFlatList'
+import PullFlatList from '../widget/PullFlatList'
 import ComicImg from './ComicImg'
-import FooterState from '../widget/FooterState'
 import CommonStyle from "./CommonStyle"
 import NetUtil from "../util/NetUtil"
 import ServerApi from "../constant/ServerApi"
@@ -15,6 +14,7 @@ import Config from '../constant/Config'
 import StatusManager from "../util/StatusManager"
 import Status from "../util/Status"
 import {BaseComponent} from "./BaseComponent"
+import LoadMoreState from "../widget/LoadMoreState"
 
 class ComicContent extends Component<Props> {
 
@@ -24,6 +24,7 @@ class ComicContent extends Component<Props> {
             data: null
         }
         this.statusManager = new StatusManager()
+        this.onRefresh = this.onRefresh.bind(this)
     }
 
     componentDidMount() {
@@ -58,26 +59,25 @@ class ComicContent extends Component<Props> {
                 data: result
             })
         }, (error) => {
-            if (this.listView) {
-                let footerState = FooterState.Failure
-                this.listView.endRefreshing(footerState)
-            }
+            this.setState({
+                loadingState: LoadMoreState.state.error
+            })
             console.log(error)
         })
     }
 
     endRefresh(next) {
         // 结束刷新
-        if (this.listView && next) {
-            let footerState
+        if (next) {
             if (this.loadMore) {
-                footerState = FooterState.CanLoadMore;
+                this.setState({
+                    loadingState: LoadMoreState.state.tip
+                })
             } else {
-                footerState = FooterState.NoMoreData;
+                this.setState({
+                    loadingState: LoadMoreState.state.noMore
+                })
             }
-            this.listView.endRefreshing(footerState)
-        } else if (this.listView) {
-            this.listView.endRefreshing()
         }
     }
 
@@ -93,7 +93,7 @@ class ComicContent extends Component<Props> {
         return(
             <View>
                 {this.state.data ?
-                    <FlatListView ref={(ref) => {
+                    <PullFlatList ref={(ref) => {
                         this.listView = ref
                     }}
                                   data={this.state.data.data}
@@ -102,10 +102,10 @@ class ComicContent extends Component<Props> {
                                   renderItem={({item, index}) => (
                                       <ComicImg imgUrl={item} index={index}/>
                                   )}
-
                                   keyExtractor={item => item}
                                   numColumns={1}
-                                  onRefresh={() => this.onRefresh()}
+                                  onPullRelease={this.onRefresh}
+                                  loadMoreState={this.state.loadingState}
                                   onLoadMore={() => this.onLoadMore()}
                                   style={CommonStyle.styles.listView}
                     /> : null}
@@ -115,14 +115,19 @@ class ComicContent extends Component<Props> {
     render() {
         return (
             <View style={CommonStyle.styles.container}>
+                {/*渲染正常界面*/}
                 {this.statusManager.Status === Status.Normal ?  this.renderNormal() :null}
+                {/*渲染状态界面*/}
                 {this.props.displayStatus(this.statusManager)}
             </View>
         )
     }
 
-    onRefresh() {
+    onRefresh(resolve) {
         this.getContentMore(false)
+        setTimeout(() => {
+            resolve()
+        }, 3000)
     }
 
     onLoadMore() {
@@ -165,10 +170,9 @@ class ComicContent extends Component<Props> {
             }
             this.endRefresh(next)
         }, (error) => {
-            if (this.listView) {
-                let footerState = FooterState.Failure
-                this.listView.endRefreshing(footerState)
-            }
+            this.setState({
+                loadingState: LoadMoreState.state.error
+            })
             console.log(error)
         })
     }

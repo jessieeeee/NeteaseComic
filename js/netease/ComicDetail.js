@@ -4,7 +4,7 @@
  * @description : 漫画详情展示
  */
 import React, {Component} from 'react'
-import {View, ScrollView, Image, findNodeHandle} from 'react-native'
+import {View, Image, findNodeHandle} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
 import ServerApi from "../constant/ServerApi"
 import NetUtil from "../util/NetUtil"
@@ -17,6 +17,7 @@ import NavigationService from '../navigator/NavigationService'
 import StatusManager from "../util/StatusManager"
 import Status from "../util/Status"
 import {BaseComponent} from "../common/BaseComponent"
+import PullScrollView from '../widget/PullScollView'
 class ComicDetail extends Component<Props> {
 
     constructor(props) {
@@ -24,29 +25,30 @@ class ComicDetail extends Component<Props> {
         this.state = {
             follow: false,
             data: null,
-            loadMore: false,
-            refresh: false,
+            loadMore: false, // 是否有更多章节
+            refresh: false, // 是否正在刷新章节
             viewRef: null
         }
         this.statusManager = new StatusManager()
+        this.onPullRelease = this.onPullRelease.bind(this)
     }
 
     /**
      * 重试回调
      */
     retry(){
-        this.getDetail()
+        this.getDetail(true)
     }
 
     componentDidMount() {
         console.log(this.props.navigation.getParam('link', ''))
-        this.getDetail()
+        this.getDetail(true)
     }
 
     /**
      * 获取详情
      */
-    getDetail() {
+    getDetail(showLoading) {
         let params = {
             link: this.props.navigation.getParam('link', '')
         }
@@ -57,7 +59,7 @@ class ComicDetail extends Component<Props> {
             })
         }, (error) => {
             console.log(error)
-        })
+        },showLoading)
     }
 
     /**
@@ -95,14 +97,22 @@ class ComicDetail extends Component<Props> {
         this.setState({viewRef: findNodeHandle(this.cover)});
     }
 
+    onPullRelease(resolve){
+        this.getDetail(false)
+        setTimeout(() => {
+            resolve()
+        }, 3000)
+    }
     /**
      * 正常显示渲染
      * @returns {*}
      */
     renderNormal(){
         return(
-            <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
-                <View style={CommonStyle.styles.container}>
+            <PullScrollView style={{flex: 1, backgroundColor: 'white'}}
+                            onPullRelease={this.onPullRelease}
+                            >
+                    {/*渲染模糊背景*/}
                     {this.state.data ?
                         <Image
                             ref={(img) => {
@@ -140,9 +150,9 @@ class ComicDetail extends Component<Props> {
                             this.getDetailMore()
                         }}/> : null}
 
-                </View>
 
-            </ScrollView>
+
+            </PullScrollView>
 
         )
     }
@@ -150,7 +160,9 @@ class ComicDetail extends Component<Props> {
     render() {
         return (
             <View style={CommonStyle.styles.container}>
+                {/*渲染正常界面*/}
                 {this.statusManager.Status === Status.Normal ?  this.renderNormal() :null}
+                {/*渲染状态界面*/}
                 {this.props.displayStatus(this.statusManager)}
             </View>
 

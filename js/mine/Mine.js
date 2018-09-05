@@ -37,16 +37,12 @@ class Mine extends Component<Props> {
     render() {
         return (
             <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
-                <View>
-                    {this.renderInfo()}
-                    <View style={MineStyle.styles.divider}/>
-                    {this.renderItems()}
-                </View>
+                {this.renderInfo()}
+                <View style={MineStyle.styles.divider}/>
+                {this.renderItems()}
             </ScrollView>
         )
     }
-
-
 
 
     /**

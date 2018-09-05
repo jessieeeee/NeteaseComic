@@ -17,7 +17,7 @@ import {
 } from 'react-native'
 import LottieView from 'lottie-react-native'
 import PropTypes from 'prop-types'
-import LoadingMore from './LoadingMore'// 加载更多的view
+import LoadMore from './LoadMore'// 加载更多的view
 const defaultDuration = 300 //默认时长
 import Refresh from './Refresh'
 /**
@@ -51,8 +51,6 @@ export default class PullScollView extends Component {
     static propTypes = {
         topRefreshHeight: PropTypes.number,
         pullOkMargin: PropTypes.number,
-        onMove: PropTypes.func,
-        onRelease: PropTypes.func,
         onPulling: PropTypes.func,
         onPullOk: PropTypes.func,
         onPullRelease: PropTypes.func,
@@ -115,8 +113,6 @@ export default class PullScollView extends Component {
 
     // 手势移动的处理
     onPanResponderMove(e, gesture) {
-        // 解决滑动冲突，调用手势移动回调
-        this.props.onMove && this.props.onMove()
         if (isUpGesture(gesture.dx, gesture.dy)) { //向上手势
             // 如果处于下拉状态，重置
             if (this.isPullState()) {
@@ -147,8 +143,6 @@ export default class PullScollView extends Component {
 
     // 手势释放
     onPanResponderRelease() {
-        // 解决滑动冲突，调用释放回调
-        this.props.onRelease && this.props.onRelease()
         if (this.curState.pulling) { // 之前是下拉状态
             this.resetDefaultXYHandler(); //重置状态
         }
@@ -189,7 +183,7 @@ export default class PullScollView extends Component {
         } else if (!this.isPullState()) {  //当前不是下拉状态允许滚动
             this.setState({scrollEnabled: true})
         }
-        let y = e.nativeEvent.contentOffset.y;
+        let y = e.nativeEvent.contentOffset.y
         // console.log('滑动距离' + y);
         let height = e.nativeEvent.layoutMeasurement.height;
         // console.log('列表高度' + height);
@@ -200,6 +194,7 @@ export default class PullScollView extends Component {
             console.log('触发加载更多');
             this.props.onLoadMore && this.props.onLoadMore()
         }
+
         // 调用外部的滑动回调
         this.props.onScroll && this.props.onScroll(e)
     }
@@ -261,7 +256,7 @@ export default class PullScollView extends Component {
                             this.scroll = c
                         }} scrollEnabled={this.state.scrollEnabled} onScroll={this.onScroll}>
                             {this.props.children}
-                            <LoadingMore state={this.props.loadMoreState} onRetry={() => this.props.onRetry()}/>
+                            <LoadMore state={this.props.loadMoreState} onRetry={() => this.props.onRetry()} loadAnim = {true}/>
 
                         </ScrollView>
                     </View>

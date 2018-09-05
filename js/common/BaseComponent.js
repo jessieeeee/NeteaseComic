@@ -20,9 +20,12 @@ export const BaseComponent = (WrapComponent) => {
          * @param statusManager 状态管理器
          * @param next 正常返回后的逻辑
          * @param err 错误逻辑
+         * @param showLoading 是否显示加载中的界面（避免和下拉刷新冲突）
          */
-        request(url, params, statusManager , next ,err) {
-            statusManager.setStatus(Status.Loading)
+        request(url, params, statusManager , next ,err ,showLoading) {
+            if (showLoading){
+                statusManager.setStatus(Status.Loading)
+            }
             NetUtil.post(url, params, (result) => {
                 // 如果设置了目标空数据的key
                 if (statusManager.getTargetEmptyKey()) {
@@ -43,8 +46,11 @@ export const BaseComponent = (WrapComponent) => {
                     }
                 }
             }, (error) => {
-                statusManager.setStatus(Status.Error)
+                if (showLoading){
+                    statusManager.setStatus(Status.Error)
+                }
                 err(error)
+
             })
         }
 
@@ -65,6 +71,9 @@ export const BaseComponent = (WrapComponent) => {
             )
         }
 
+        /**
+         * 重试
+         */
         retryCallback(){
             if(this.component.retry){
                 this.component.retry()

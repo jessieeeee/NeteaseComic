@@ -15,27 +15,36 @@ import DetailInfo from './DetailInfo'
 import {BlurView} from 'react-native-blur'
 import NavigationService from "../navigator/NavigationService"
 import Config from "../constant/Config"
+import PullScrollView from '../widget/PullScollView'
 class ComicDetail extends Component<Props>{
     constructor(props) {
         super(props)
         this.state = {
             follow: false,
             data: null,
-            loadMore: false,
-            refresh: false,
+            loadMore: false, // 是否有更多章节
+            refresh: false, // 是否正在刷新章节
             viewRef: null
         }
+        this.onPullRelease = this.onPullRelease.bind(this)
     }
 
     componentDidMount() {
         console.log(this.props.navigation.getParam('id', ''))
-        this.getDetail()
+        this.getDetail(false)
+    }
+
+    /**
+     * 重试回调
+     */
+    retry(){
+        this.getDetail(true)
     }
 
     /**
      * 获取详情
      */
-    getDetail() {
+    getDetail(showLoading) {
         let params = {
             id: this.props.navigation.getParam('id', '')
         }
@@ -46,7 +55,7 @@ class ComicDetail extends Component<Props>{
             })
         }, (error) => {
             console.log(error)
-        })
+        },showLoading)
     }
 
     /**
@@ -84,10 +93,18 @@ class ComicDetail extends Component<Props>{
         this.setState({viewRef: findNodeHandle(this.cover)});
     }
 
+    onPullRelease(resolve){
+        this.getDetail(true)
+        setTimeout(() => {
+            resolve()
+        }, 3000)
+    }
+
     render() {
         return (
-            <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
-                <View style={CommonStyle.styles.container}>
+            <PullScrollView style={{flex: 1, backgroundColor: 'white'}}
+                            onPullRelease={this.onPullRelease}>
+                {/*渲染模糊背景*/}
                     {this.state.data ?
                         <Image
                             ref={(img) => {
@@ -124,8 +141,7 @@ class ComicDetail extends Component<Props>{
                         }} onMore={() => {
                             this.getDetailMore()
                         }}/> : null}
-                </View>
-            </ScrollView>
+            </PullScrollView>
         )
     }
 

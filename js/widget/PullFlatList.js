@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import LottieView from 'lottie-react-native'
 import PropTypes from 'prop-types'
-import LoadingMore from './LoadingMore'
+import LoadMore from './LoadMore'
 import Refresh from './Refresh'
 const defaultDuration = 300 //默认时长
 /**
@@ -25,6 +25,8 @@ const defaultState = {pulling: false, pullok: false, pullrelease: false} //默�
 const statePulling = {pulling: true, pullok: false, pullrelease: false} //正在下拉状态
 const statePullok = {pulling: false, pullok: true, pullrelease: false} //下拉到位状态
 const statePullrelease = {pulling: false, pullok: false, pullrelease: true} //下拉释放状态
+
+let icLoading = require('../img/trail_loading')
 //向下手势
 const isDownGesture = (x, y) => {
     return y > 0 && (y > Math.abs(x));
@@ -46,8 +48,6 @@ export default class PullFlatList extends Component {
     static propTypes = {
         topRefreshHeight: PropTypes.number,
         pullOkMargin: PropTypes.number,
-        onMove: PropTypes.func,
-        onRelease: PropTypes.func,
         onPulling: PropTypes.func,
         onPullOk: PropTypes.func,
         onPullRelease: PropTypes.func,
@@ -91,12 +91,13 @@ export default class PullFlatList extends Component {
             onPanResponderRelease: this.onPanResponderRelease.bind(this),//放开了所有的触摸点，且此时视图已经成为了响应者。
         })
         this.setPullState(defaultState)// 设置提示文字的默认状态
+
     }
 
     // 手势响应回调，是否处理
     onShouldSetPanResponder(e, gesture) {
         //非垂直手势不处理
-        if (!isVerticalGesture(gesture.dx, gesture.dy)) {
+        if (!isVerticalGesture(gesture.dx, gesture.dy)) { //不使用pullable,或非向上 或向下手势不响应
             return false;
         }
         if (!this.state.scrollEnabled) {
@@ -109,14 +110,13 @@ export default class PullFlatList extends Component {
 
     // 手势移动的处理
     onPanResponderMove(e, gesture) {
-        // 解决滑动冲突，调用手势移动回调
-        this.props.onMove && this.props.onMove()
         if (isUpGesture(gesture.dx, gesture.dy)) { //向上手势
             // 如果处于下拉状态，重置
             if (this.isPullState()) {
                 this.resetDefaultXYHandler()
             } else { // 恢复到默认位置
-                this.scroll.scrollTo({x: 0, y: gesture.dy * -1})
+                this.list&&this.list.scrollToOffset({animated: true,
+                    offset: gesture.dy * -1});
             }
         } else if (isDownGesture(gesture.dx, gesture.dy)) { //向下手势
             // 设置下拉区域
@@ -141,8 +141,6 @@ export default class PullFlatList extends Component {
 
     // 手势释放
     onPanResponderRelease() {
-        // 解决滑动冲突，调用释放回调
-        this.props.onRelease && this.props.onRelease()
         if (this.curState.pulling) { // 之前是下拉状态
             this.resetDefaultXYHandler(); //重置状态
         }
@@ -176,7 +174,7 @@ export default class PullFlatList extends Component {
         this.animation.play()
     }
 
-    // scrollview 的滚动回调
+    // 滚动回调
     onScroll(e) {
         if (e.nativeEvent.contentOffset.y <= 0) { //临界状态，此时已经到列表顶部，但是还没触发下拉刷新状态
             this.setState({scrollEnabled: this.defaultScrollEnabled})
@@ -194,6 +192,14 @@ export default class PullFlatList extends Component {
             console.log('触发加载更多');
             this.props.onLoadMore && this.props.onLoadMore()
         }
+        let x = e.nativeEvent.contentOffset.x
+        if (isVerticalGesture(x,y) && this.last - y > 4){
+            this.props.onUp && this.props.onUp()
+        }
+        if (isVerticalGesture(x,y) && this.last - y < -4){
+            this.props.onDown && this.props.onDown()
+        }
+        this.last = y
         // 调用外部的滑动回调
         this.props.onScroll && this.props.onScroll(e)
     }
@@ -251,25 +257,35 @@ export default class PullFlatList extends Component {
                         this.scrollContainer = c
                     }} {...this.panResponder.panHandlers} style={{width: this.state.width, height: this.state.height}}>
                         <FlatList
-                            ref={"list"}
+                            ref={(c) => {
+                                this.list = c
+                            }}
+                            extraData={this.state}
                             {...this.props}
                             onScroll={this.onScroll}
+                            scrollEnabled={this.state.scrollEnabled}
                             ListFooterComponent={() => {
-                                return <LoadingMore state={this.props.loadMoreState} onRetry={() => this.props.onRetry()}/>
+                                return <LoadMore state={this.props.loadMoreState} onRetry={() => this.props.onRetry()}/>
                             }}
                         />
+
                     </View>
                 </Animated.View>
             </View>
         )
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            loadMoreState: nextProps.loadMoreState
+        })
+    }
     scrollToEnd() {
-        this.refs.list.scrollToEnd()
+        this.list.scrollToEnd()
     }
 
-    scrollToIndex(params) {
-        this.refs.list.scrollToIndex(params)
+    scrollToTop() {
+        this.list.scrollToIndex({viewPosition: 0, index: 0})
     }
 
     // 绘制下拉刷新
@@ -328,10 +344,10 @@ export default class PullFlatList extends Component {
                     ref={animation => {
                         this.animation = animation;
                     }}
-                    source={require('./trail_loading')}
+                    source={icLoading}
                 />
             </View>
-        );
+        )
     }
 }
 

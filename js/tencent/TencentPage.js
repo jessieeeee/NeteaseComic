@@ -1,11 +1,10 @@
 import React,{Component} from 'react'
 import {View} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
-import NetUtil from '../util/NetUtil'
+import LoadMoreState from '../widget/LoadMoreState'
+import PullFlatList from '../widget/PullFlatList'
 import ServerApi from '../constant/ServerApi'
 import CommicItem from './ComicItem'
-import FlatListView from '../widget/PullFlatList'
-import FooterState from '../widget/FooterState'
 import ControlBtn from '../widget/ControlBtn'
 import StatusManager from '../util/StatusManager'
 import {observer} from "mobx-react/native"
@@ -21,21 +20,24 @@ class TencentPage extends Component<Props> {
         this.state = {
             data: null,
             btnState: ControlBtn.States.Default,
+            loadingState: LoadMoreState.state.tip //默认显示加载更多的提示
         }
+        // 初始化状态界面管理器
         this.statusManager = new StatusManager()
+        this.onRefresh = this.onRefresh.bind(this)
     }
 
     componentDidMount() {
-        this.getFreeComicList()
+        this.getFreeComicList(true)
     }
 
     retry(){
-        this.getFreeComicList()
+        this.getFreeComicList(true)
     }
     /**
      * 获取免费漫画列表
      */
-    getFreeComicList(){
+    getFreeComicList(showLoading){
         let params = {
             pageNo: this.pageNo
         }
@@ -50,27 +52,24 @@ class TencentPage extends Component<Props> {
             }
             this.endRefresh(result)
         }, (error) => {
-            if(this.listView){
-                let footerState = FooterState.Failure;
-                this.listView.endRefreshing(footerState)
-            }
             console.log(error)
-        })
+        },showLoading)
 
     }
 
     endRefresh(result){
-        // 结束刷新
-        if(this.listView){
-            let footerState
-            // 如果当前的数据量小于上一次
-            if (result.length < this.lastNum){
-                footerState = FooterState.NoMoreData;
-            }else {
-                footerState = FooterState.CanLoadMore;
-                this.pageNo ++
-            }
-            this.listView.endRefreshing(footerState)
+        // 如果当前的数据量小于上一次
+        if (result.length < this.lastNum){
+            // 没有更多了
+            this.setState({
+                loadingState: LoadMoreState.state.noMore
+            })
+        }else {
+            // 继续提示加载更多
+            this.setState({
+                loadingState: LoadMoreState.state.tip
+            })
+            this.pageNo ++
         }
     }
 
@@ -78,15 +77,17 @@ class TencentPage extends Component<Props> {
         return (
             <View>
                 {this.state.data ?
-                    <FlatListView ref={(ref) => {this.listView = ref}}
+                    <PullFlatList ref={(ref) => {this.listView = ref}}
                                   data={this.state.data}
                                   showsVerticalScrollIndicator = {false}
                                   renderItem={({item}) => (
                                       <CommicItem data={item}/>
                                   )}
                                   keyExtractor={item => item.id}
-                                  onRefresh={() => this.onRefresh()}
+                                  onPullRelease={this.onRefresh}
+                                  loadMoreState={this.state.loadingState}
                                   onLoadMore={() => this.onLoadMore()}
+                                  onRetry={() => this.onLoadMore()}
                                   style={CommonStyle.styles.listView}
                                   onUp={() => {
                                       this.setState({
@@ -99,6 +100,7 @@ class TencentPage extends Component<Props> {
                                       })
                                   }}
                     />:  null}
+                {/*渲染返回顶部底部按钮*/}
                 {this.state.btnState === ControlBtn.States.Default ?  null : <ControlBtn btnState={this.state.btnState} callback={() => this.scrollTopBottom()}/>}
             </View>
         )
@@ -106,7 +108,9 @@ class TencentPage extends Component<Props> {
     render(){
         return (
             <View style={CommonStyle.styles.container}>
+                {/*渲染正常界面*/}
                 {this.statusManager.Status === Status.Normal ?  this.renderNormal() :null}
+                {/*渲染状态界面*/}
                 {this.props.displayStatus(this.statusManager)}
             </View>
         )
@@ -115,27 +119,33 @@ class TencentPage extends Component<Props> {
     /**
      * 下拉刷新回调
      */
-    onRefresh() {
+    onRefresh(resolve) {
         this.pageNo = 1
-        this.getFreeComicList()
+        this.getFreeComicList(false)
+        setTimeout(() => {
+            resolve()
+        }, 3000)
     }
 
     /**
      * 加载更多回调
      */
     onLoadMore() {
-        this.getFreeComicList()
+        this.setState({
+            loadingState: LoadMoreState.state.loading
+        })
+        this.getFreeComicList(false)
     }
 
     /**
-     * 滚动到顶部
+     * 滚动到底部顶部
      */
     scrollTopBottom() {
         if (this.state.btnState === ControlBtn.States.Up && this.listView){
             this.listView.scrollToEnd()
         }
         else if (this.state.btnState === ControlBtn.States.Down && this.listView){
-            this.listView.scrollToIndex({ viewPosition: 0, index: 0 })
+            this.listView.scrollToTop()
         }
     }
 }

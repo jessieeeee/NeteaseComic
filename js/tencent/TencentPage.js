@@ -48,7 +48,10 @@ class TencentPage extends Component<Props> {
                     data: result,
                 })
             }else{
-                Array.prototype.push.apply(this.state.data, result)
+                // 避免重复添加，比较最后一个数据
+                if (JSON.stringify(this.state.data[this.state.data.length - 1]) !== JSON.stringify(result[result.length-1])){
+                    Array.prototype.push.apply(this.state.data, result)
+                }
             }
             this.endRefresh(result)
         }, (error) => {

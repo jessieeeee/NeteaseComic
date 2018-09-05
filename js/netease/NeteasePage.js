@@ -124,8 +124,11 @@ class NeteasePage extends Component<Props> {
             loadingState: LoadMoreState.state.loading
         })
         NetUtil.post(ServerApi.netease.getComicMore, null, (result) => {
-            Array.prototype.push.apply(this.state.data, result)
-            this.endRefresh(result)
+            // 避免重复添加，比较最后一个数据
+            if (JSON.stringify(this.state.data[this.state.data.length - 1]) !== JSON.stringify(result[result.length-1])){
+                Array.prototype.push.apply(this.state.data, result)
+                this.endRefresh(result)
+            }
         }, (error) => {
             // 加载更多错误
             this.setState({

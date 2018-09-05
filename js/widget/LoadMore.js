@@ -45,7 +45,6 @@ class LoadMore extends Component {
      * 动画执行，逐个显示
      */
     animate() {
-        console.log('进来了')
         this.arr.forEach((value) => {
             this.animatedValue[value].setValue(0);
         })
@@ -78,7 +77,6 @@ class LoadMore extends Component {
         this.setState({
             curState: nextProps.state
         })
-        console.log('刷新里面',nextProps.state)
         switch (nextProps.state) {
             case LoadMoreState.state.loading:
                 if (this.props.loadAnim){
@@ -127,7 +125,6 @@ class LoadMore extends Component {
 
     // 绘制文字
     renderLoad() {
-        console.log('进来哦')
         const animations = this.arr.map((value, index) => {
             return (
                 <Animated.Text key={index} style={{

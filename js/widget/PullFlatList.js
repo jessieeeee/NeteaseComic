@@ -181,15 +181,15 @@ export default class PullFlatList extends Component {
         } else if (!this.isPullState()) {  //当前不是下拉状态允许滚动
             this.setState({scrollEnabled: true})
         }
-        let y = e.nativeEvent.contentOffset.y;
-        // console.log('滑动距离' + y);
-        let height = e.nativeEvent.layoutMeasurement.height;
-        // console.log('列表高度' + height);
-        let contentHeight = e.nativeEvent.contentSize.height;
-        // console.log('内容高度' + contentHeight);
-        // console.log('判断条件' + (y + height));
+        let y = e.nativeEvent.contentOffset.y
+        // console.log('滑动距离' + y)
+        let height = e.nativeEvent.layoutMeasurement.height
+        // console.log('列表高度' + height)
+        let contentHeight = e.nativeEvent.contentSize.height
+        // console.log('内容高度' + contentHeight)
+        // console.log('判断条件' + (y + height))
         if (y + height >= contentHeight - 20) {
-            console.log('触发加载更多');
+            console.log('触发加载更多')
             this.props.onLoadMore && this.props.onLoadMore()
         }
         let x = e.nativeEvent.contentOffset.x

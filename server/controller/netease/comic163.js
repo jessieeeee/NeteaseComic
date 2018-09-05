@@ -10,9 +10,15 @@ exports.getComic = (async (ctx, next) => {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
     let result = await list.getComic()
-    ctx.body = {
-        success: true,
-        msg: result
+    if (result.length === 0){
+        ctx.body = {
+            success: false
+        }
+    } else{
+        ctx.body = {
+            success: true,
+            msg: result
+        }
     }
 })
 
@@ -24,9 +30,15 @@ exports.getComicMore = (async (ctx, next) => {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
     let result = await list.getComicMore()
-    ctx.body = {
-        success: true,
-        msg: result
+    if (result.length === 0){
+        ctx.body = {
+            success: false
+        }
+    } else{
+        ctx.body = {
+            success: true,
+            msg: result
+        }
     }
 })
 
@@ -39,10 +51,17 @@ exports.getComicDetail = (async (ctx, next) => {
     }
     let link = body.link
     let result = await detail.getComicDetail(link)
-    ctx.body = {
-        success: true,
-        msg: result
+    if (result.data.length === 0 ){
+        ctx.body = {
+            success: false,
+        }
+    } else {
+        ctx.body = {
+            success: true,
+            msg: result
+        }
     }
+
 })
 
 // 抓取漫画详情所有章节
@@ -54,10 +73,17 @@ exports.getComicDetailMore = (async(ctx, next) => {
     }
     let link = body.link
     let result = await detail.getComicDetailMore(link)
-    ctx.body = {
-        success: true,
-        msg: result
+    if (result.length === 0 ){
+        ctx.body = {
+            success: false,
+        }
+    } else {
+        ctx.body = {
+            success: true,
+            msg: result
+        }
     }
+
 })
 
 // 抓取漫画内容
@@ -69,10 +95,17 @@ exports.getComicContent = (async (ctx, next) => {
     }
     let link = body.link
     let result = await content.getComicContent(link)
-    ctx.body = {
-        success: true,
-        msg: result
+    if (result.data.length === 0 ){
+        ctx.body = {
+            success: false,
+        }
+    } else {
+        ctx.body = {
+            success: true,
+            msg: result
+        }
     }
+
 })
 
 // 抓取漫画内容上一话和下一话
@@ -84,10 +117,17 @@ exports.getComicContentLastOrNext = (async (ctx, next) => {
     }
     let nextChapter = body.next
     let result = await content.getComicContentLastOrNext(nextChapter)
-    ctx.body = {
-        success: true,
-        msg: result
+    if (result.data.length === 0 ){
+        ctx.body = {
+            success: false,
+        }
+    } else {
+        ctx.body = {
+            success: true,
+            msg: result
+        }
     }
+
 })
 // 抓取漫画弹幕
 exports.getComicComment = (async (ctx, next) => {
@@ -99,10 +139,17 @@ exports.getComicComment = (async (ctx, next) => {
     let link = body.link
     let index = body.index
     let result = await comment.getComicComment(link, index)
-    ctx.body = {
-        success: true,
-        msg: result
+    if (result.length === 0 ){
+        ctx.body = {
+            success: false,
+        }
+    } else {
+        ctx.body = {
+            success: true,
+            msg: result
+        }
     }
+
 })
 
 

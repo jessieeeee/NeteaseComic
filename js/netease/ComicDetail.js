@@ -17,7 +17,7 @@ import NavigationService from '../navigator/NavigationService'
 import StatusManager from "../util/StatusManager"
 import Status from "../util/Status"
 import {BaseComponent} from "../common/BaseComponent"
-import PullScrollView from '../widget/PullScollView'
+import PullScrollView from '../widget/PullScrollView'
 class ComicDetail extends Component<Props> {
 
     constructor(props) {
@@ -41,8 +41,13 @@ class ComicDetail extends Component<Props> {
     }
 
     componentDidMount() {
+        this.isMount = true
         console.log(this.props.navigation.getParam('link', ''))
         this.getDetail(true)
+    }
+
+    componentWillUnmount(){
+        this.isMount = false
     }
 
     /**
@@ -53,10 +58,13 @@ class ComicDetail extends Component<Props> {
             link: this.props.navigation.getParam('link', '')
         }
         this.props.request(ServerApi.netease.getDetail,params,this.statusManager,(result) => {
-            this.setState({
-                data: result,
-                loadMore: result.loadMore
-            })
+            if(this.isMount){
+                this.setState({
+                    data: result,
+                    loadMore: result.loadMore
+                })
+            }
+
         }, (error) => {
             console.log(error)
         },showLoading)
@@ -74,16 +82,18 @@ class ComicDetail extends Component<Props> {
             refresh: true
         })
         NetUtil.post(ServerApi.netease.getDetailMore, params, (result) => {
-            if (result.length !== 0) {
+            if (this.isMount && result.length !== 0 ) {
                 Array.prototype.push.apply(this.state.data.data, result)
                 this.setState({
                     ['data.data']: this.state.data.data,
                     refresh: false
                 })
             } else {
-                this.setState({
-                    refresh: false
-                })
+                if (this.isMount){
+                    this.setState({
+                        refresh: false
+                    })
+                }
             }
         }, (error) => {
             console.log(error)
@@ -94,7 +104,9 @@ class ComicDetail extends Component<Props> {
      * 图片加载完成回调
      */
     imageLoaded() {
-        this.setState({viewRef: findNodeHandle(this.cover)});
+        if(this.isMount){
+            this.setState({viewRef: findNodeHandle(this.cover)})
+        }
     }
 
     onPullRelease(resolve){

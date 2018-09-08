@@ -85,8 +85,8 @@ export const BaseComponent = (WrapComponent) => {
                 <View style={{flex: 1}}>
                     <WrapComponent ref={(ref) => {
                         this.component = ref
-                    }} {...this.props} request={(url, params, statusManager, next ,err) => {
-                        this.request(url, params, statusManager ,next, err)
+                    }} {...this.props} request={(url, params, statusManager, next ,err, showLoading) => {
+                        this.request(url, params, statusManager ,next, err, showLoading)
                     }} displayStatus={(statusManager) => {return this.displayStatus(statusManager)}}
                     />
                 </View>

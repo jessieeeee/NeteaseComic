@@ -28,11 +28,15 @@ class ComicContent extends Component<Props> {
     }
 
     componentDidMount() {
+        this.isMount = true
         console.log(this.props.navigation.getParam('link', ''))
         console.log(this.props.navigation.getParam('platform', ''))
         this.getComicContent()
     }
 
+    componentWillUnmount(){
+        this.isMount = false
+    }
     /**
      * 重试回调
      */
@@ -55,13 +59,17 @@ class ComicContent extends Component<Props> {
             url = ServerApi.tencent.getComicContent
         }
         this.props.request(url,params,this.statusManager,(result) => {
-            this.setState({
-                data: result
-            })
+            if (this.isMount){
+                this.setState({
+                    data: result
+                })
+            }
         }, (error) => {
-            this.setState({
-                loadingState: LoadMoreState.state.error
-            })
+            if (this.isMount){
+                this.setState({
+                    loadingState: LoadMoreState.state.error
+                })
+            }
             console.log(error)
         })
     }
@@ -69,14 +77,14 @@ class ComicContent extends Component<Props> {
     endRefresh(next) {
         // 结束刷新
         if (next) {
-            if (this.loadMore) {
+            if (this.isMount && this.loadMore) {
                 this.setState({
                     loadingState: LoadMoreState.state.tip
                 })
-            } else {
-                this.setState({
-                    loadingState: LoadMoreState.state.noMore
-                })
+            } else if (this.isMount){
+                    this.setState({
+                        loadingState: LoadMoreState.state.noMore
+                    })
             }
         }
     }
@@ -170,9 +178,12 @@ class ComicContent extends Component<Props> {
             }
             this.endRefresh(next)
         }, (error) => {
-            this.setState({
-                loadingState: LoadMoreState.state.error
-            })
+            if (this.isMount){
+                this.setState({
+                    loadingState: LoadMoreState.state.error
+                })
+            }
+
             console.log(error)
         })
     }

@@ -4,7 +4,7 @@
  * @description : 高阶组件基类- 处理界面公共逻辑
  */
 import React, {Component} from 'react'
-import {DeviceEventEmitter, View} from 'react-native'
+import {View} from 'react-native'
 import {observer} from "mobx-react/native"
 import NetUtil from "../util/NetUtil"
 import Status from '../util/Status'

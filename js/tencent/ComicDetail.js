@@ -18,6 +18,9 @@ import {BlurView} from 'react-native-blur'
 import NavigationService from "../navigator/NavigationService"
 import Config from "../constant/Config"
 import PullScrollView from '../widget/PullScrollView'
+import {BaseComponent} from "../common/BaseComponent"
+import {observer} from "mobx-react/native"
+@observer
 class ComicDetail extends Component<Props>{
     constructor(props) {
         super(props)
@@ -35,7 +38,7 @@ class ComicDetail extends Component<Props>{
     componentDidMount() {
         this.isMount = true
         console.log(this.props.navigation.getParam('id', ''))
-        this.getDetail(false)
+        this.getDetail(true)
     }
 
     /**
@@ -56,7 +59,7 @@ class ComicDetail extends Component<Props>{
         let params = {
             id: this.props.navigation.getParam('id', '')
         }
-        this.props.request(ServerApi.netease.getDetail,params,this.statusManager,(result) => {
+        this.props.request(ServerApi.tencent.getDetail,params,this.statusManager,(result) => {
             if(this.isMount){
                 this.setState({
                     data: result,
@@ -109,7 +112,7 @@ class ComicDetail extends Component<Props>{
     }
 
     onPullRelease(resolve){
-        this.getDetail(true)
+        this.getDetail(false)
         setTimeout(() => {
             resolve()
         }, 3000)
@@ -180,4 +183,4 @@ class ComicDetail extends Component<Props>{
 
 }
 
-export default ComicDetail
+export default BaseComponent(ComicDetail)

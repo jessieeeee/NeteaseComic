@@ -18,6 +18,8 @@ import StatusManager from "../util/StatusManager"
 import Status from "../util/Status"
 import {BaseComponent} from "../common/BaseComponent"
 import PullScrollView from '../widget/PullScrollView'
+import {observer} from "mobx-react/native"
+@observer
 class ComicDetail extends Component<Props> {
 
     constructor(props) {

@@ -18,7 +18,7 @@ import {
 import Config from '../constant/Config'
 import PropTypes from 'prop-types'
 import LoadMoreState from './LoadMoreState'
-
+import DoubleClick from '../util/DoubleClick'
 const pointsNum = 3; //点数量
 
 class LoadMore extends Component {
@@ -143,11 +143,17 @@ class LoadMore extends Component {
         return (
             <TouchableOpacity
                 style={{flexDirection: 'row', alignItems: 'center', height: Config.sreenW * 0.14,}}
-                onPress={() => {
-                    if (this.state.curState === LoadMoreState.state.error) {
-                        this.props.onRetry && this.props.onRetry()
-                    }
-                }}>
+                onPress={() => new DoubleClick().filterDoubleClick(
+                    function () {
+                        if (this.state.curState === LoadMoreState.state.error){
+                            this.props.onRetry && this.props.onRetry()
+                            this.setState({
+                                curState:LoadMoreState.state.loading
+                            })
+                            this.animate()
+                        }
+                    }.bind(this)
+                )}>
                 <Text style={{
                     color: Config.normalTextColor,
                     fontSize: Config.sreenW * 0.04,

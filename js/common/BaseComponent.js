@@ -46,6 +46,7 @@ export const BaseComponent = (WrapComponent) => {
                     }
                 }
             }, (error) => {
+                console.log('错误',error,showLoading)
                 if (showLoading){
                     statusManager.setStatus(Status.Error)
                 }

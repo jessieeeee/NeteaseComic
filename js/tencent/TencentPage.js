@@ -56,6 +56,11 @@ class TencentPage extends Component<Props> {
             this.endRefresh(result)
         }, (error) => {
             console.log(error)
+            if (!showLoading){
+                this.setState({
+                    loadingState: LoadMoreState.state.error
+                })
+            }
         },showLoading)
 
     }

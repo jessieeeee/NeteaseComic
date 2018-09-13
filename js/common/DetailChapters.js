@@ -45,10 +45,10 @@ class DetailChapters extends Component<Props> {
                           onRefresh={this.onRefresh}
                           showsVerticalScrollIndicator={false}
                           extraData={this.props.state}
-                          renderItem={({item}) => (
+                          renderItem={({item,index}) => (
                               <TouchableOpacity onPress={() => {
                                   if (this.props.onClick) {
-                                      this.props.onClick(item)
+                                      this.props.onClick(item,index)
                                   }
                               }}>
                                   <Text style={CommonStyle.styles.chapterDetailText}>

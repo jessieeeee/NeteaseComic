@@ -8,60 +8,60 @@ import Config from '../constant/Config'
  */
 const dimensions = {
     android: {
-        tabBarImageSize: Config.sreenW * 0.08,
-        tabBarHeight: Config.sreenW * 0.15,
-        controlBtnW: Config.sreenW * 0.04,
-        controlBtnH: Config.sreenW * 0.06,
-        controlBtnR: Config.sreenW * 0.1,
-        controlBtnB: Config.sreenW * 0.1,
-        controlBtnBg: Config.sreenW * 0.12,
-        barHeight: Config.sreenW * 0.1,
-        iconBarMargin: Config.sreenW * 0.04,
-        iconBarSize: Config.sreenW * 0.06,
-        titleFont: Config.sreenW * 0.034,
-        subTitleFont: Config.sreenW * 0.028,
-        chapterTextW: Config.sreenW * 0.18,
-        chapterTextH: Config.sreenW * 0.08,
-        chapterTextMargin: Config.sreenW * 0.016,
-        btnWidth: Config.sreenW * 0.6,
-        btnHeight: Config.sreenW * 0.08,
-        introMargin: Config.sreenW * 0.08,
-        infoCoverW: Config.sreenW * 0.3,
-        infoCoverH: Config.sreenW * 0.42,
-        infoMargin: Config.sreenW * 0.04,
-        readTextW: Config.sreenW * 0.4,
-        readTextH: Config.sreenW * 0.08,
-        detailTitleFont: Config.sreenW * 0.04,
-        detailSubTitleFont: Config.sreenW * 0.03,
-        marginTop: Config.sreenW * 0.01,
+        tabBarImageSize: Config.screenW * 0.08,
+        tabBarHeight: Config.screenW * 0.15,
+        controlBtnW: Config.screenW * 0.04,
+        controlBtnH: Config.screenW * 0.06,
+        controlBtnR: Config.screenW * 0.1,
+        controlBtnB: Config.screenW * 0.1,
+        controlBtnBg: Config.screenW * 0.12,
+        barHeight: Config.screenW * 0.1,
+        iconBarMargin: Config.screenW * 0.04,
+        iconBarSize: Config.screenW * 0.06,
+        titleFont: Config.screenW * 0.034,
+        subTitleFont: Config.screenW * 0.028,
+        chapterTextW: Config.screenW * 0.18,
+        chapterTextH: Config.screenW * 0.08,
+        chapterTextMargin: Config.screenW * 0.016,
+        btnWidth: Config.screenW * 0.6,
+        btnHeight: Config.screenW * 0.08,
+        introMargin: Config.screenW * 0.08,
+        infoCoverW: Config.screenW * 0.3,
+        infoCoverH: Config.screenW * 0.42,
+        infoMargin: Config.screenW * 0.04,
+        readTextW: Config.screenW * 0.4,
+        readTextH: Config.screenW * 0.08,
+        detailTitleFont: Config.screenW * 0.04,
+        detailSubTitleFont: Config.screenW * 0.03,
+        marginTop: Config.screenW * 0.01,
     },
     ios: {
-        tabBarImageSize: Config.sreenW * 0.08,
-        tabBarHeight: Config.sreenW * 0.15,
-        controlBtnW: Config.sreenW * 0.04,
-        controlBtnH: Config.sreenW * 0.06,
-        controlBtnR: Config.sreenW * 0.1,
-        controlBtnB: Config.sreenW * 0.1,
-        controlBtnBg: Config.sreenW * 0.12,
-        barHeight: Config.sreenW * 0.1,
-        iconBarMargin: Config.sreenW * 0.04,
-        iconBarSize: Config.sreenW * 0.06,
-        titleFont: Config.sreenW * 0.034,
-        subTitleFont: Config.sreenW * 0.028,
-        chapterTextW: Config.sreenW * 0.18,
-        chapterTextH: Config.sreenW * 0.08,
-        chapterTextMargin: Config.sreenW * 0.016,
-        btnWidth: Config.sreenW * 0.6,
-        btnHeight: Config.sreenW * 0.08,
-        introMargin: Config.sreenW * 0.08,
-        infoCoverW: Config.sreenW * 0.3,
-        infoCoverH: Config.sreenW * 0.42,
-        infoMargin: Config.sreenW * 0.04,
-        readTextW: Config.sreenW * 0.4,
-        readTextH: Config.sreenW * 0.08,
-        detailTitleFont: Config.sreenW * 0.04,
-        detailSubTitleFont: Config.sreenW * 0.03,
-        marginTop: Config.sreenW * 0.01,
+        tabBarImageSize: Config.screenW * 0.08,
+        tabBarHeight: Config.screenW * 0.15,
+        controlBtnW: Config.screenW * 0.04,
+        controlBtnH: Config.screenW * 0.06,
+        controlBtnR: Config.screenW * 0.1,
+        controlBtnB: Config.screenW * 0.1,
+        controlBtnBg: Config.screenW * 0.12,
+        barHeight: Config.screenW * 0.1,
+        iconBarMargin: Config.screenW * 0.04,
+        iconBarSize: Config.screenW * 0.06,
+        titleFont: Config.screenW * 0.034,
+        subTitleFont: Config.screenW * 0.028,
+        chapterTextW: Config.screenW * 0.18,
+        chapterTextH: Config.screenW * 0.08,
+        chapterTextMargin: Config.screenW * 0.016,
+        btnWidth: Config.screenW * 0.6,
+        btnHeight: Config.screenW * 0.08,
+        introMargin: Config.screenW * 0.08,
+        infoCoverW: Config.screenW * 0.3,
+        infoCoverH: Config.screenW * 0.42,
+        infoMargin: Config.screenW * 0.04,
+        readTextW: Config.screenW * 0.4,
+        readTextH: Config.screenW * 0.08,
+        detailTitleFont: Config.screenW * 0.04,
+        detailSubTitleFont: Config.screenW * 0.03,
+        marginTop: Config.screenW * 0.01,
     }
 }
 
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         bottom: Platform.OS === 'ios' ? dimensions.ios.controlBtnB : dimensions.android.controlBtnB,
     },
     detailHeader: {
-        width: Config.sreenW,
+        width: Config.screenW,
         height: Platform.OS === 'ios' ? dimensions.ios.barHeight : dimensions.android.barHeight,
         flexDirection: 'row',
         alignItems: 'center',
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     chapterHeadView: {
         alignItems: 'center',
         flexDirection: 'row',
-        width: Config.sreenW,
+        width: Config.screenW,
         height: Platform.OS === 'ios' ? dimensions.ios.barHeight : dimensions.android.barHeight,
     },
     stateView: {
@@ -248,8 +248,8 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         right: 0,
-        width: Config.sreenW,
-        height: Config.sreenW * 0.44
+        width: Config.screenW,
+        height: Config.screenW * 0.44
     },
 
     absolute: {
@@ -258,16 +258,17 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         right: 0,
-        width: Config.sreenW,
-        height: Config.sreenW * 0.5,
+        width: Config.screenW,
+        height: Config.screenW * 0.5,
 
     },
     listView: {
-        marginTop: Platform.OS === 'ios' ? Config.sreenW * 0.06 : 0
+        marginTop: Platform.OS === 'ios' ? Config.screenW * 0.06 : 0,
+        flex:1,
     },
     imgPlaceholder: {
-        width: Config.sreenW,
-        height: Config.sreenW * 1.2,
+        width: Config.screenW,
+        height: Config.screenW * 1.2,
         backgroundColor: Config.normalTextColor,
         justifyContent: 'center',
         alignItems: 'center'
@@ -278,12 +279,12 @@ const styles = StyleSheet.create({
     },
     divider: {
         height: 2,
-        width: Config.sreenW,
+        width: Config.screenW,
         backgroundColor: Config.dividerColor
     },
     tipView: {
-        width: Config.sreenW * 0.68,
-        height: Config.sreenW * 0.3,
+        width: Config.screenW * 0.68,
+        height: Config.screenW * 0.3,
         justifyContent: 'center',
         alignItems: 'center',
         resizeMode: 'contain'
@@ -292,14 +293,18 @@ const styles = StyleSheet.create({
         color: Config.lightGray,
         fontSize: Platform.OS === 'ios' ? dimensions.ios.titleFont : dimensions.android.titleFont,
         position: 'absolute',
-        top: Config.sreenW * 0.3 * 0.66
+        top: Config.screenW * 0.3 * 0.66
     },
     retryText: {
         marginTop: Platform.OS === 'ios' ? dimensions.ios.infoMargin : dimensions.android.infoMargin,
         color: Config.themeColor,
         fontSize: Platform.OS === 'ios' ? dimensions.ios.detailTitleFont : dimensions.android.detailTitleFont,
+    },
+    emptyView:{
+        width: Config.screenW,
+        height: Config.screenH,
+        backgroundColor: 'white'
     }
-
 })
 
 

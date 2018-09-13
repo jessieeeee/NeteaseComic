@@ -8,16 +8,16 @@ import Config from "../constant/Config"
  */
 const dimensions = {
     android:{
-        iconLogoGirlW:Config.sreenW*0.6,
-        iconLogoGirlH:Config.sreenW,
-        iconLogoW:Config.sreenW*1,
-        iconLogoH:Config.sreenW*0.3,
+        iconLogoGirlW:Config.screenW*0.6,
+        iconLogoGirlH:Config.screenW,
+        iconLogoW:Config.screenW*1,
+        iconLogoH:Config.screenW*0.3,
     },
     ios:{
-        iconLogoGirlW:Config.sreenW*0.6,
-        iconLogoGirlH:Config.sreenW,
-        iconLogoW:Config.sreenW*1,
-        iconLogoH:Config.sreenW*0.3,
+        iconLogoGirlW:Config.screenW*0.6,
+        iconLogoGirlH:Config.screenW,
+        iconLogoW:Config.screenW*1,
+        iconLogoH:Config.screenW*0.3,
     }
 }
 const styles = StyleSheet.create({

@@ -33,20 +33,24 @@ exports.getImgs = async function () {
     }
     // 获取图片url
     let data = await page.$$eval('#comicContain img[data-h]', imgs => {
-        const images = [];
-        imgs.forEach(img => {
-            // if (img.src.lastIndexOf('.gif') !== img.src.length - 4) {
+        const images = []
+
+        imgs.some(function (img, index, imgs) {
+            if (img.src.lastIndexOf('.gif') !== img.src.length - 4) {
                 images.push(img.src)
-            // }
-        });
-        return images;
-    });
+            } else {
+                images.splice(0, images.length)
+            }
+            return img.src.lastIndexOf('.gif') === img.src.length - 4
+        })
+        return images
+    })
     let nextBtnText = await page.$eval('#mainControlNext', node => node.innerText)
     let loadMore = false
 
     if (nextBtnText === '点击进入书末页') {
         loadMore = false
-    } else if(nextBtnText === '点击进入下一话'){
+    } else if (nextBtnText === '点击进入下一话') {
         loadMore = true
     }
     return {data, loadMore}
@@ -55,16 +59,16 @@ exports.getImgs = async function () {
 
 exports.getComicContentLastOrNext = async function (nextChapter) {
     let result = await page.evaluate((nextChapter) => {
-        if (nextChapter === 'false'){
+        if (nextChapter === 'false') {
             console.log('点击了上一话')
             let prevChapterNode = document.querySelector('#prevChapter')
             prevChapterNode.click()
-            return '点击了上一话'+nextChapter
-        }else{
+            return '点击了上一话' + nextChapter
+        } else {
             console.log('点击了下一话')
             let nextChapterNode = document.querySelector('#nextChapter')
             nextChapterNode.click()
-            return '点击了下一话'+nextChapter
+            return '点击了下一话' + nextChapter
         }
     }, nextChapter)
     console.log(result)

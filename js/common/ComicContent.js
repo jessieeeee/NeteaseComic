@@ -5,42 +5,44 @@
  */
 import React, {Component} from 'react'
 import {Text, View, Image, TouchableOpacity} from 'react-native'
-import PullFlatList from '../widget/PullFlatList'
-import ComicImg from './ComicImg'
+import ComicContentList from './ComicContentList'
 import CommonStyle from "./CommonStyle"
 import NetUtil from "../util/NetUtil"
 import ServerApi from "../constant/ServerApi"
 import Config from '../constant/Config'
 import StatusManager from "../util/StatusManager"
-import Status from "../util/Status"
 import {BaseComponent} from "./BaseComponent"
-import LoadMoreState from "../widget/LoadMoreState"
+import {observer} from "mobx-react/native"
 
+@observer
 class ComicContent extends Component<Props> {
 
     constructor(props) {
         super(props)
-        this.state = {
-            data: null
-        }
+        this.data = null
         this.statusManager = new StatusManager()
         this.onRefresh = this.onRefresh.bind(this)
+        this.backward = this.backward.bind(this)
+        this.forward = this.forward.bind(this)
     }
 
     componentDidMount() {
         this.isMount = true
-        console.log(this.props.navigation.getParam('link', ''))
-        console.log(this.props.navigation.getParam('platform', ''))
+        console.log('link',this.props.navigation.getParam('link', ''))
+        console.log('platform',this.props.navigation.getParam('platform', ''))
+        console.log('page',this.props.navigation.getParam('page', 0))
+        console.log('count',this.props.navigation.getParam('count', 0))
         this.getComicContent()
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.isMount = false
     }
+
     /**
      * 重试回调
      */
-    retry(){
+    retry() {
         this.getComicContent()
     }
 
@@ -58,90 +60,65 @@ class ComicContent extends Component<Props> {
         else if (this.props.navigation.getParam('platform', '') === Config.platformTencent) {
             url = ServerApi.tencent.getComicContent
         }
-        this.props.request(url,params,this.statusManager,(result) => {
-            if (this.isMount){
-                this.setState({
-                    data: result
-                })
+        this.props.request(url, params, this.statusManager, (result) => {
+            if (this.isMount) {
+                this.data = result
+                this.content.initPage(this.data)
             }
         }, (error) => {
-            if (this.isMount){
-                this.setState({
-                    loadingState: LoadMoreState.state.error
-                })
-            }
             console.log(error)
         })
     }
 
-    endRefresh(next) {
-        // 结束刷新
-        if (next) {
-            if (this.isMount && this.loadMore) {
-                this.setState({
-                    loadingState: LoadMoreState.state.tip
-                })
-            } else if (this.isMount){
-                    this.setState({
-                        loadingState: LoadMoreState.state.noMore
-                    })
-            }
-        }
-    }
-
-    space() {
-        return (<View style={CommonStyle.styles.divider}/>)
-    }
-
-    /**
-     * 正常显示渲染
-     * @returns {*}
-     */
-    renderNormal(){
-        return(
-            <View>
-                {this.state.data ?
-                    <PullFlatList ref={(ref) => {
-                        this.listView = ref
-                    }}
-                                  data={this.state.data.data}
-                                  showsVerticalScrollIndicator={false}
-                                  ItemSeparatorComponent={this.space}
-                                  renderItem={({item, index}) => (
-                                      <ComicImg imgUrl={item} index={index}/>
-                                  )}
-                                  keyExtractor={item => item}
-                                  numColumns={1}
-                                  onPullRelease={this.onRefresh}
-                                  loadMoreState={this.state.loadingState}
-                                  onLoadMore={() => this.onLoadMore()}
-                                  style={CommonStyle.styles.listView}
-                    /> : null}
-            </View>
-        )
-    }
     render() {
         return (
             <View style={CommonStyle.styles.container}>
-                {/*渲染正常界面*/}
-                {this.statusManager.Status === Status.Normal ?  this.renderNormal() :null}
-                {/*渲染状态界面*/}
-                {this.props.displayStatus(this.statusManager)}
+                {this.renderNormal()}
+                {/*/!*渲染正常界面*!/*/}
+                {/*{this.statusManager.Status === Status.Normal ? this.renderNormal() : null}*/}
+                {/*/!*渲染状态界面*!/*/}
+                {/*{this.props.displayStatus(this.statusManager)}*/}
             </View>
         )
     }
 
     onRefresh(resolve) {
-        this.getContentMore(false)
         setTimeout(() => {
             resolve()
         }, 3000)
     }
 
-    onLoadMore() {
+
+    /**
+     * 渲染正常界面
+     * @returns {*}
+     */
+    renderNormal() {
+        return (
+            <ComicContentList
+                ref={(c) => {this.content = c}}
+                onRefresh={this.onRefresh}
+                page={this.props.navigation.getParam('page', 0)}
+                count={this.props.navigation.getParam('count',0)}
+                backward={this.backward}
+                forward={this.forward}
+            />
+        )
+    }
+
+    /**
+     * 向后翻页
+     */
+    backward(){
         this.getContentMore(true)
     }
 
+    /**
+     * 向前翻页
+     */
+    forward(){
+        this.getContentMore(false)
+    }
     /**
      * 加载更多
      * @param next
@@ -159,31 +136,17 @@ class ComicContent extends Component<Props> {
             url = ServerApi.tencent.getComicContentLastOrNext
         }
         NetUtil.post(url, params, (result) => {
-            // 没有下一页了
-            if (!result.data) {
-                this.loadMore = false
-                return
-            }
-
             // 加载下一页,数据与最后一条数据不同，拼接在末尾
-            if (next && JSON.stringify(result.data[result.data.length - 1]) !== JSON.stringify(this.state.data.data[this.state.data.data.length - 1])) {
-                Array.prototype.push.apply(this.state.data.data, result.data)
-                console.log(this.state.data.data)
-                this.loadMore = result.loadMore
+            if (next && JSON.stringify(result.data[result.data.length - 1]) !== JSON.stringify(this.data.data[this.data.data.length - 1])) {
+                this.data = result
+                this.content.addPage(true,this.data)
             }
             // 加载上一页,数据与第一条数据不同，数据添加在头部
-            else if (!next && JSON.stringify(result.data[0]) !== JSON.stringify(this.state.data.data[0])) {
-                result.data.unshift(0, 0)
-                Array.prototype.splice.apply(this.state.data.data, result.data)
+            else if (!next && JSON.stringify(result.data[0]) !== JSON.stringify(this.data.data[0])) {
+                this.data = result
+                this.content.addPage(false,this.data)
             }
-            this.endRefresh(next)
         }, (error) => {
-            if (this.isMount){
-                this.setState({
-                    loadingState: LoadMoreState.state.error
-                })
-            }
-
             console.log(error)
         })
     }

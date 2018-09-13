@@ -22,7 +22,7 @@ import Status from "../util/Status"
 import {observer} from "mobx-react/native"
 import NetUtil from '../util/NetUtil'
 let numColumns = 3 // 3列
-let cellW = Config.sreenW / numColumns // 单个item的宽度
+let cellW = Config.screenW / numColumns // 单个item的宽度
 @observer
 class NeteasePage extends Component<Props> {
 

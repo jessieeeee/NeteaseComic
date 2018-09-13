@@ -8,21 +8,21 @@ import {Platform, StyleSheet} from "react-native"
  */
 const dimensions = {
     android: {
-        titleFont: Config.sreenW * 0.04,
-        subTitleFont: Config.sreenW * 0.03,
-        marginTop: Config.sreenW * 0.02,
-        subMarginTop: Config.sreenW * 0.01,
-        labelMargin: Config.sreenW * 0.014,
-        labelPadding: Config.sreenW * 0.004,
+        titleFont: Config.screenW * 0.04,
+        subTitleFont: Config.screenW * 0.03,
+        marginTop: Config.screenW * 0.02,
+        subMarginTop: Config.screenW * 0.01,
+        labelMargin: Config.screenW * 0.014,
+        labelPadding: Config.screenW * 0.004,
 
     },
     ios: {
-        titleFont: Config.sreenW * 0.04,
-        subTitleFont: Config.sreenW * 0.03,
-        marginTop: Config.sreenW * 0.02,
-        subMarginTop: Config.sreenW * 0.01,
-        labelMargin: Config.sreenW * 0.014,
-        labelPadding: Config.sreenW * 0.004,
+        titleFont: Config.screenW * 0.04,
+        subTitleFont: Config.screenW * 0.03,
+        marginTop: Config.screenW * 0.02,
+        subMarginTop: Config.screenW * 0.01,
+        labelMargin: Config.screenW * 0.014,
+        labelPadding: Config.screenW * 0.004,
 
     }
 }
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         backgroundColor: Config.backgroundColor,
-        width: Config.sreenW,
-        height: Config.sreenW * 0.44
+        width: Config.screenW,
+        height: Config.screenW * 0.44
     },
     textView: {
         flex: 1,

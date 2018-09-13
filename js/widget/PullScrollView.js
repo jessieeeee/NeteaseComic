@@ -144,7 +144,7 @@ export default class PullScrollView extends Component {
     // 手势释放
     onPanResponderRelease() {
         if (this.curState.pulling) { // 之前是下拉状态
-            this.resetDefaultXYHandler(); //重置状态
+            this.resetDefaultXYHandler() //重置状态
         }
         if (this.curState.pullok) { // 之前是下拉到位状态
             // 之前没有松开

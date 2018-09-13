@@ -136,13 +136,13 @@ class LoadMore extends Component {
         const animations = this.arr.map((value, index) => {
             return (
                 <Animated.Text key={index} style={{
-                    opacity: this.animatedValue[value], fontSize: Config.sreenW * 0.06, color: Config.normalTextColor
+                    opacity: this.animatedValue[value], fontSize: Config.screenW * 0.06, color: Config.normalTextColor
                 }}>.</Animated.Text>
             )
         })
         return (
             <TouchableOpacity
-                style={{flexDirection: 'row', alignItems: 'center', height: Config.sreenW * 0.14,}}
+                style={{flexDirection: 'row', alignItems: 'center', height: Config.screenW * 0.14,}}
                 onPress={() => new DoubleClick().filterDoubleClick(
                     function () {
                         if (this.state.curState === LoadMoreState.state.error){
@@ -156,8 +156,8 @@ class LoadMore extends Component {
                 )}>
                 <Text style={{
                     color: Config.normalTextColor,
-                    fontSize: Config.sreenW * 0.04,
-                    marginRight: Config.sreenW * 0.02,
+                    fontSize: Config.screenW * 0.04,
+                    marginRight: Config.screenW * 0.02,
                 }}>
                     {this.renderLoadText()}
                 </Text>
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     pointsView: {
-        height: Config.sreenW * 0.14,
+        height: Config.screenW * 0.14,
         flexDirection: 'row',
         alignItems: 'center',
     },

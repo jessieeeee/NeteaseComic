@@ -54,21 +54,24 @@ exports.getImgs = async function () {
     const step = 1;
     for (let i = 1; i <= imagesLen / step; i++) {
         // 每次滚动一个张图片的高度
-        await page.evaluate(`window.scrollTo(0, ${i * imgHeight * step})`);
+        await page.evaluate(`window.scrollTo(0, ${i * imgHeight * step})`)
         console.log('滚动步长'+ i * imgHeight * step)
         // 为确保懒加载触发，需要等待一下
         await page.waitFor(1300)
     }
     // 获取图片url
     let data = await page.$$eval('div.portrait-player .img-box img', imgs => {
-        const images = [];
-        imgs.forEach(img => {
-            // if (img.src.substring(0,5) !== 'data'){
+        const images = []
+        imgs.some(function (img, index, imgs) {
+            if (img.src.substring(0,5) !== 'data'){
                 images.push(img.src);
-            // }
-        });
-        return images;
-    });
+            }else{
+                images.splice(0,images.length)
+            }
+            return img.src.substring(0,5) === 'data'
+        })
+        return images
+    })
 
     let loadMore = true
 

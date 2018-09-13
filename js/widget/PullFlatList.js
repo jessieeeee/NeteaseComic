@@ -54,7 +54,6 @@ export default class PullFlatList extends Component {
         onLoadMore: PropTypes.func,
         onScroll: PropTypes.func,
         children: PropTypes.array,
-        style: PropTypes.object,
         loadMoreState: PropTypes.number,
         onRetry: PropTypes.func,
     }

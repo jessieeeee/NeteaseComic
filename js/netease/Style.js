@@ -8,20 +8,20 @@ import Config from "../constant/Config"
  */
 const dimensions = {
     android: {
-        titleFont: Config.sreenW * 0.034,
-        subTitleFont: Config.sreenW * 0.028,
-        clickNumFont: Config.sreenW * 0.022,
-        marginTop: Config.sreenW * 0.01,
-        subMarginTop: Config.sreenW * 0.002,
-        iconBarMargin: Config.sreenW * 0.04,
+        titleFont: Config.screenW * 0.034,
+        subTitleFont: Config.screenW * 0.028,
+        clickNumFont: Config.screenW * 0.022,
+        marginTop: Config.screenW * 0.01,
+        subMarginTop: Config.screenW * 0.002,
+        iconBarMargin: Config.screenW * 0.04,
     },
     ios: {
-        titleFont: Config.sreenW * 0.034,
-        subTitleFont: Config.sreenW * 0.028,
-        clickNumFont: Config.sreenW * 0.022,
-        marginTop: Config.sreenW * 0.01,
-        subMarginTop: Config.sreenW * 0.01,
-        iconBarMargin: Config.sreenW * 0.04,
+        titleFont: Config.screenW * 0.034,
+        subTitleFont: Config.screenW * 0.028,
+        clickNumFont: Config.screenW * 0.022,
+        marginTop: Config.screenW * 0.01,
+        subMarginTop: Config.screenW * 0.01,
+        iconBarMargin: Config.screenW * 0.04,
 
     }
 }

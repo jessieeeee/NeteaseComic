@@ -8,35 +8,35 @@ import Config from "../constant/Config"
  */
 const dimensions = {
     android: {
-        itemHeight: Config.sreenW * 0.16,
-        iconSize: Config.sreenW * 0.08,
-        itemFontSize: Config.sreenW * 0.4,
-        avatarSize: Config.sreenW * 0.2,
-        infoHeight: Config.sreenW * 0.5,
-        infoFontSize: Config.sreenW * 0.04,
-        loginFontSize: Config.sreenW * 0.06,
-        arrowSize: Config.sreenW * 0.03,
-        itemMargin: Config.sreenW * 0.06,
-        textMargin: Config.sreenW * 0.04,
-        dividerHeight: Config.sreenW * 0.06,
+        itemHeight: Config.screenW * 0.16,
+        iconSize: Config.screenW * 0.08,
+        itemFontSize: Config.screenW * 0.4,
+        avatarSize: Config.screenW * 0.2,
+        infoHeight: Config.screenW * 0.5,
+        infoFontSize: Config.screenW * 0.04,
+        loginFontSize: Config.screenW * 0.06,
+        arrowSize: Config.screenW * 0.03,
+        itemMargin: Config.screenW * 0.06,
+        textMargin: Config.screenW * 0.04,
+        dividerHeight: Config.screenW * 0.06,
     },
     ios: {
-        itemHeight: Config.sreenW * 0.16,
-        iconSize: Config.sreenW * 0.08,
-        itemFontSize: Config.sreenW * 0.4,
-        avatarSize: Config.sreenW * 0.2,
-        infoHeight: Config.sreenW * 0.5,
-        infoFontSize: Config.sreenW * 0.04,
-        loginFontSize: Config.sreenW * 0.06,
-        arrowSize: Config.sreenW * 0.03,
-        itemMargin: Config.sreenW * 0.06,
-        textMargin: Config.sreenW * 0.04,
-        dividerHeight: Config.sreenW * 0.06,
+        itemHeight: Config.screenW * 0.16,
+        iconSize: Config.screenW * 0.08,
+        itemFontSize: Config.screenW * 0.4,
+        avatarSize: Config.screenW * 0.2,
+        infoHeight: Config.screenW * 0.5,
+        infoFontSize: Config.screenW * 0.04,
+        loginFontSize: Config.screenW * 0.06,
+        arrowSize: Config.screenW * 0.03,
+        itemMargin: Config.screenW * 0.06,
+        textMargin: Config.screenW * 0.04,
+        dividerHeight: Config.screenW * 0.06,
     }
 }
 const styles = StyleSheet.create({
     itemView: {
-        width: Config.sreenW,
+        width: Config.screenW,
         height: Platform.OS === 'ios' ? dimensions.ios.itemHeight :dimensions.android.itemHeight,
         borderBottomColor: Config.dividerColor,
         borderBottomWidth: 0.2,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     divider:{
         height: Platform.OS === 'ios' ? dimensions.ios.dividerHeight : dimensions.android.dividerHeight,
-        width: Config.sreenW,
+        width: Config.screenW,
         backgroundColor: Config.dividerColor
     }
 })

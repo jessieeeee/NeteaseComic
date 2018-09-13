@@ -6,8 +6,8 @@
 let Dimensions = require('Dimensions')
 
 const object = {
-    sreenW: Dimensions.get('window').width,
-    sreenH: Dimensions.get('window').height,
+    screenW: Dimensions.get('window').width,
+    screenH: Dimensions.get('window').height,
     redText:'#ff5f65',
     themeColor:'#fb887d',
     backgroundColor:'#ffffff',

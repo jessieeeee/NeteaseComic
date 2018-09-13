@@ -27,8 +27,8 @@ class ComicItem extends Component<Props> {
                                   NavigationService.navigate('TencentDetail', {id: this.props.data.id })
                               }}>
                 <Image source={{uri: this.props.data.cover}} style={{
-                    width: Config.sreenW * 0.26,
-                    height: Config.sreenW * 0.4
+                    width: Config.screenW * 0.26,
+                    height: Config.screenW * 0.4
                 }}/>
                 <View style={TencentStyle.styles.textView}>
                     <View style={TencentStyle.styles.titleView}>

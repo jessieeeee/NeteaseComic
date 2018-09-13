@@ -38,7 +38,7 @@ class ComicImg extends Component<Props> {
         return (
 
             this.state.originalW ?
-                <Image source={{uri: this.props.imgUrl}} style={{width: Config.sreenW, height: this.getHeight()}}/> :
+                <Image source={{uri: this.props.imgUrl}} style={{width: Config.screenW, height: this.getHeight()}}/> :
                 <View style={CommonStyle.styles.imgPlaceholder}>
                    <Text style={CommonStyle.styles.imgPlaceholderText}>
                        {this.props.index}
@@ -61,7 +61,7 @@ class ComicImg extends Component<Props> {
 
     //按图片宽度缩放
     getHeight() {
-        let ratio = Config.sreenW / this.state.originalW
+        let ratio = Config.screenW / this.state.originalW
         return this.state.originalH * ratio
     }
 }

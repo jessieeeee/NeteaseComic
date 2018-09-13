@@ -4,7 +4,7 @@
  * @description : 漫画详情展示
  */
 import React, {Component} from 'react'
-import {View, Image, findNodeHandle} from 'react-native'
+import {View, Image, findNodeHandle, ScrollView} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
 import ServerApi from "../constant/ServerApi"
 import NetUtil from "../util/NetUtil"
@@ -18,8 +18,7 @@ import StatusManager from "../util/StatusManager"
 import Status from "../util/Status"
 import {BaseComponent} from "../common/BaseComponent"
 import PullScrollView from '../widget/PullScrollView'
-import {observer} from "mobx-react/native"
-@observer
+
 class ComicDetail extends Component<Props> {
 
     constructor(props) {
@@ -38,7 +37,7 @@ class ComicDetail extends Component<Props> {
     /**
      * 重试回调
      */
-    retry(){
+    retry() {
         this.getDetail(true)
     }
 
@@ -48,7 +47,7 @@ class ComicDetail extends Component<Props> {
         this.getDetail(true)
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.isMount = false
     }
 
@@ -59,8 +58,8 @@ class ComicDetail extends Component<Props> {
         let params = {
             link: this.props.navigation.getParam('link', '')
         }
-        this.props.request(ServerApi.netease.getDetail,params,this.statusManager,(result) => {
-            if(this.isMount){
+        this.props.request(ServerApi.netease.getDetail, params, this.statusManager, (result) => {
+            if (this.isMount) {
                 this.setState({
                     data: result,
                     loadMore: result.loadMore
@@ -69,7 +68,7 @@ class ComicDetail extends Component<Props> {
 
         }, (error) => {
             console.log(error)
-        },showLoading)
+        }, showLoading)
     }
 
     /**
@@ -84,14 +83,14 @@ class ComicDetail extends Component<Props> {
             refresh: true
         })
         NetUtil.post(ServerApi.netease.getDetailMore, params, (result) => {
-            if (this.isMount && result.length !== 0 ) {
+            if (this.isMount && result.length !== 0) {
                 Array.prototype.push.apply(this.state.data.data, result)
                 this.setState({
                     ['data.data']: this.state.data.data,
                     refresh: false
                 })
             } else {
-                if (this.isMount){
+                if (this.isMount) {
                     this.setState({
                         refresh: false
                     })
@@ -106,64 +105,70 @@ class ComicDetail extends Component<Props> {
      * 图片加载完成回调
      */
     imageLoaded() {
-        if(this.isMount){
+        if (this.isMount) {
             this.setState({viewRef: findNodeHandle(this.cover)})
         }
     }
 
-    onPullRelease(resolve){
+    onPullRelease(resolve) {
         this.getDetail(false)
         setTimeout(() => {
             resolve()
         }, 3000)
     }
+
     /**
      * 正常显示渲染
      * @returns {*}
      */
-    renderNormal(){
-        return(
+    renderNormal() {
+        return (
             <PullScrollView style={{flex: 1, backgroundColor: 'white'}}
                             onPullRelease={this.onPullRelease}
-                            >
-                    {/*渲染模糊背景*/}
-                    {this.state.data ?
-                        <Image
-                            ref={(img) => {
-                                this.cover = img
-                            }}
-                            source={{uri: this.state.data.cover}}
-                            style={CommonStyle.styles.detailAbsolute}
-                            onLoadEnd={this.imageLoaded.bind(this)}
-                        /> : null }
-                    {this.state.viewRef ?
-                        <BlurView
-                            style={CommonStyle.styles.detailAbsolute}
-                            viewRef={this.state.viewRef}
-                            blurType="dark"
-                            blurAmount={2}
-                        /> : null}
-                    {/*渲染头部*/}
-                    <DetailHeader follow={this.state.follow} onBack={() => {
-                        this.props.navigation.goBack()
-                    }} onFollow={() => {
-                        this.setState({
-                            follow: true
+            >
+                {/*渲染模糊背景*/}
+                {this.state.data ?
+                    <Image
+                        ref={(img) => {
+                            this.cover = img
+                        }}
+                        source={{uri: this.state.data.cover}}
+                        style={CommonStyle.styles.detailAbsolute}
+                        onLoadEnd={this.imageLoaded.bind(this)}
+                    /> : null}
+                {this.state.viewRef ?
+                    <BlurView
+                        style={CommonStyle.styles.detailAbsolute}
+                        viewRef={this.state.viewRef}
+                        blurType="dark"
+                        blurAmount={2}
+                    /> : null}
+                {/*渲染头部*/}
+                <DetailHeader follow={this.state.follow} onBack={() => {
+                    this.props.navigation.goBack()
+                }} onFollow={() => {
+                    this.setState({
+                        follow: true
+                    })
+                }}/>
+                {/*渲染漫画信息*/}
+                {this.state.data ? <DetailInfo data={this.state.data}/> : null}
+                {/*渲染可看漫画章节*/}
+                {this.state.data ?
+                    <DetailChapters data={this.state.data}
+                                    refresh={this.state.refresh}
+                                    state={this.state}
+                                    loadMore={this.state.loadMore}
+                                    onClick={(item, index) => {
+                        NavigationService.navigate('ComicContent', {
+                            link: item.link,
+                            platform: Config.platformNetease,
+                            page: this.state.data.data.length - index,
+                            count: this.state.data.data.length
                         })
-                    }}/>
-                    {/*渲染漫画信息*/}
-                    {this.state.data ? <DetailInfo data={this.state.data}/> : null}
-                    {/*渲染可看漫画章节*/}
-                    {this.state.data ?
-                        <DetailChapters data={this.state.data}
-                                        refresh={this.state.refresh}
-                                        state={this.state}
-                                        loadMore={this.state.loadMore} onClick={(item) => {
-                            NavigationService.navigate('ComicContent',{link:item.link, platform:Config.platformNetease})
-                        }} onMore={() => {
-                            this.getDetailMore()
-                        }}/> : null}
-
+                    }} onMore={() => {
+                        this.getDetailMore()
+                    }}/> : null}
 
 
             </PullScrollView>
@@ -175,7 +180,7 @@ class ComicDetail extends Component<Props> {
         return (
             <View style={CommonStyle.styles.container}>
                 {/*渲染正常界面*/}
-                {this.statusManager.Status === Status.Normal ?  this.renderNormal() :null}
+                {this.statusManager.Status === Status.Normal ? this.renderNormal() : null}
                 {/*渲染状态界面*/}
                 {this.props.displayStatus(this.statusManager)}
             </View>

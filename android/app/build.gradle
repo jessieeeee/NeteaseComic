@@ -145,7 +145,7 @@ configurations.all {
 }
 
 dependencies {
-    compile project(':lottie-react-native')
+    api project(':lottie-react-native')
     api project(':react-native-blur')
     api fileTree(dir: "libs", include: ["*.jar"])
     api "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"

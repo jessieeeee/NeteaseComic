@@ -7,7 +7,7 @@ import React, {Component} from 'react'
 import CommonStyle from "./CommonStyle"
 import PropTypes from 'prop-types'
 import ComicContentListItem from './ComicContentListItem'
-import {View, ScrollView, TouchableOpacity} from 'react-native'
+import {View, ScrollView, TouchableOpacity, Text} from 'react-native'
 import Config from '../constant/Config'
 
 class ComicContentList extends Component<props> {
@@ -27,7 +27,7 @@ class ComicContentList extends Component<props> {
     constructor(props) {
         super(props)
         this.itemPageArr = []
-        this.items = []
+        this.items = [] // 内容界面数组
         this.leftIndex = 0 //左边下标
         this.rightIndex = 0 //右边下标
         this.curPage = 0 //当前页数
@@ -44,9 +44,11 @@ class ComicContentList extends Component<props> {
 
     renderEmpty(key) {
         return (
-            <View key={key} style={CommonStyle.styles.emptyView}/>
+            <View key={key} style={CommonStyle.styles.emptyView}>
+            </View>
         )
     }
+
 
     /**
      * 刷新当页数据
@@ -57,13 +59,14 @@ class ComicContentList extends Component<props> {
         this.setState({})
         if(end){
             this.items[this.items.length -1].update(Data)
-            // this.content.scrollTo({x: Config.screenW * this.itemPageArr.length, y: 0})
+            setTimeout( () => this.content.scrollTo({x: Config.screenW * (this.itemPageArr.length-2),animation:false}),100)
         }
         else{
             this.items[0].update(Data)
-            // this.content.scrollTo({x: Config.screenW * 2, y: 0})
+            setTimeout( () => this.content.scrollTo({x: Config.screenW,animation:false}),100)
         }
         this.setState({})
+
     }
 
     renderPage(end,key) {
@@ -89,51 +92,55 @@ class ComicContentList extends Component<props> {
         this.itemPageArr.push(
             this.renderPage(true, this.props.page)
         )
-        this.addRight()
-        this.addLeft()
-        this.updatePage(true, Data)
+        this.addRight(Data)
+        this.addLeft(Data)
+
     }
 
     // 添加内容页面
     addPage(end, Data) {
         let key = end ? this.rightIndex : this.leftIndex
         if (end) {
+            console.log('添加右边内容')
             // 把空白界面删除
             this.itemPageArr.pop()
             // 添加内容界面
             this.itemPageArr.push(this.renderPage(end, key))
+            this.addRight(Data)
         }
         else {
+            console.log('添加左边内容')
             // 把空白界面删除
             this.itemPageArr.shift()
             // 添加内容界面
             this.itemPageArr.unshift(this.renderPage(end, key))
+            this.addLeft(Data)
         }
-        this.updatePage(end,Data)
     }
 
     /**
      * 添加右边界面
      */
-    addRight() {
+    addRight(Data) {
         console.log('count',this.props.count)
         console.log('rightIndex',this.rightIndex)
         if (this.rightIndex + 1 <= this.props.count) {
             this.rightIndex ++
             this.addEmptyView(true)
+            this.updatePage(true, Data)
         }
     }
 
     /**
      * 添加左边界面
      */
-    addLeft() {
+    addLeft(Data) {
         console.log('count',this.props.count)
         console.log('leftIndex',this.leftIndex)
         if (this.leftIndex - 1 >= 0) {
             this.leftIndex --
             this.addEmptyView(false)
-
+            this.updatePage(false,Data)
         }
     }
 
@@ -154,11 +161,10 @@ class ComicContentList extends Component<props> {
             // 插入到第一个元素
             this.itemPageArr.unshift(this.renderEmpty(key))
         }
-        this.content.scrollToEnd()
+
     }
 
     render() {
-        console.log('arr', this.itemPageArr.length)
         return (
             <ScrollView
                 ref={(c) => {this.content = c}}
@@ -170,6 +176,7 @@ class ComicContentList extends Component<props> {
                 onMomentumScrollEnd={this.onMomentumScrollEnd}>
                 {/*渲染分页*/}
                 {this.itemPageArr}
+
 
             </ScrollView>
 
@@ -186,16 +193,21 @@ class ComicContentList extends Component<props> {
         console.log(':' + offset + '宽度' + Config.screenW)
         //当前页数
         let currentPage = Math.round(offset / Config.screenW)
-        this.curPage = currentPage
-        //往后翻
-        if (currentPage > this.props.page) {
-            this.props.backward && this.props.backward(currentPage)
-        }
-        else if (currentPage < this.props.page) {
-            // console.log('往前翻')
-            this.props.forward && this.props.forward(currentPage)
-        }
 
+        //往后翻
+        if (currentPage > this.curPage) {
+            // 如果当前页数大于右边缓存页数
+            if(currentPage >= this.rightIndex && this.props.page !== currentPage) {
+                this.props.backward && this.props.backward(currentPage)
+            }
+        }
+        else if (currentPage < this.curPage) {
+            // 如果当前页数小于左边缓存页数
+            if(currentPage <= this.leftIndex && this.props.page !== currentPage){
+                this.props.forward && this.props.forward(currentPage)
+            }
+        }
+        this.curPage = currentPage
     }
 
 

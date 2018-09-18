@@ -155,7 +155,12 @@ class ComicDetail extends Component<Props>{
                                     refresh={this.state.refresh}
                                     state={this.state}
                                     loadMore={this.state.loadMore} onClick={(item) => {
-                        NavigationService.navigate('ComicContent',{link:this.getLink(item.link), platform:Config.platformTencent})
+                        NavigationService.navigate('ComicContent', {
+                            link: this.getLink(item.link),
+                            platform: Config.platformTencent,
+                            page: this.state.data.data.length - index,
+                            count: this.state.data.data.length
+                        })
                     }} onMore={() => {
                         this.getDetailMore()
                     }}/> : null}

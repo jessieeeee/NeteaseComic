@@ -19,27 +19,36 @@ class ComicContentListItem extends Component{
     constructor(props){
         super(props)
         this.state = {
-            data: []
+            data: [],
+            statusManager: null
         }
     }
 
     componentDidMount(){
+        this.isMount = true
         // 暴露this给父组件
         this.props.refCallback(this)
     }
 
+    componentWillUnmount(){
+        this.isMount = false
+    }
     /**
      * 刷新数据
      * @param Data
      */
     update(Data){
-        this.setState({
-            data: Data
-        })
+        if(this.isMount){
+            this.setState({
+                data: Data
+            })
+        }
     }
+
 
     render(){
         return(
+
             <PullFlatList
                 data={this.state.data.data}
                 showsVerticalScrollIndicator={false}
@@ -52,6 +61,7 @@ class ComicContentListItem extends Component{
                 onPullRelease={this.props.onRefresh}
                 style={[CommonStyle.styles.listView,{width: Config.screenW,height:Config.screenH}]}
             />
+
         )
     }
 

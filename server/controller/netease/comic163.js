@@ -51,7 +51,7 @@ exports.getComicDetail = (async (ctx, next) => {
     }
     let link = body.link
     let result = await detail.getComicDetail(link)
-    if (result.data.length === 0 ){
+    if (!result.data || result.data.length === 0 ){
         ctx.body = {
             success: false,
         }
@@ -95,7 +95,7 @@ exports.getComicContent = (async (ctx, next) => {
     }
     let link = body.link
     let result = await content.getComicContent(link)
-    if (result.data.length === 0 ){
+    if (!result.data ||result.data.length === 0 ){
         ctx.body = {
             success: false,
         }
@@ -117,7 +117,7 @@ exports.getComicContentLastOrNext = (async (ctx, next) => {
     }
     let nextChapter = body.next
     let result = await content.getComicContentLastOrNext(nextChapter)
-    if (result.data.length === 0 ){
+    if (!result.data ||result.data.length === 0 ){
         ctx.body = {
             success: false,
         }

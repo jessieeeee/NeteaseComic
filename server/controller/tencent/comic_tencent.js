@@ -38,7 +38,7 @@ exports.getComicDetail = (async (ctx, next) => {
     }
     let id = body.id
     let result = await detail.getComicDetail('https://m.ac.qq.com/comic/index/id/'+ id);
-    if (result.data.length === 0 ){
+    if (!result.data ||result.data.length === 0 ){
         ctx.body = {
             success: false,
         }
@@ -82,7 +82,7 @@ exports.getComicContent = (async (ctx, next) => {
     let link = tencentUrl + body.link
     // http://ac.qq.com/ComicView/index/id/522924/cid/287
     let result = await content.getComicContent(link);
-    if (result.data.length === 0 ){
+    if (!result.data ||result.data.length === 0 ){
         ctx.body = {
             success: false,
         }
@@ -103,7 +103,7 @@ exports.getComicContentLastOrNext = (async (ctx, next) => {
     }
     let nextChapter = body.next
     let result = await content.getComicContentLastOrNext(nextChapter)
-    if (result.data.length === 0 ){
+    if (!result.data ||result.data.length === 0 ){
         ctx.body = {
             success: false,
         }

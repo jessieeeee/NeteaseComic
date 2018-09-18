@@ -13,6 +13,13 @@ import Status from '../util/Status'
 
 class DefaultDisplay extends Component<Props> {
 
+    constructor(props){
+        super(props)
+        this.state = {
+            status: props.status
+        }
+    }
+
     static propTypes = {
         status: PropTypes.number, // 展示状态,
     }
@@ -20,6 +27,7 @@ class DefaultDisplay extends Component<Props> {
     static defaultProps = {
         status: Status.Loading, // 默认加载状态
     }
+
 
     render() {
         return (
@@ -36,8 +44,14 @@ class DefaultDisplay extends Component<Props> {
                     <Image source={tipBg} style={CommonStyle.styles.tipView}/>
                     {this.renderStatus()}
                     {
-                        this.props.status !== Status.Loading ?
-                            <TouchableOpacity onPress={() => this.props.onRetry()}>
+                        this.state.status !== Status.Loading ?
+                            <TouchableOpacity onPress={() =>
+                            {
+                                this.props.onRetry()
+                                this.setState({
+                                    status: Status.Loading
+                                })
+                            }}>
                                 <Text style={CommonStyle.styles.retryText}>重新加载</Text>
                             </TouchableOpacity> : null
                     }
@@ -47,7 +61,7 @@ class DefaultDisplay extends Component<Props> {
     }
 
     renderStatus() {
-        switch (this.props.status) {
+        switch (this.state.status) {
             case Status.Loading:
                 return this.renderLoading()
             case Status.Empty:

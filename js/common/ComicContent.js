@@ -13,7 +13,6 @@ import Config from '../constant/Config'
 import StatusManager from "../util/StatusManager"
 import {BaseComponent} from "./BaseComponent"
 import {observer} from "mobx-react/native"
-
 @observer
 class ComicContent extends Component<Props> {
 
@@ -67,17 +66,15 @@ class ComicContent extends Component<Props> {
             }
         }, (error) => {
             console.log(error)
-        })
+        },true)
     }
 
     render() {
         return (
             <View style={CommonStyle.styles.container}>
                 {this.renderNormal()}
-                {/*/!*渲染正常界面*!/*/}
-                {/*{this.statusManager.Status === Status.Normal ? this.renderNormal() : null}*/}
                 {/*/!*渲染状态界面*!/*/}
-                {/*{this.props.displayStatus(this.statusManager)}*/}
+                {this.props.displayStatus(this.statusManager)}
             </View>
         )
     }
@@ -105,6 +102,7 @@ class ComicContent extends Component<Props> {
             />
         )
     }
+
 
     /**
      * 向后翻页
@@ -135,22 +133,26 @@ class ComicContent extends Component<Props> {
         else if (this.props.navigation.getParam('platform', '') === Config.platformTencent) {
             url = ServerApi.tencent.getComicContentLastOrNext
         }
-        NetUtil.post(url, params, (result) => {
-            // 加载下一页,数据与最后一条数据不同，拼接在末尾
-            if (next && JSON.stringify(result.data[result.data.length - 1]) !== JSON.stringify(this.data.data[this.data.data.length - 1])) {
-                this.data = result
-                this.content.addPage(true,this.data)
-            }
-            // 加载上一页,数据与第一条数据不同，数据添加在头部
-            else if (!next && JSON.stringify(result.data[0]) !== JSON.stringify(this.data.data[0])) {
-                this.data = result
-                this.content.addPage(false,this.data)
-            }
+
+        this.props.request(url, params, this.statusManager, (result) => {
+           if(this.isMount){
+               // 加载下一页,数据与最后一条数据不同，拼接在末尾
+               if (next && JSON.stringify(result.data[result.data.length - 1]) !== JSON.stringify(this.data.data[this.data.data.length - 1])) {
+                   console.log('加载下一页成功')
+                   this.data = result
+                   this.content.addPage(true,this.data)
+               }
+               // 加载上一页,数据与第一条数据不同，数据添加在头部
+               else if (!next && JSON.stringify(result.data[0]) !== JSON.stringify(this.data.data[0])) {
+                   console.log('加载上一页成功')
+                   this.data = result
+                   this.content.addPage(false,this.data)
+               }
+           }
         }, (error) => {
             console.log(error)
-        })
+        },true)
     }
 }
-
 
 export default BaseComponent(ComicContent)

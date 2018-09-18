@@ -4,7 +4,7 @@
  * @description : 抓取web上的数据
  */
 'use strict'
-const puppeteer = require('puppeteer-cn')　//web抓取工具类
+const puppeteer = require('puppeteer')　//web抓取工具类
 
 /**
  *　模拟移动设备iphone6

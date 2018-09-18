@@ -18,7 +18,9 @@ import StatusManager from "../util/StatusManager"
 import Status from "../util/Status"
 import {BaseComponent} from "../common/BaseComponent"
 import PullScrollView from '../widget/PullScrollView'
+import {observer} from "mobx-react/native"
 
+@observer
 class ComicDetail extends Component<Props> {
 
     constructor(props) {
@@ -163,7 +165,7 @@ class ComicDetail extends Component<Props> {
                         NavigationService.navigate('ComicContent', {
                             link: item.link,
                             platform: Config.platformNetease,
-                            page: this.state.data.data.length - index,
+                            page: index,
                             count: this.state.data.data.length
                         })
                     }} onMore={() => {
@@ -187,7 +189,6 @@ class ComicDetail extends Component<Props> {
 
         )
     }
-
 
 }
 

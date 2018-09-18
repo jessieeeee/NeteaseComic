@@ -60,7 +60,14 @@ class DefaultDisplay extends Component<Props> {
         )
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            status: nextProps.status
+        })
+    }
+
     renderStatus() {
+        console.log('当前状态',this.state.status)
         switch (this.state.status) {
             case Status.Loading:
                 return this.renderLoading()

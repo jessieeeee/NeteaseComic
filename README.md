@@ -1,8 +1,8 @@
 # NeteaseComic
-这是一个获取网易，腾讯免费漫画的全栈项目
-服务端：nodejs + koa + mongoose
-数据抓取：puppeteer抓取web端数据返回给客户端
-客户端：react-native + mobx，适配android，ios双平台
+- 这是一个获取网易，腾讯免费漫画的全栈项目
+- 服务端：nodejs + koa + mongoose
+- 数据抓取：puppeteer抓取web端数据返回给客户端
+- 客户端：react-native + mobx，适配android，ios双平台
 ## 当前进度截图：
 ![截图1](http://oqujmbgen.bkt.clouddn.com/images/comic_1.png?imageView2/2/w/500/h/500/q/100|imageslim)
 ![截图2](http://oqujmbgen.bkt.clouddn.com/images/comic_2.png?imageView2/2/w/500/h/500/q/100|imageslim)

@@ -19,10 +19,10 @@
 1. npm install --save (下载依赖库)
 2. react-native start (启动rn服务)
 3. 编译
-### Android
-- 使用命令, gradle clean && gradle build
+- Android
+- gradle clean && gradle build
 - android studio gradle插件
-### ios
+- ios
 xcode build && run
 4. 选择你的运行设备, 安装app运行
 

@@ -88,6 +88,8 @@ class ComicContentList extends Component<props> {
 
 
     initPage(Data) {
+        // 清空重置
+        this.itemPageArr.splice(0,this.itemPageArr.length)
         // 添加内容界面
         this.itemPageArr.push(
             this.renderPage(true, this.props.page)

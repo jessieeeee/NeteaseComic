@@ -4,12 +4,12 @@
 - 数据抓取：puppeteer抓取web端数据返回给客户端
 - 客户端：react-native + mobx，适配android，ios双平台
 ## 当前进度截图：
-![image](http://oqujmbgen.bkt.clouddn.com/images/comic_1.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![image](http://oqujmbgen.bkt.clouddn.com/images/comic_2.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![image](http://oqujmbgen.bkt.clouddn.com/images/comic_3.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![image](http://oqujmbgen.bkt.clouddn.com/images/comic_4.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![image](http://oqujmbgen.bkt.clouddn.com/images/comic_5.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![image](http://oqujmbgen.bkt.clouddn.com/images/comic_6.png?imageView2/2/w/500/h/500/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_1.png?imageView2/2/w/480/h/480/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_2.png?imageView2/2/w/480/h/480/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_3.png?imageView2/2/w/480/h/480/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_4.png?imageView2/2/w/480/h/480/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_5.png?imageView2/2/w/480/h/480/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_6.png?imageView2/2/w/480/h/480/q/100|imageslim)
 ## 如何运行
 ### 服务端
 1. cd server

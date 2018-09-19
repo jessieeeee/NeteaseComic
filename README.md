@@ -4,26 +4,25 @@
 - 数据抓取：puppeteer抓取web端数据返回给客户端
 - 客户端：react-native + mobx，适配android，ios双平台
 ## 当前进度截图：
-![截图1](http://oqujmbgen.bkt.clouddn.com/images/comic_1.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![截图2](http://oqujmbgen.bkt.clouddn.com/images/comic_2.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![截图3](http://oqujmbgen.bkt.clouddn.com/images/comic_3.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![截图4](http://oqujmbgen.bkt.clouddn.com/images/comic_4.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![截图5](http://oqujmbgen.bkt.clouddn.com/images/comic_5.png?imageView2/2/w/500/h/500/q/100|imageslim)
-![截图6](http://oqujmbgen.bkt.clouddn.com/images/comic_6.png?imageView2/2/w/500/h/500/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_1.png?imageView2/2/w/500/h/500/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_2.png?imageView2/2/w/500/h/500/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_3.png?imageView2/2/w/500/h/500/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_4.png?imageView2/2/w/500/h/500/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_5.png?imageView2/2/w/500/h/500/q/100|imageslim)
+![image](http://oqujmbgen.bkt.clouddn.com/images/comic_6.png?imageView2/2/w/500/h/500/q/100|imageslim)
 ## 如何运行
 ### 服务端
-1. cd server (进入服务端目录)
-2. npm install --save (下载依赖库)
-3. node app (启动服务)
+1. cd server
+2. npm install --save
+3. node app
 ### 客户端
-1. npm install --save (下载依赖库)
-2. react-native start (启动rn服务)
+1. npm install --save
+2. react-native start
 3. 编译
-- Android
+- Android:
 - gradle clean && gradle build
-- android studio gradle插件
-- ios
-xcode build && run
+- ios:
+- xcode build && run
 4. 选择你的运行设备, 安装app运行
 
 ## 已完成功能：

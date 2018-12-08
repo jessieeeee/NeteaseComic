@@ -7,6 +7,7 @@ import React, {Component} from 'react'
 import {View, Image, TouchableOpacity} from 'react-native'
 import CommonStyle from "./CommonStyle"
 import PropTypes from 'prop-types'
+import Xcompatible from '../util/Xcompatible'
 let icBack = require('../img/ic_back.png')
 let icFollow = require('../img/ic_follow.png')
 let icUnFollow = require('../img/ic_unfollow.png')
@@ -22,8 +23,18 @@ class DetailHeader extends Component<Props> {
     }
 
     render(){
+        let marginTop
+        if (Xcompatible.isIphoneX() ){
+            marginTop = CommonStyle.dimensions.ios.barHeight * 0.8
+        }
+        else if(Xcompatible.isIphoneXR()){
+            marginTop = CommonStyle.dimensions.ios.barHeight
+        }
+        else {
+            marginTop = 0
+        }
         return (
-            <View style={CommonStyle.styles.detailHeader}>
+            <View style={[CommonStyle.styles.detailHeader,{marginTop: marginTop} ]}>
                 <TouchableOpacity style={CommonStyle.styles.headerIconLeftView}
                                   onPress={() => {
                                       if(this.props.onBack){

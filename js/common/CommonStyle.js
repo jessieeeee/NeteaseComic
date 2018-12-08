@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         margin: Platform.OS === 'ios' ? dimensions.ios.chapterTextMargin : dimensions.android.chapterTextMargin,
         width: Platform.OS === 'ios' ? dimensions.ios.chapterTextW : dimensions.android.chapterTextW,
+        lineHeight: Platform.OS === 'ios' ? dimensions.ios.chapterTextH : dimensions.android.chapterTextH,
         height: Platform.OS === 'ios' ? dimensions.ios.chapterTextH : dimensions.android.chapterTextH,
     },
     introText: {
@@ -189,6 +190,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         textAlignVertical: 'center',
+        lineHeight: Platform.OS === 'ios' ? dimensions.ios.btnHeight : dimensions.android.btnHeight,
         width: Platform.OS === 'ios' ? dimensions.ios.btnWidth : dimensions.android.btnWidth,
         height: Platform.OS === 'ios' ? dimensions.ios.btnHeight : dimensions.android.btnHeight,
     },
@@ -223,6 +225,7 @@ const styles = StyleSheet.create({
         height: Platform.OS === 'ios' ? dimensions.ios.readTextH : dimensions.android.readTextH,
         textAlign: 'center',
         alignItems: 'center',
+        lineHeight: Platform.OS === 'ios' ? dimensions.ios.readTextH : dimensions.android.readTextH,
         justifyContent: 'center',
         textAlignVertical: 'center',
         borderRadius: 2

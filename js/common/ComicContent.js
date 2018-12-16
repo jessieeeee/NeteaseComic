@@ -7,7 +7,6 @@ import React, {Component} from 'react'
 import {Text, View, Image, TouchableOpacity} from 'react-native'
 import ComicContentList from './ComicContentList'
 import CommonStyle from "./CommonStyle"
-import NetUtil from "../util/NetUtil"
 import ServerApi from "../constant/ServerApi"
 import Config from '../constant/Config'
 import StatusManager from "../util/StatusManager"

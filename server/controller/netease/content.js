@@ -3,6 +3,7 @@
  * @email : lyj1246505807@gmail.com
  * @description :获取网易漫画内容
  */
+let webSocketUtil = require('../websocketutil')
 let Spider = require('../spider')
 let page
 //　获取漫画内容
@@ -12,6 +13,7 @@ exports.getComicContent = async function (url) {
     // 跳转到目标网站
     await page.goto(url)
     console.log('catch------>', url)
+
     return this.getImgs()
 }
 
@@ -44,7 +46,7 @@ exports.getImgs = async function () {
     try{
          imgHeight = await page.$eval('div.portrait-player .img-box', img => img.style.height.replace('px',''))
     }catch (error){
-        return{loadMore:false}
+        return {loadMore : false}
     }
     const imagesLen = await page.$$eval('div.portrait-player .img-box', imgs => imgs.length)
 
@@ -65,6 +67,7 @@ exports.getImgs = async function () {
         imgs.some(function (img, index, imgs) {
             if (img.src.substring(0,5) !== 'data'){
                 images.push(img.src);
+                webSocketUtil.curSocket.emit(img.src)
             }else{
                 images.splice(0,images.length)
             }

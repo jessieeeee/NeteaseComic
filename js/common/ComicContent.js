@@ -12,6 +12,7 @@ import Config from '../constant/Config'
 import StatusManager from "../util/StatusManager"
 import {BaseComponent} from "./BaseComponent"
 import {observer} from "mobx-react/native"
+import SocketIOClient from 'socket.io-client';
 @observer
 class ComicContent extends Component<Props> {
 
@@ -22,6 +23,11 @@ class ComicContent extends Component<Props> {
         this.onRefresh = this.onRefresh.bind(this)
         this.backward = this.backward.bind(this)
         this.forward = this.forward.bind(this)
+
+        this.socket = SocketIOClient(ServerApi.server); // 设置服务端的地址和端口号
+        this.socket.on('imgUrl', (url) => {
+           console.log('图片url:' + url)
+        })
     }
 
     componentDidMount() {

@@ -17,7 +17,8 @@
     "react-native": "0.56.0",
     "react-native-blur": "^3.2.2",
     "react-navigation": "^2.12.1",
-    "react-navigation-tabs": "^0.6.0"
+    "react-navigation-tabs": "^0.6.0",
+    "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "7.0.0-beta.47",

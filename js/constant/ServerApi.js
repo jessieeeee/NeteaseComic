@@ -5,26 +5,28 @@
  */
 
 // 服务器主机ip
-const server_host = 'http://192.168.199.151:1234/api'
+const server_host = 'http://192.168.199.151:1234'
+const server_api = server_host + '/api'
 const netease = '/163'
 const tencent = '/tencent'
 const object = {
+    server: server_host,
     // 网易漫画
     netease:{
-        getComic:server_host + netease + '/getComic',
-        getComicMore:server_host + netease + '/getComicMore',
-        getDetail:server_host + netease + '/getComicDetail',
-        getDetailMore:server_host + netease + '/getComicDetailMore',
-        getComicContent: server_host + netease + '/getComicContent',
-        getComicContentLastOrNext: server_host + netease + '/getComicContentLastOrNext'
+        getComic:server_api + netease + '/getComic',
+        getComicMore:server_api + netease + '/getComicMore',
+        getDetail:server_api + netease + '/getComicDetail',
+        getDetailMore:server_api + netease + '/getComicDetailMore',
+        getComicContent: server_api + netease + '/getComicContent',
+        getComicContentLastOrNext: server_api + netease + '/getComicContentLastOrNext'
     },
     //　腾讯漫画
     tencent:{
-        getComic:server_host + tencent + '/getComic',
-        getDetail:server_host + tencent + '/getComicDetail',
-        getDetailMore:server_host + tencent + '/getComicDetailMore',
-        getComicContent: server_host + tencent + '/getComicContent',
-        getComicContentLastOrNext: server_host + tencent + '/getComicContentLastOrNext'
+        getComic:server_api + tencent + '/getComic',
+        getDetail:server_api + tencent + '/getComicDetail',
+        getDetailMore:server_api + tencent + '/getComicDetailMore',
+        getComicContent: server_api + tencent + '/getComicContent',
+        getComicContentLastOrNext: server_api + tencent + '/getComicContentLastOrNext'
     }
 }
 export default object

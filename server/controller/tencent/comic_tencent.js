@@ -81,16 +81,9 @@ exports.getComicContent = (async (ctx, next) => {
     let tencentUrl = 'http://ac.qq.com/ComicView/'
     let link = tencentUrl + body.link
     // http://ac.qq.com/ComicView/index/id/522924/cid/287
-    let result = await content.getComicContent(link);
-    if (!result.data ||result.data.length === 0 ){
-        ctx.body = {
-            success: false,
-        }
-    } else {
-        ctx.body = {
-            success: true,
-            msg: result
-        }
+    await content.getComicContent(link);
+    ctx.body = {
+        success: true
     }
 })
 
@@ -102,16 +95,9 @@ exports.getComicContentLastOrNext = (async (ctx, next) => {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
     let nextChapter = body.next
-    let result = await content.getComicContentLastOrNext(nextChapter)
-    if (!result.data ||result.data.length === 0 ){
-        ctx.body = {
-            success: false,
-        }
-    } else {
-        ctx.body = {
-            success: true,
-            msg: result
-        }
+    await content.getComicContentLastOrNext(nextChapter)
+    ctx.body = {
+        success: true
     }
 })
 // 抓取漫画弹幕
@@ -121,16 +107,9 @@ exports.getComicComment = (async (ctx, next) => {
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let result = await comment.getComicComment('http://ac.qq.com/ComicView/index/id/542724/cid/263', 1)
-    if (result.length === 0 ){
-        ctx.body = {
-            success: false,
-        }
-    } else {
-        ctx.body = {
-            success: true,
-            msg: result
-        }
+    await comment.getComicComment('http://ac.qq.com/ComicView/index/id/542724/cid/263', 1)
+    ctx.body = {
+        success: true
     }
 })
 

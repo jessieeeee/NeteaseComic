@@ -4,14 +4,11 @@
  * @description :获取网易漫画评论
  */
 let Spider = require('../spider')
-let commentData //当前评论数据
-let commentNum = 0//评论数量
+let commentData = []//当前评论数据
 // 直接取对应图片的评论
 exports.getComment = async function (page,index) {
-    // 等待
-    await page.waitFor(1000)
     // 取数据
-    commentData = await page.evaluate((index) => {
+    let comments = await page.evaluate((index) => {
         let elements = document.querySelectorAll('.img-box-wrapper') // 获取评论和图片
         // 获取评论
         let comments = []
@@ -22,12 +19,12 @@ exports.getComment = async function (page,index) {
         }
         return comments
     },index)
-    console.log(commentData.pop())
-    if (commentNum !== commentData.length) {
-        // 记录获取的数量
-        commentNum = commentData.length
-        await this.getComment(page,index)
-    }
+    // 过滤集合中不存在的图片
+    let result = comments.filter(function(v){ return commentData.indexOf(v) === -1 })
+    // 添加到当前获取到的图片集合
+    Array.prototype.push.apply(commentData, result);
+    console.log('放入新的链接:' + result)
+
 }
 
 // 获取漫画评论
@@ -37,7 +34,8 @@ exports.getComicComment = async function (url, index) {
     let urlStr = url + '#imgIndex=' + index
     // 跳转到目标网站
     await page.goto(urlStr)
-    // 开始获取评论，每秒获取一次
-    await this.getComment(page,index)
-    return commentData
+    this.setInterval(async function () {
+        // 开始获取评论，每秒获取一次
+        await this.getComment(page,index)
+    },1000)
 }

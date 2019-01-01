@@ -94,16 +94,9 @@ exports.getComicContent = (async (ctx, next) => {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
     let link = body.link
-    let result = await content.getComicContent(link)
-    if (!result.data ||result.data.length === 0 ){
-        ctx.body = {
-            success: false,
-        }
-    } else {
-        ctx.body = {
-            success: true,
-            msg: result
-        }
+    await content.getComicContent(link)
+    ctx.body = {
+        success: true
     }
 
 })
@@ -116,16 +109,9 @@ exports.getComicContentLastOrNext = (async (ctx, next) => {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
     let nextChapter = body.next
-    let result = await content.getComicContentLastOrNext(nextChapter)
-    if (!result.data ||result.data.length === 0 ){
-        ctx.body = {
-            success: false,
-        }
-    } else {
-        ctx.body = {
-            success: true,
-            msg: result
-        }
+    await content.getComicContentLastOrNext(nextChapter)
+    ctx.body = {
+        success: true
     }
 
 })
@@ -138,16 +124,9 @@ exports.getComicComment = (async (ctx, next) => {
     }
     let link = body.link
     let index = body.index
-    let result = await comment.getComicComment(link, index)
-    if (result.length === 0 ){
-        ctx.body = {
-            success: false,
-        }
-    } else {
-        ctx.body = {
-            success: true,
-            msg: result
-        }
+    await comment.getComicComment(link, index)
+    ctx.body = {
+        success: true
     }
 
 })

@@ -14,9 +14,9 @@ const iphone = devices['iPhone 6 Plus']
 /**
  * 模拟pc设备mac
  */
-const viewPort = {
-    width: 1920,
-    height: 1080
+exports.viewPort = {
+    width: 1080,
+    height: 1920
 }
 const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
 let browser = null // 全局的浏览器实例
@@ -29,7 +29,7 @@ exports.tencentUrl = 'http://ac.qq.com' //腾讯漫画地址
 exports.init = async function () {
     if (!browser) {
         // 启动了一个Chrome实例
-        browser = await puppeteer.launch({ headless: true })
+        browser = await puppeteer.launch({ headless: false })
     }
     // 浏览器中创建一个新的页面
     return await browser.newPage()
@@ -41,6 +41,17 @@ exports.init = async function () {
  * @returns {Promise<void>}
  */
 exports.switchPc = async function (page) {
+    await page.setViewport(this.viewPort);
+    await page.setUserAgent(userAgent);
+}
+
+/**
+ * 切换到pc设备
+ * @param page
+ * @param viewPort
+ * @returns {Promise<void>}
+ */
+exports.switchCustomPc = async function (page, viewPort) {
     await page.setViewport(viewPort);
     await page.setUserAgent(userAgent);
 }

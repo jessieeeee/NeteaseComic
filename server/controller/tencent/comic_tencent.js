@@ -18,7 +18,7 @@ exports.getComic = (async (ctx, next) => {
     let result = await list.getComic(pageNo)
     if (result.length === 0){
         ctx.body = {
-            success: false
+            success: false,
         }
     } else{
         ctx.body = {
@@ -83,7 +83,8 @@ exports.getComicContent = (async (ctx, next) => {
     // http://ac.qq.com/ComicView/index/id/522924/cid/287
     await content.getComicContent(link);
     ctx.body = {
-        success: true
+        success: true,
+        msg:{}
     }
 })
 
@@ -97,7 +98,8 @@ exports.getComicContentLastOrNext = (async (ctx, next) => {
     let nextChapter = body.next
     await content.getComicContentLastOrNext(nextChapter)
     ctx.body = {
-        success: true
+        success: true,
+        msg:{}
     }
 })
 // 抓取漫画弹幕
@@ -109,7 +111,8 @@ exports.getComicComment = (async (ctx, next) => {
     }
     await comment.getComicComment('http://ac.qq.com/ComicView/index/id/542724/cid/263', 1)
     ctx.body = {
-        success: true
+        success: true,
+        msg:{}
     }
 })
 

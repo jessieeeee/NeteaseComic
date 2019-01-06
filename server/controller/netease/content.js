@@ -69,7 +69,9 @@ exports.imgsTask = async function () {
         // 添加到当前获取到的图片集合
         Array.prototype.push.apply(images, result);
         console.log('放入新的链接:' + result)
-        // webSocketUtil.curSocket.emit('imgUrl', img.src)
+        if(result.length !== 0){
+            webSocketUtil.curSocket.emit('imgUrl', result)
+        }
     }
 }
 // 抓取图片
@@ -78,7 +80,7 @@ exports.getImgs = async function () {
     let data = await page.$$eval('div.portrait-player .img-box img', imgs => {
         const images = []
         imgs.forEach(async img =>  {
-            if (img.src.substring(0,5) !== 'data'){
+            if (img.src.substring(0,4) !== 'data'){
                 images.push(img.src)
             }
         })

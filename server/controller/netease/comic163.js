@@ -12,7 +12,7 @@ exports.getComic = (async (ctx, next) => {
     let result = await list.getComic()
     if (result.length === 0){
         ctx.body = {
-            success: false
+            success: false,
         }
     } else{
         ctx.body = {
@@ -96,7 +96,8 @@ exports.getComicContent = (async (ctx, next) => {
     let link = body.link
     await content.getComicContent(link)
     ctx.body = {
-        success: true
+        success: true,
+        msg:{}
     }
 
 })
@@ -111,7 +112,8 @@ exports.getComicContentLastOrNext = (async (ctx, next) => {
     let nextChapter = body.next
     await content.getComicContentLastOrNext(nextChapter)
     ctx.body = {
-        success: true
+        success: true,
+        msg:{}
     }
 
 })
@@ -126,7 +128,8 @@ exports.getComicComment = (async (ctx, next) => {
     let index = body.index
     await comment.getComicComment(link, index)
     ctx.body = {
-        success: true
+        success: true,
+        msg:{}
     }
 
 })

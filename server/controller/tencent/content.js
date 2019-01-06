@@ -3,6 +3,7 @@
  * @email : lyj1246505807@gmail.com
  * @description : 获取腾讯漫画内容
  */
+let webSocketUtil = require('../websocketutil')
 let Spider = require('../spider')
 let page
 //　获取漫画内容
@@ -53,7 +54,9 @@ exports.imgsTask = async function () {
         // 添加到当前获取到的图片集合
         Array.prototype.push.apply(images, result);
         console.log('放入新的链接:' + result)
-        // webSocketUtil.curSocket.emit('imgUrl', img.src)
+        if(result.length !== 0){
+            webSocketUtil.curSocket.emit('imgUrl', result)
+        }
     }
 }
 
@@ -71,9 +74,9 @@ exports.getImgs = async function () {
     let nextBtnText = await page.$eval('#mainControlNext', node => node.innerText)
 
     if (nextBtnText === '点击进入书末页') {
-        // webSocketUtil.curSocket.emit('loadMore', false)
+        webSocketUtil.curSocket.emit('loadMore', false)
     } else if (nextBtnText === '点击进入下一话') {
-        // webSocketUtil.curSocket.emit('loadMore', true)
+        webSocketUtil.curSocket.emit('loadMore', true)
     }
     return data
 

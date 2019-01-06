@@ -6,13 +6,13 @@ let IMUtil = require('./im')
 let users = {}
 // 聊天室id
 let curChatId = 1
-let curSocket
+exports.curSocket = {}
 function init(server) {
     let websocket = Socketio(server)
     websocket.on('connection', (socket) =>
     {
         console.log('连上了')
-        curSocket = socket
+        this.curSocket = socket
         let userId = users[socket.id]
         // 用户id为空返回
         if (!userId) {
@@ -43,4 +43,4 @@ async function onUserJoined(userId, chatId, socket) {
     await IMUtil.sendExistingMessages(socket, chatId)
 }
 
-module.exports = {init, log, curSocket}
+module.exports = {init, log}

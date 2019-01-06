@@ -29,7 +29,7 @@ exports.tencentUrl = 'http://ac.qq.com' //腾讯漫画地址
 exports.init = async function () {
     if (!browser) {
         // 启动了一个Chrome实例
-        browser = await puppeteer.launch({ headless: false })
+        browser = await puppeteer.launch({ headless: true })
     }
     // 浏览器中创建一个新的页面
     return await browser.newPage()

@@ -62,13 +62,10 @@ exports.getImgs = async function () {
     // 获取图片url
     let data = await page.$$eval('div.portrait-player .img-box img', imgs => {
         const images = []
-        imgs.some(function (img, index, imgs) {
-            if (img.src.substring(0,5) !== 'data'){
-                images.push(img.src);
-            }else{
-                images.splice(0,images.length)
+        imgs.forEach(async img => {
+            if (img.src.substring(0,4) !== 'data') {
+                images.push(img.src)
             }
-            return img.src.substring(0,5) === 'data'
         })
         return images
     })

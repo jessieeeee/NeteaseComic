@@ -24,9 +24,6 @@ function init(server) {
     })
 }
 
-function log(msg) {
-    console.log(msg)
-}
 async function onUserJoined(userId, chatId, socket) {
     console.log('有用户进来了' + userId)
     curChatId = chatId
@@ -43,4 +40,4 @@ async function onUserJoined(userId, chatId, socket) {
     await IMUtil.sendExistingMessages(socket, chatId)
 }
 
-module.exports = {init, log}
+module.exports = {init}

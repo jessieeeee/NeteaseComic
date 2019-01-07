@@ -15,6 +15,17 @@ exports.getComicContent = async function (url) {
     return this.getImgs()
 }
 
+// 针对腾讯漫画屏蔽了window.scroll一系列方法，用puppeteer模拟用户拖拽
+exports.scrollPage = async function (distance) {
+    await page.mouse.move(Spider.viewPort.width/2, Spider.viewPort.height * 0.9, {steps: 10})
+    await page.mouse.down(Spider.viewPort.width/2, Spider.viewPort.height * 0.9)
+    if (Spider.viewPort.height * 0.9 - distance > Spider.viewPort.height * 0.05){
+        await page.mouse.move(Spider.viewPort.width/2, Spider.viewPort.height * 0.9 - distance, {steps: 10})
+    }else{
+        await page.mouse.move(Spider.viewPort.width/2, Spider.viewPort.height * 0.05, {steps: 10})
+    }
+    await page.mouse.up()
+}
 exports.getImgs = async function () {
     // 等待
     await page.waitFor(500)
@@ -27,21 +38,17 @@ exports.getImgs = async function () {
     const step = 1;
     for (let i = 1; i <= imagesLen / step; i++) {
         // 每次滚动一个张图片的高度
-        await page.evaluate(`window.scrollTo(0, ${i * imgHeight * step})`);
+        await this.scrollPage(i * imgHeight * step)
         // 为确保懒加载触发，需要等待一下
         await page.waitFor(500)
     }
     // 获取图片url
     let data = await page.$$eval('#comicContain img[data-h]', imgs => {
         const images = []
-
-        imgs.some(function (img, index, imgs) {
+        imgs.forEach(async img => {
             if (img.src.lastIndexOf('.gif') !== img.src.length - 4) {
                 images.push(img.src)
-            } else {
-                images.splice(0, images.length)
             }
-            return img.src.lastIndexOf('.gif') === img.src.length - 4
         })
         return images
     })

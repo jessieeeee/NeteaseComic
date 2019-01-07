@@ -24,10 +24,10 @@ class ComicContent extends Component<Props> {
         this.backward = this.backward.bind(this)
         this.forward = this.forward.bind(this)
 
-        this.socket = SocketIOClient(ServerApi.server); // 设置服务端的地址和端口号
-        this.socket.on('imgUrl', (url) => {
-           console.log('图片url:' + url)
-        })
+        // this.socket = SocketIOClient(ServerApi.server); // 设置服务端的地址和端口号
+        // this.socket.on('imgUrl', (url) => {
+        //    console.log('图片url:' + url)
+        // })
     }
 
     componentDidMount() {

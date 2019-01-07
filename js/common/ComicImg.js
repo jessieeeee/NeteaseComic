@@ -11,13 +11,13 @@ import CommonStyle from './CommonStyle'
 class ComicImg extends Component<Props> {
 
     static propTypes = {
-        imgUrl: PropTypes.object.isRequired,
+        imgUrl: PropTypes.string.isRequired,
         imgWidth: PropTypes.number,
         imgHeight: PropTypes.number
     }
 
     static defaultProps = {
-        imgUrl: null, // 默认数据源为空
+        imgUrl: '', // 默认数据源为空
     }
 
     componentWillMount() {

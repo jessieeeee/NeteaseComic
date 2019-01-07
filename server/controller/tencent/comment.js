@@ -5,10 +5,13 @@
  */
 let Spider = require('../spider')
 let commentData = [] //当前评论数据
+let commentLastData = [] //上一次获取的评论数据
 // 直接取对应图片的评论
 exports.getComment = async function (page, index) {
+    // 等待
+    await page.waitFor(1000)
     // 取数据
-    let comments = await page.$$eval('div.for-roast', divs => {
+    commentData = await page.$$eval('div.for-roast', divs => {
         const comments = [];
         divs.forEach(div => {
             comments.push(div.innerText)
@@ -16,11 +19,10 @@ exports.getComment = async function (page, index) {
         return comments
     })
 
-    // 过滤集合中不存在的图片
-    let result = comments.filter(function(v){ return commentData.indexOf(v) === -1 })
-    // 添加到当前获取到的图片集合
-    Array.prototype.push.apply(commentData, result);
-    console.log('放入新的链接:' + result)
+    if (commentData.toString() !== commentLastData.toString()) {
+        commentLastData = commentData
+        await this.getComment(page, index)
+    }
 }
 
 // 获取漫画评论
@@ -35,8 +37,7 @@ exports.getComicComment = async function (url, index) {
     await page.evaluate(`window.scrollTo(0, ${index * imgHeight })`);
     // 等待
     await page.waitFor(8000)
-    this.setInterval(async function () {
-        // 开始获取评论，每秒获取一次
-        await this.getComment(page,index)
-    },1000)
+    // 开始获取评论，每秒获取一次
+    await this.getComment(page, index)
+    return commentData
 }

@@ -33,12 +33,14 @@ exports.getImgs = async function () {
     // 获取图片数目和高度
     const imagesLen = await page.$$eval('#comicContain img[data-h]', imgs => imgs.length);
     const imgHeight = await page.$eval('#comicContain img[data-h]', img => img.getAttribute('data-h'));
-
+    const imgWidth = await page.$eval('#comicContain img[data-w]', img => img.getAttribute('data-w'));
+    console.log('图片数量为' + imagesLen)
     // 自动滚动，使懒加载图片加载
     const step = 1;
     for (let i = 1; i <= imagesLen / step; i++) {
         // 每次滚动一个张图片的高度
         await this.scrollPage(i * imgHeight * step)
+        console.log('滚动步长'+ i * imgHeight * step)
         // 为确保懒加载触发，需要等待一下
         await page.waitFor(500)
     }
@@ -60,7 +62,7 @@ exports.getImgs = async function () {
     } else if (nextBtnText === '点击进入下一话') {
         loadMore = true
     }
-    return {data, loadMore}
+    return {data, loadMore ,imgWidth ,imgHeight}
 
 }
 

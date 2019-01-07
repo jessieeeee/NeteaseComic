@@ -40,14 +40,14 @@ exports.getComicContentLastOrNext = async function (nextChapter) {
 exports.getImgs = async function () {
     // 等待
     await page.waitFor(700)
-    let imgHeight
+    let imgHeight,imgWidth
     try{
          imgHeight = await page.$eval('div.portrait-player .img-box', img => img.style.height.replace('px',''))
+         imgWidth = await page.$eval('div.portrait-player .img-box', img => img.style.width.replace('px',''))
     }catch (error){
-        return{loadMore:false}
+        return {loadMore:false}
     }
     const imagesLen = await page.$$eval('div.portrait-player .img-box', imgs => imgs.length)
-
     console.log('图片数量为' + imagesLen)
     console.log('图片高度为' + imgHeight)
     // 自动滚动，使懒加载图片加载
@@ -60,7 +60,7 @@ exports.getImgs = async function () {
         await page.waitFor(1300)
     }
     // 获取图片url
-    let data = await page.$$eval('div.portrait-player .img-box img', imgs => {
+    let data = await page.$$eval('div.portrait-player .img-box img', (imgs) => {
         const images = []
         imgs.forEach(async img => {
             if (img.src.substring(0,4) !== 'data') {
@@ -71,7 +71,7 @@ exports.getImgs = async function () {
     })
 
     let loadMore = true
-
-    return {data, loadMore}
+    console.log({data, loadMore,imgWidth,imgHeight})
+    return {data, loadMore,imgWidth,imgHeight}
 
 }

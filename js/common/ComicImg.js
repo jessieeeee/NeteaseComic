@@ -11,24 +11,19 @@ import CommonStyle from './CommonStyle'
 class ComicImg extends Component<Props> {
 
     static propTypes = {
-        imgUrl: PropTypes.string.isRequired, // 数据源,
+        imgUrl: PropTypes.object.isRequired,
+        imgWidth: PropTypes.number,
+        imgHeight: PropTypes.number
     }
 
     static defaultProps = {
-        imgUrl: '', // 默认数据源为空
+        imgUrl: null, // 默认数据源为空
     }
 
-    constructor(props){
-        super(props)
-
-        this.state = {
-            originalW: 0
-        }
-
-    }
     componentWillMount() {
         this.unmount = false
-        this.meaureImg()
+        // this.meaureImg()
+        console.log('当前item' + JSON.stringify(this.props.imgWidth))
     }
 
     componentWillUnmount(){
@@ -36,14 +31,12 @@ class ComicImg extends Component<Props> {
     }
     render() {
         return (
-
-            this.state.originalW ?
-                <Image source={{uri: this.props.imgUrl}} style={{width: Config.screenW, height: this.getHeight()}}/> :
-                <View style={CommonStyle.styles.imgPlaceholder}>
-                   <Text style={CommonStyle.styles.imgPlaceholderText}>
-                       {this.props.index}
-                   </Text>
-                </View>
+                <Image source={{uri: this.props.imgUrl}} style={{width: Config.screenW, height: this.getHeight()}}/>
+                // {/*<View style={CommonStyle.styles.imgPlaceholder}>*/}
+                //    {/*<Text style={CommonStyle.styles.imgPlaceholderText}>*/}
+                //        {/*{this.props.index}*/}
+                //    {/*</Text>*/}
+                // {/*</View>*/}
         )
     }
 
@@ -56,13 +49,15 @@ class ComicImg extends Component<Props> {
                    }
                );
            }
+        },(error) => {
+            console.log('获取宽高错误'+error)
         });
     }
 
     //按图片宽度缩放
     getHeight() {
-        let ratio = Config.screenW / this.state.originalW
-        return this.state.originalH * ratio
+        let ratio = Config.screenW / this.props.imgWidth
+        return this.props.imgHeight * ratio
     }
 }
 

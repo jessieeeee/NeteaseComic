@@ -54,7 +54,7 @@ class ComicContentListItem extends Component{
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={this.space}
                 renderItem={({item, index}) => (
-                    <ComicImg imgUrl={item} index={index}/>
+                    <ComicImg imgUrl={item} imgWidth = {this.state.data.imgWidth} imgHeight = {this.state.data.imgHeight} index={index}/>
                 )}
                 keyExtractor={item => item}
                 numColumns={1}

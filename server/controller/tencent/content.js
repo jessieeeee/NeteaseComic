@@ -3,6 +3,7 @@
  * @email : lyj1246505807@gmail.com
  * @description : 获取腾讯漫画内容
  */
+let websocket = require('../websocketutil')
 let Spider = require('../spider')
 let page
 //　获取漫画内容
@@ -31,15 +32,16 @@ exports.getImgs = async function () {
     await page.waitFor(500)
 
     // 获取图片数目和高度
-    const imagesLen = await page.$$eval('#comicContain img[data-h]', imgs => imgs.length);
-    const imgHeight = await page.$eval('#comicContain img[data-h]', img => img.getAttribute('data-h'));
-    const imgWidth = await page.$eval('#comicContain img[data-w]', img => img.getAttribute('data-w'));
+    let imagesLen = await page.$$eval('#comicContain img[data-h]', imgs => imgs.length);
+    let imgHeight = await page.$eval('#comicContain img[data-h]', img => img.getAttribute('data-h'));
+    let imgWidth = await page.$eval('#comicContain img[data-w]', img => img.getAttribute('data-w'));
     console.log('图片数量为' + imagesLen)
     // 自动滚动，使懒加载图片加载
     const step = 1;
     for (let i = 1; i <= imagesLen / step; i++) {
         // 每次滚动一个张图片的高度
         await this.scrollPage(i * imgHeight * step)
+        websocket.curSocket.emit('catch',{index:i,length:imagesLen})
         console.log('滚动步长'+ i * imgHeight * step)
         // 为确保懒加载触发，需要等待一下
         await page.waitFor(500)
@@ -62,6 +64,9 @@ exports.getImgs = async function () {
     } else if (nextBtnText === '点击进入下一话') {
         loadMore = true
     }
+    imgHeight = parseInt(imgHeight)
+    imgWidth = parseInt(imgWidth)
+    console.log({data, loadMore,imgWidth,imgHeight})
     return {data, loadMore ,imgWidth ,imgHeight}
 
 }

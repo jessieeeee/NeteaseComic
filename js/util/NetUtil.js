@@ -11,7 +11,7 @@ export default class NetUtils {
             console.log('server--------->', json.msg)
             callbackSuccess(json.msg)
         } else {
-            callbackError('server---------> 服务器出错')
+            callbackError('server---------> 服务器出错:收到数据为' + JSON.stringify(json))
         }
     }
 

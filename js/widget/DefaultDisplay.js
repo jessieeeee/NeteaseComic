@@ -16,7 +16,8 @@ class DefaultDisplay extends Component<Props> {
     constructor(props){
         super(props)
         this.state = {
-            status: props.status
+            status: props.status,
+            loadingText: '正在加载中.....'
         }
     }
 
@@ -28,6 +29,9 @@ class DefaultDisplay extends Component<Props> {
         status: Status.Loading, // 默认加载状态
     }
 
+    componentDidMount(){
+       this.props.refCallback(this)
+    }
 
     render() {
         return (
@@ -101,8 +105,18 @@ class DefaultDisplay extends Component<Props> {
      */
     renderLoading() {
         return (
-            <Text style={CommonStyle.styles.tipText}>正在加载中.....</Text>
+            <Text style={CommonStyle.styles.tipText}>{this.state.loadingText}</Text>
         )
+    }
+
+    /**
+     * 刷新加载文本
+     * @param loadingText
+     */
+    updateLoading(loadingText){
+        this.setState({
+            loadingText: loadingText
+        })
     }
 }
 

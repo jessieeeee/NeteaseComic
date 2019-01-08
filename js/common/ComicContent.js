@@ -4,7 +4,7 @@
  * @description : 浏览漫画界面
  */
 import React, {Component} from 'react'
-import {Text, View, Image, TouchableOpacity} from 'react-native'
+import {Text, View, Image, TouchableOpacity, AsyncStorage} from 'react-native'
 import ComicContentList from './ComicContentList'
 import CommonStyle from "./CommonStyle"
 import ServerApi from "../constant/ServerApi"
@@ -13,6 +13,7 @@ import StatusManager from "../util/StatusManager"
 import {BaseComponent} from "./BaseComponent"
 import {observer} from "mobx-react/native"
 import SocketIOClient from 'socket.io-client';
+const USER_ID = "USER_ID"
 @observer
 class ComicContent extends Component<Props> {
 
@@ -24,10 +25,30 @@ class ComicContent extends Component<Props> {
         this.backward = this.backward.bind(this)
         this.forward = this.forward.bind(this)
 
-        // this.socket = SocketIOClient(ServerApi.server); // 设置服务端的地址和端口号
-        // this.socket.on('imgUrl', (url) => {
-        //    console.log('图片url:' + url)
-        // })
+        this.socket = SocketIOClient(ServerApi.server); // 设置服务端的地址和端口号
+        // 获取用户id
+        AsyncStorage.getItem(USER_ID)
+            .then((userId) => {
+                // 本地没有用户id
+                if (!userId) {
+                    // 发送空的用户id
+                    this.socket.emit('userJoined', null);
+                    // 监听userJoined消息，保存服务端给的用户id
+                    this.socket.on('userJoined', (userId) => {
+                        AsyncStorage.setItem(USER_ID, userId);
+                        this.setState({ userId });
+                    });
+                } else {
+                    // 发送本地保存的用户id
+                    this.socket.emit('userJoined', userId);
+                }
+            })
+            .catch((e) => alert(e));
+
+        this.socket.on('catch', (item) => {
+            console.log('当前抓取进度:' + '(' +item.index +'/' + item.length + ')')
+            this.props.updateLoading('当前抓取进度:' + '(' +item.index +'/' + item.length + ')')
+        })
     }
 
     componentDidMount() {
@@ -36,6 +57,7 @@ class ComicContent extends Component<Props> {
         console.log('platform',this.props.navigation.getParam('platform', ''))
         console.log('page',this.props.navigation.getParam('page', 0))
         console.log('count',this.props.navigation.getParam('count', 0))
+
         this.getComicContent()
     }
 
@@ -47,6 +69,8 @@ class ComicContent extends Component<Props> {
      * 重试回调
      */
     retry() {
+        // 重置
+        this.content && this.content.reset()
         this.getComicContent()
     }
 

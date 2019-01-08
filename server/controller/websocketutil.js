@@ -17,7 +17,6 @@ function init(server) {
         // 用户id为空返回
         if (!userId) {
             console.log('没有这个用户啦')
-            return
         }
         socket.on('userJoined', (userId, chatId) => onUserJoined(userId, chatId, socket))
         socket.on('message', (message, chatId) => IMUtil.onMessageReceived(message, chatId, socket))
@@ -31,6 +30,7 @@ async function onUserJoined(userId, chatId, socket) {
     if (!userId) {
         let userData = new Users({})
         let user = await userData.save()
+        console.log('发送新用户id' + user._id)
         socket.emit('userJoined', user._id);
         users[socket.id] = user._id;
     } else { //否则刷新用户id

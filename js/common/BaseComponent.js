@@ -55,6 +55,13 @@ export const BaseComponent = (WrapComponent) => {
             })
         }
 
+        /**
+         * 刷新加载文本
+         * @param loadingText
+         */
+        updateLoading(loadingText){
+            this.defaultDisplay.updateLoading(loadingText)
+        }
 
         /**
          * 根据状态展示
@@ -68,7 +75,7 @@ export const BaseComponent = (WrapComponent) => {
             }
             console.log('显示异常界面')
             return (
-                <DefaultDisplay status={statusManager.Status} onRetry={() => this.retryCallback() }/>
+                <DefaultDisplay refCallback = {(ref) => {this.defaultDisplay = ref}} status={statusManager.Status} onRetry={() => this.retryCallback() }/>
             )
         }
 
@@ -89,6 +96,7 @@ export const BaseComponent = (WrapComponent) => {
                     }} {...this.props} request={(url, params, statusManager, next ,err, showLoading) => {
                         this.request(url, params, statusManager ,next, err, showLoading)
                     }} displayStatus={(statusManager) => {return this.displayStatus(statusManager)}}
+                                   updateLoading={(loadingText) => {this.updateLoading(loadingText)}}
                     />
                 </View>
             )

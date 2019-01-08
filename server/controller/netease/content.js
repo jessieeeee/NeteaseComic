@@ -3,6 +3,7 @@
  * @email : lyj1246505807@gmail.com
  * @description :获取网易漫画内容
  */
+let websocket = require('../websocketutil')
 let Spider = require('../spider')
 let page
 //　获取漫画内容
@@ -55,6 +56,7 @@ exports.getImgs = async function () {
     for (let i = 1; i <= imagesLen / step; i++) {
         // 每次滚动一个张图片的高度
         await page.evaluate(`window.scrollTo(0, ${i * imgHeight * step})`)
+        websocket.curSocket.emit('catch',{index:i,length:imagesLen})
         console.log('滚动步长'+ i * imgHeight * step)
         // 为确保懒加载触发，需要等待一下
         await page.waitFor(1300)
@@ -71,7 +73,9 @@ exports.getImgs = async function () {
     })
 
     let loadMore = true
-    console.log({data, loadMore,imgWidth,imgHeight})
-    return {data, loadMore,imgWidth,imgHeight}
+    imgHeight = parseInt(imgHeight)
+    imgWidth = parseInt(imgWidth)
+    console.log({data, loadMore,imgWidth, imgHeight})
+    return {data, loadMore,imgWidth, imgHeight}
 
 }

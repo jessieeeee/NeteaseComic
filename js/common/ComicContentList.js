@@ -26,6 +26,12 @@ class ComicContentList extends Component<props> {
 
     constructor(props) {
         super(props)
+        // 重置数据
+        this.reset()
+        this.onMomentumScrollEnd = this.onMomentumScrollEnd.bind(this)
+    }
+
+    reset(){
         this.itemPageArr = []
         this.items = [] // 内容界面数组
         this.leftIndex = 0 //左边下标
@@ -34,7 +40,6 @@ class ComicContentList extends Component<props> {
         this.state = {
             data: []
         }
-        this.onMomentumScrollEnd = this.onMomentumScrollEnd.bind(this)
     }
 
     componentDidMount() {
@@ -59,6 +64,7 @@ class ComicContentList extends Component<props> {
         this.setState({})
         if(end){
             this.items[this.items.length -1].update(Data)
+            console.log('滑到第'+(this.itemPageArr.length-2))
             setTimeout( () => this.content.scrollTo({x: Config.screenW * (this.itemPageArr.length-2),animation:false}),100)
         }
         else{
@@ -124,12 +130,11 @@ class ComicContentList extends Component<props> {
      * 添加右边界面
      */
     addRight(Data) {
-        console.log('count',this.props.count)
-        console.log('rightIndex',this.rightIndex)
         if (this.rightIndex + 1 <= this.props.count) {
             this.rightIndex ++
             this.addEmptyView(true)
             this.updatePage(true, Data)
+            console.log('添加了右边空白页' + this.rightIndex)
         }
     }
 
@@ -143,6 +148,7 @@ class ComicContentList extends Component<props> {
             this.leftIndex --
             this.addEmptyView(false)
             this.updatePage(false,Data)
+            console.log('添加了左边空白页' + this.leftIndex)
         }
     }
 
@@ -198,14 +204,18 @@ class ComicContentList extends Component<props> {
 
         //往后翻
         if (currentPage > this.curPage) {
+            console.log('向右滑动' + 'rightIndex:' +this.rightIndex + 'page:' + this.props.page + 'currentPage:' + currentPage)
             // 如果当前页数大于右边缓存页数
             if(currentPage >= this.rightIndex && this.props.page !== currentPage) {
+                console.log('向右滑动有效')
                 this.props.backward && this.props.backward(currentPage)
             }
         }
         else if (currentPage < this.curPage) {
+            console.log('向左滑动' + 'rightIndex:' +this.leftIndex + 'page:' + this.props.page + 'currentPage:' + currentPage)
             // 如果当前页数小于左边缓存页数
             if(currentPage <= this.leftIndex && this.props.page !== currentPage){
+                console.log('向左滑动有效')
                 this.props.forward && this.props.forward(currentPage)
             }
         }

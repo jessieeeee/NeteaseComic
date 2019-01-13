@@ -13,7 +13,7 @@ exports.getComicContent = async function (url) {
     // 跳转到目标网站
     await page.goto(url)
     console.log('catch------>', url)
-    return this.getImgs()
+    return await this.getImgs()
 }
 
 //　获取上一话和下一话的内容
@@ -34,7 +34,7 @@ exports.getComicContentLastOrNext = async function (nextChapter) {
         }
     }, nextChapter)
     console.log(result)
-    return this.getImgs()
+    return await this.getImgs()
 }
 
 // 抓取图片

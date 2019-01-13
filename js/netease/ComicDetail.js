@@ -32,6 +32,7 @@ class ComicDetail extends Component<Props> {
             refresh: false, // 是否正在刷新章节
             viewRef: null
         }
+        this.follow = false
         this.statusManager = new StatusManager()
         this.onPullRelease = this.onPullRelease.bind(this)
     }
@@ -149,8 +150,9 @@ class ComicDetail extends Component<Props> {
                 <DetailHeader follow={this.state.follow} onBack={() => {
                     this.props.navigation.goBack()
                 }} onFollow={() => {
+                    this.follow = !this.follow
                     this.setState({
-                        follow: true
+                        follow: this.follow
                     })
                 }}/>
                 {/*渲染漫画信息*/}

@@ -16,45 +16,15 @@ class ComicContentListItem extends Component{
         onRefresh: PropTypes.func.isRequired, //刷新回调
     }
 
-    constructor(props){
-        super(props)
-        this.state = {
-            data: [],
-            statusManager: null
-        }
-    }
-
-    componentDidMount(){
-        this.isMount = true
-        // 暴露this给父组件
-        this.props.refCallback(this)
-    }
-
-    componentWillUnmount(){
-        this.isMount = false
-    }
-    /**
-     * 刷新数据
-     * @param Data
-     */
-    update(Data){
-        if(this.isMount){
-            this.setState({
-                data: Data
-            })
-        }
-    }
-
-
     render(){
         return(
 
             <PullFlatList
-                data={this.state.data.data}
+                data={this.props.data.data}
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={this.space}
                 renderItem={({item, index}) => (
-                    <ComicImg imgUrl={item} imgWidth = {this.state.data.imgWidth} imgHeight = {this.state.data.imgHeight} index={index}/>
+                    <ComicImg imgUrl={item} imgWidth = {this.props.data.imgWidth} imgHeight = {this.props.data.imgHeight} index={index}/>
                 )}
                 keyExtractor={item => item}
                 numColumns={1}

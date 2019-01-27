@@ -19,7 +19,6 @@ class ComicContent extends Component<Props> {
 
     constructor(props) {
         super(props)
-        this.data = null
         this.statusManager = new StatusManager()
         this.onRefresh = this.onRefresh.bind(this)
         this.backward = this.backward.bind(this)
@@ -90,8 +89,7 @@ class ComicContent extends Component<Props> {
         }
         this.props.request(url, params, this.statusManager, (result) => {
             if (this.isMount) {
-                this.data = result
-                this.content.initPage(this.data)
+                this.content.initPage(result)
             }
         }, (error) => {
             console.log(error)
@@ -168,14 +166,12 @@ class ComicContent extends Component<Props> {
                // 加载下一页,数据与最后一条数据不同，拼接在末尾
                if (next && JSON.stringify(result.data[result.data.length - 1]) !== JSON.stringify(this.data.data[this.data.data.length - 1])) {
                    console.log('加载下一页成功')
-                   this.data = result
-                   this.content.addPage(true,this.data)
+                   this.content.addPage(true,result)
                }
                // 加载上一页,数据与第一条数据不同，数据添加在头部
                else if (!next && JSON.stringify(result.data[0]) !== JSON.stringify(this.data.data[0])) {
                    console.log('加载上一页成功')
-                   this.data = result
-                   this.content.addPage(false,this.data)
+                   this.content.addPage(false,result)
                }
            }
         }, (error) => {

@@ -33,19 +33,14 @@ class ComicContentList extends Component<props> {
 
     reset(){
         this.itemPageArr = []
-        this.items = [] // 内容界面数组
-        this.leftIndex = 0 //左边下标
-        this.rightIndex = 0 //右边下标
-        this.curPage = 0 //当前页数
+        this.leftIndex = this.props.page
+        this.rightIndex = this.props.page
+        this.curPage = this.props.page
         this.state = {
             data: []
         }
     }
 
-    componentDidMount() {
-        this.leftIndex = this.props.page
-        this.rightIndex = this.props.page
-    }
 
     renderEmpty(key) {
         return (
@@ -55,54 +50,39 @@ class ComicContentList extends Component<props> {
     }
 
 
-    /**
-     * 刷新当页数据
-     * @param Data
-     * @param end 是否是最后一个
-     */
-    updatePage(end, Data) {
-        this.setState({})
-        if(end){
-            this.items[this.items.length -1].update(Data)
-            console.log('滑到第'+(this.itemPageArr.length-2))
-            setTimeout( () => this.content.scrollTo({x: Config.screenW * (this.itemPageArr.length-2),animation:false}),100)
-        }
-        else{
-            this.items[0].update(Data)
-            setTimeout( () => this.content.scrollTo({x: Config.screenW,animation:false}),100)
-        }
-        this.setState({})
-
-    }
-
-    renderPage(end,key) {
+    renderPage(data,key) {
 
         return (
             <ComicContentListItem
                 key={key}
+                data={data}
                 onRefresh={this.props.onRefresh}
-                refCallback={(ref) => {
-                    if (end) {
-                        this.items.push(ref)
-                    }
-                    else {
-                        this.items.unshift(ref)
-                    }
-                }}/>
+                />
         )
     }
 
 
     initPage(Data) {
+        this.reset()
         // 清空重置
         this.itemPageArr.splice(0,this.itemPageArr.length)
         // 添加内容界面
         this.itemPageArr.push(
-            this.renderPage(true, this.props.page)
+            this.renderPage(Data, this.props.page)
         )
-        this.addRight(Data)
-        this.addLeft(Data)
+        if (this.rightIndex + 1 <= this.props.count) {
+            this.rightIndex ++
+            this.addEmptyView(true)
+        }
+        if (this.leftIndex - 1 >= 0) {
+            this.leftIndex --
+            this.addEmptyView(false)
+            setTimeout( () => this.content.scrollTo({x: Config.screenW,animation:false}),100)
+        } else {
+            setTimeout( () => this.content.scrollTo({x: 0,animation:false}),100)
+        }
 
+        this.setState({})
     }
 
     // 添加内容页面
@@ -113,43 +93,52 @@ class ComicContentList extends Component<props> {
             // 把空白界面删除
             this.itemPageArr.pop()
             // 添加内容界面
-            this.itemPageArr.push(this.renderPage(end, key))
-            this.addRight(Data)
+            this.itemPageArr.push(this.renderPage(Data, key))
+            // 添加下一个空界面并刷新
+            this.addRight()
         }
         else {
             console.log('添加左边内容')
             // 把空白界面删除
             this.itemPageArr.shift()
             // 添加内容界面
-            this.itemPageArr.unshift(this.renderPage(end, key))
-            this.addLeft(Data)
+            this.itemPageArr.unshift(this.renderPage(Data, key))
+            // 添加下一个空界面并刷新
+            this.addLeft()
         }
     }
 
     /**
      * 添加右边界面
      */
-    addRight(Data) {
+    addRight() {
         if (this.rightIndex + 1 <= this.props.count) {
             this.rightIndex ++
             this.addEmptyView(true)
-            this.updatePage(true, Data)
+            setTimeout( () => this.content.scrollTo({x: Config.screenW * (this.itemPageArr.length - 2), animation:false}),100)
             console.log('添加了右边空白页' + this.rightIndex)
+        }else{
+            setTimeout( () => this.content.scrollTo({x: Config.screenW * (this.itemPageArr.length - 1), animation:false}),100)
+
         }
     }
 
     /**
      * 添加左边界面
      */
-    addLeft(Data) {
+    addLeft() {
         console.log('count',this.props.count)
         console.log('leftIndex',this.leftIndex)
         if (this.leftIndex - 1 >= 0) {
             this.leftIndex --
             this.addEmptyView(false)
-            this.updatePage(false,Data)
+            setTimeout( () => this.content.scrollTo({x: Config.screenW, animation:false}),100)
             console.log('添加了左边空白页' + this.leftIndex)
+        }else{
+            setTimeout( () => this.content.scrollTo({x: 0, animation:false}),100)
         }
+
+
     }
 
     /**
@@ -201,7 +190,7 @@ class ComicContentList extends Component<props> {
         console.log(':' + offset + '宽度' + Config.screenW)
         //当前页数
         let currentPage = Math.round(offset / Config.screenW)
-
+        console.log(':' + currentPage + '上次页数' + this.curPage)
         //往后翻
         if (currentPage > this.curPage) {
             console.log('向右滑动' + 'rightIndex:' +this.rightIndex + 'page:' + this.props.page + 'currentPage:' + currentPage)
@@ -212,7 +201,7 @@ class ComicContentList extends Component<props> {
             }
         }
         else if (currentPage < this.curPage) {
-            console.log('向左滑动' + 'rightIndex:' +this.leftIndex + 'page:' + this.props.page + 'currentPage:' + currentPage)
+            console.log('向左滑动' + 'leftIndex:' +this.leftIndex + 'page:' + this.props.page + 'currentPage:' + currentPage)
             // 如果当前页数小于左边缓存页数
             if(currentPage <= this.leftIndex && this.props.page !== currentPage){
                 console.log('向左滑动有效')

@@ -138,16 +138,10 @@ exports.getComicComment = (async (ctx, next) => {
     }
     let link = body.link
     let index = body.index
-    let result = await comment.getComicComment(link, index)
-    if (result.length === 0 ){
-        ctx.body = {
-            success: false,
-        }
-    } else {
-        ctx.body = {
-            success: true,
-            msg: result
-        }
+    await comment.getComicComment(link, index)
+    ctx.body = {
+        success: true,
+        msg: true
     }
 
 })

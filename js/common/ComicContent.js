@@ -48,19 +48,22 @@ class ComicContent extends Component<Props> {
             console.log('当前抓取进度:' + '(' +item.index +'/' + item.length + ')')
             this.props.updateLoading('当前抓取进度:' + '(' +item.index +'/' + item.length + ')')
         })
+        this.socket.on('comment',(item) => {
+            console.log('收到弹幕:' + item.toString())
+        })
     }
 
     componentDidMount() {
-        this.isMount = true
         console.log('link',this.props.navigation.getParam('link', ''))
         console.log('platform',this.props.navigation.getParam('platform', ''))
         console.log('page',this.props.navigation.getParam('page', 0))
         console.log('count',this.props.navigation.getParam('count', 0))
-
+        this.isMount = true
         this.getComicContent()
+        // this.getComments()
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(){
         this.isMount = false
     }
 
@@ -71,8 +74,27 @@ class ComicContent extends Component<Props> {
         // 重置
         this.content && this.content.reset()
         this.getComicContent()
+        this.getComments()
     }
 
+    getComments(){
+        let params = {
+            link: this.props.navigation.getParam('link', ''),
+            index: 1
+        }
+        let url
+        if (this.props.navigation.getParam('platform', '') === Config.platformNetease) {
+            url = ServerApi.netease.getComicComment
+        }
+        else if (this.props.navigation.getParam('platform', '') === Config.platformTencent) {
+            url = ServerApi.tencent.getComicComment
+        }
+        this.props.request(url, params, this.statusManager, (result) => {
+            console.log('请求成功' + result)
+        }, (error) => {
+            console.log(error)
+        },true)
+    }
     /**
      * 获取免费漫画图片
      */
@@ -163,13 +185,11 @@ class ComicContent extends Component<Props> {
 
         this.props.request(url, params, this.statusManager, (result) => {
            if(this.isMount){
-               // 加载下一页,数据与最后一条数据不同，拼接在末尾
-               if (next && JSON.stringify(result.data[result.data.length - 1]) !== JSON.stringify(this.data.data[this.data.data.length - 1])) {
+               if (next) {
                    console.log('加载下一页成功')
                    this.content.addPage(true,result)
                }
-               // 加载上一页,数据与第一条数据不同，数据添加在头部
-               else if (!next && JSON.stringify(result.data[0]) !== JSON.stringify(this.data.data[0])) {
+               else {
                    console.log('加载上一页成功')
                    this.content.addPage(false,result)
                }

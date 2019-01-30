@@ -3,6 +3,7 @@
  * @email : lyj1246505807@gmail.com
  * @description : 获取腾讯漫画评论
  */
+let websocket = require('../websocketutil')
 let Spider = require('../spider')
 let commentData = [] //当前评论数据
 let commentLastData = [] //上一次获取的评论数据
@@ -18,10 +19,12 @@ exports.getComment = async function (page, index) {
         })
         return comments
     })
-
-    if (commentData.toString() !== commentLastData.toString()) {
+    let result = commentData.filter(function(v){ return commentLastData.indexOf(v) === -1 })
+    websocket.curSocket.emit('comment',result)
+    console.log('评论数量' + result.length)
+    if (result.length === 0) {
         commentLastData = commentData
-        await this.getComment(page, index)
+        await this.getComment(page,index)
     }
 }
 

@@ -106,6 +106,7 @@ class ComicContentList extends Component<props> {
             // 添加下一个空界面并刷新
             this.addLeft()
         }
+        this.setState({})
     }
 
     /**

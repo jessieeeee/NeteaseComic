@@ -121,16 +121,12 @@ exports.getComicComment = (async (ctx, next) => {
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let result = await comment.getComicComment('http://ac.qq.com/ComicView/index/id/542724/cid/263', 1)
-    if (result.length === 0 ){
-        ctx.body = {
-            success: false,
-        }
-    } else {
-        ctx.body = {
-            success: true,
-            msg: result
-        }
+    let link = body.link
+    let index = body.index
+    await comment.getComicComment('http://ac.qq.com/ComicView/index/id/542724/cid/263', 1)
+    ctx.body = {
+        success: true,
+        msg: true
     }
 })
 

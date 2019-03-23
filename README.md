@@ -5,7 +5,7 @@
 - 客户端：react-native + mobx，适配android，ios双平台
 
 ## 当前进度截图：
-![image](http://oqujmbgen.bkt.clouddn.com/images/comic_1.png?imageView2/2/w/480/h/480/q/100|imageslim)
+![image](https://gitee.com/JessieKate/MyImgur/blob/master/comic1.png)
 ![image](http://oqujmbgen.bkt.clouddn.com/images/comic_2.png?imageView2/2/w/480/h/480/q/100|imageslim)
 ![image](http://oqujmbgen.bkt.clouddn.com/images/comic_3.png?imageView2/2/w/480/h/480/q/100|imageslim)
 ![image](http://oqujmbgen.bkt.clouddn.com/images/comic_4.png?imageView2/2/w/480/h/480/q/100|imageslim)

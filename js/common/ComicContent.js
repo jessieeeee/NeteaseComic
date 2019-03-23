@@ -45,8 +45,8 @@ class ComicContent extends Component<Props> {
             .catch((e) => alert(e));
 
         this.socket.on('catch', (item) => {
-            console.log('当前抓取进度:' + '(' +item.index +'/' + item.length + ')')
-            this.props.updateLoading('当前抓取进度:' + '(' +item.index +'/' + item.length + ')')
+            console.log('当前抓取进度:' + '(' +item.index +'/' + item.length + ')' )
+            this.props.updateLoading('当前抓取进度:' + '(' +item.index +'/' + item.length + ')\n请耐心等待~')
         })
         this.socket.on('comment',(item) => {
             console.log('收到弹幕:' + item.toString())

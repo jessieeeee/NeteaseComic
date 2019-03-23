@@ -112,14 +112,19 @@ const styles = StyleSheet.create({
     headerIconLeftView: {
         position: 'absolute',
         left: Platform.OS === 'ios' ? dimensions.ios.iconBarMargin : dimensions.android.iconBarMargin,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     headerIcon: {
         width: Platform.OS === 'ios' ? dimensions.ios.iconBarSize : dimensions.android.iconBarSize,
         height: Platform.OS === 'ios' ? dimensions.ios.iconBarSize : dimensions.android.iconBarSize,
+        alignSelf: 'auto'
     },
     headerIconRightView: {
         position: 'absolute',
         right: Platform.OS === 'ios' ? dimensions.ios.iconBarMargin : dimensions.android.iconBarMargin,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     chapterViews: {
         flex: 1,

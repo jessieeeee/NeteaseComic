@@ -34,7 +34,7 @@ class DetailHeader extends Component<Props> {
             marginTop = 0
         }
         return (
-            <View style={[CommonStyle.styles.detailHeader,{marginTop: marginTop} ]}>
+            <View style={[CommonStyle.styles.detailHeader]}>
                 <TouchableOpacity style={CommonStyle.styles.headerIconLeftView}
                                   onPress={() => {
                                       if(this.props.onBack){

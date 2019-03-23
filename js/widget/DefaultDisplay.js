@@ -17,7 +17,7 @@ class DefaultDisplay extends Component<Props> {
         super(props)
         this.state = {
             status: props.status,
-            loadingText: '正在加载中.....'
+            loadingText: '正在加载中.....\n请耐心等待～'
         }
     }
 

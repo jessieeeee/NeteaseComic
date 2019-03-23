@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "jsc-android": "224109.x.x",
+    "lodash": "4.17.10",
     "lottie-react-native": "^2.5.8",
     "mobx": "^5.0.5",
     "mobx-react": "^5.2.5",

@@ -7,12 +7,12 @@
 ## 当前进度截图：
 
 <div  align="center">    
-<img src="./screenshot/comic1.png" width = "300" align=center />
-<img src="./screenshot/comic2.png" width = "300" align=center />
-<img src="./screenshot/comic3.png" width = "300" align=center />
-<img src="./screenshot/comic4.png" width = "300" align=center />
-<img src="./screenshot/comic5.png" width = "300" align=center />
-<img src="./screenshot/comic6.png" width = "300" align=center />
+<img src="./screenshot/comic1.png" width = "200" align=center />
+<img src="./screenshot/comic2.png" width = "200" align=center />
+<img src="./screenshot/comic3.png" width = "200" align=center />
+<img src="./screenshot/comic4.png" width = "200" align=center />
+<img src="./screenshot/comic5.png" width = "200" align=center />
+<img src="./screenshot/comic6.png" width = "200" align=center />
 </div>
 
 

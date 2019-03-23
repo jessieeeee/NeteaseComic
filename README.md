@@ -5,12 +5,18 @@
 - 客户端：react-native + mobx，适配android，ios双平台
 
 ## 当前进度截图：
-![image](./screenshot/comic1.png)
-![image](./screenshot/comic2.png)
-![image](./screenshot/comic3.png)
-![image](./screenshot/comic4.png)
-![image](./screenshot/comic5.png)
-![image](./screenshot/comic6.png)
+
+<div  align="center">    
+<img src="./screenshot/comic1.png" width = "300" height = "200" alt="图片名称" align=center />
+<img src="./screenshot/comic2.png" width = "300" height = "200" alt="图片名称" align=center />
+<img src="./screenshot/comic3.png" width = "300" height = "200" alt="图片名称" align=center />
+<img src="./screenshot/comic4.png" width = "300" height = "200" alt="图片名称" align=center />
+<img src="./screenshot/comic5.png" width = "300" height = "200" alt="图片名称" align=center />
+<img src="./screenshot/comic6.png" width = "300" height = "200" alt="图片名称" align=center />
+</div>
+
+
+
 
 ## 如何运行
 

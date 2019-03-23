@@ -5,12 +5,12 @@
 - 客户端：react-native + mobx，适配android，ios双平台
 
 ## 当前进度截图：
-![image](https://gitee.com/JessieKate/MyImgur/raw/master/comic1.png)
-![image](https://gitee.com/JessieKate/MyImgur/raw/master/comic2.png)
-![image](https://gitee.com/JessieKate/MyImgur/raw/master/comic3.png)
-![image](https://gitee.com/JessieKate/MyImgur/raw/master/comic4.png)
-![image](https://gitee.com/JessieKate/MyImgur/raw/master/comic5.png)
-![image](https://gitee.com/JessieKate/MyImgur/raw/master/comic6.png)
+![image](./screenshot/comic1.png)
+![image](./screenshot/comic2.png)
+![image](./screenshot/comic3.png)
+![image](./screenshot/comic4.png)
+![image](./screenshot/comic5.png)
+![image](./screenshot/comic6.png)
 
 ## 如何运行
 

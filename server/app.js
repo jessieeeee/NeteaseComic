@@ -5,10 +5,10 @@ let logger = require('koa-logger')
 let session = require('koa-session')
 let http = require('http')
 
-let mongoose = require('mongoose')
-mongoose.Promise = require('bluebird') // bluebird设置为mongoose内置的库
+const { MongoClient } = require("mongodb");
+MongoClient.Promise = require('bluebird') // bluebird设置为mongoose内置的库
 let dbUrl = 'mongodb://localhost/test' // 设置mongo数据库访问地址
-mongoose.connect(dbUrl) //连接数据库
+MongoClient.connect.connect(dbUrl,{useNewUrlParser: true } ) //连接数据库
 
 
 let path = require('path')

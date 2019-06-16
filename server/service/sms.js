@@ -6,16 +6,16 @@ var https = require('https')
 var querystring = require('querystring')
 var Promise = require('bluebird')
 var speakeasy = require('speakeasy')
-
+// 获取验证码
 exports.getCode = function() {
-    var code = speakeasy.totp({
+    let code = speakeasy.totp({
         secret: 'jessie',
         digits: 4
     })
 
     return code
 }
-
+// 发送消息
 exports.send = function(phoneNumber, msg) {
     return new Promise(function(resolve, reject) {
         // 手机号判断
@@ -23,14 +23,14 @@ exports.send = function(phoneNumber, msg) {
             return reject(new Error('手机号为空!'))
         }
         // 初始化发送消息对象
-        var postData = {
+        let postData = {
             mobile: phoneNumber,
             message: msg + '【铁壳测试】'
         }
         
-        var content = querystring.stringify(postData)
+        let content = querystring.stringify(postData)
         // 选项设置
-        var options = {
+        let options = {
             host:'sms-api.luosimao.com',
             path:'/v1/send.json',
             method:'POST',
@@ -41,10 +41,10 @@ exports.send = function(phoneNumber, msg) {
             'Content-Type' : 'application/x-www-form-urlencoded',
             'Content-Length' :content.length
             }
-        };
+        }
         
-        var str = ''
-        var req = https.request(options,function(res){
+        let str = ''
+        let req = https.request(options,function(res){
             // 处理404错误
             if (res.status === 404){
               reject(new Error('短信服务器没有响应'))
@@ -72,7 +72,7 @@ exports.send = function(phoneNumber, msg) {
                     resolve(data)
                 } else {
                     // 错误map
-                    var errorMap ={
+                    let errorMap ={
                         '-10':	'验证信息失败	检查api key是否和各种中心内的一致，调用传入是否正确',
                         '-11':	'用户接口被禁用	滥发违规内容，验证码被刷等，请联系客服解除',
                         '-20':	'短信余额不足	进入个人中心购买充值',
@@ -89,8 +89,8 @@ exports.send = function(phoneNumber, msg) {
                     // 错误返回
                     reject(new Error(errorMap[data.error]))
                 }
-            });
-        });
+            })
+        })
         
             req.write(content)
             req.end()

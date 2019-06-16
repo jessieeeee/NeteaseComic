@@ -1,7 +1,11 @@
 'use strict'
-var mongoose = require('mongoose')
-var UsersSchema = new mongoose.Schema({
-    name: String,
+let mongoose = require('mongoose')
+let UsersSchema = new mongoose.Schema({
+    phoneNumber: String,  //手机号
+    password:String, //密码
+    gender:String, //性别
+    birthday:Date, //生日
+    accessToken: String,
     createdAt: {
         type: Date,
         default: Date.now()

@@ -13,9 +13,7 @@ module.exports = function(){
     })
 
     router.post('/u/signup', bodyParser(), App.hasBody, User.signup)
-    router.post('/u/verify', bodyParser(), App.hasBody, User.verify)
     router.post('/u/update', bodyParser(), App.hasBody, App.hasToken, User.update)
-    router.post('/u/signature', bodyParser(), App.hasBody, App.hasToken, App.signature)
     // 抓取网易漫画接口
     router.post(netease + '/getComic', bodyParser(), Comic163.getComic)
     router.post(netease + '/getComicMore', bodyParser(), Comic163.getComicMore)

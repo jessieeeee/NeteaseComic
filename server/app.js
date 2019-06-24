@@ -4,13 +4,6 @@ let koa = require('koa')
 let logger = require('koa-logger')
 let session = require('koa-session')
 let http = require('http')
-
-const { MongoClient } = require("mongodb");
-MongoClient.Promise = require('bluebird') // bluebird设置为mongoose内置的库
-let dbUrl = 'mongodb://localhost/test' // 设置mongo数据库访问地址
-MongoClient.connect.connect(dbUrl,{useNewUrlParser: true } ) //连接数据库
-
-
 let path = require('path')
 let model_path = path.join(__dirname, '/model')
 let fs = require('fs')

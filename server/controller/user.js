@@ -1,17 +1,20 @@
 'use strict'
-let mongoose = require('mongoose')
-let User = mongoose.model('users')
+
 let uuid = require('uuid')
 let xss = require('xss')
 let sms = require('../service/sms')
+let mongoose = require('mongoose')
+let Users = mongoose.model("users")
+mongoose.connect('mongodb://localhost/test',{ useNewUrlParser: true });
 /**
  * 注册
  */
 exports.signup = (async (ctx, next) =>{
     let phoneNumber = xss(ctx.request.body.phoneNumber.trim())
     let password = xss(ctx.request.body.password.trim())
+
     // 查用户是否存在
-    let user = await User.findOne({
+    let user = await Users.findOne({
         phoneNumber: phoneNumber
     }).exec()
     // 没有这个用户, 创建新的用户
@@ -21,7 +24,7 @@ exports.signup = (async (ctx, next) =>{
         // 生成一个token
         let accessToken = uuid.v4()
         // 生成一个新用户对象
-        user = new User({
+        user = new Users({
             nickname: '默认昵称',
             phoneNumber: xss(phoneNumber),
             password: xss(password),
@@ -77,7 +80,7 @@ exports.update = (async (ctx, next) =>{
     let phoneNumber = xss(ctx.request.body.phoneNumber.trim())
     let oldPassword = xss(ctx.request.body.oldPassword.trim())
     // 查用户是否存在
-    let user = await User.findOne({
+    let user = await Users.findOne({
         phoneNumber: phoneNumber,
         password: oldPassword
     }).exec()

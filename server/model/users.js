@@ -1,10 +1,11 @@
 'use strict'
 let mongoose = require('mongoose')
 let UsersSchema = new mongoose.Schema({
+    nickname: String, // 昵称
     phoneNumber: String,  //手机号
     password:String, //密码
     gender:String, //性别
-    birthday:Date, //生日
+    birthday:String, //生日
     accessToken: String,
     createdAt: {
         type: Date,

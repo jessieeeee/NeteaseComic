@@ -12,7 +12,9 @@ module.exports = function(){
         prefix:'/api'
     })
 
+    // 用户管理接口
     router.post('/u/signup', bodyParser(), App.hasBody, User.signup)
+    router.post('/u/login', bodyParser(), App.hasBody, User.login)
     router.post('/u/update', bodyParser(), App.hasBody, App.hasToken, User.update)
     // 抓取网易漫画接口
     router.post(netease + '/getComic', bodyParser(), Comic163.getComic)

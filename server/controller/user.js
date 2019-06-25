@@ -30,7 +30,7 @@ exports.signup = (async (ctx, next) =>{
             password: xss(password),
             accessToken: accessToken,
             gender: "未知",
-            birthday: new Date(1990,5,1),
+            birthday: "1990-01-01",
             avatar: 'http://res.cloudinary.com/gougou/image/upload/mooc1.png'
         })
         // 保存用户数据,返回新的用户
@@ -73,6 +73,43 @@ exports.signup = (async (ctx, next) =>{
     }
 })
 
+
+/**
+ * 登录
+ */
+exports.login = (async (ctx, next) =>{
+    let phoneNumber = xss(ctx.request.body.phoneNumber.trim())
+    let password = xss(ctx.request.body.password.trim())
+
+    // 查用户是否存在
+    let user = await Users.findOne({
+        phoneNumber: phoneNumber,
+        password: password
+    }).exec()
+    // 没有这个用户, 创建新的用户
+    if(!user){
+        // 返回成功
+        ctx.body = {
+            success: false,
+            msg: '账号或密码错误'
+        }
+    }
+    // 有这个用户
+    else{
+        // 生成一个token
+        let accessToken = uuid.v4()
+        user.accessToken = accessToken
+        // 保存修改后的用户数据
+        user = await user.save()
+        ctx.body = {
+            success: true,
+            accessToken: user.accessToken,
+            msg: '登录成功'
+        }
+        await next()
+    }
+})
+
 /**
  * 更新用户信息
  */
@@ -93,15 +130,15 @@ exports.update = (async (ctx, next) =>{
        }
        return
     }
-    let body = ctx.request.body.updateInfo
+    let info = JSON.parse(ctx.request.body.updateInfo)
     // 把属性字符串切割成数组
-    let fields = 'avatar,gender,birthday,nickname'.split(',')
+    let fields = 'avatar,gender,birthday,nickname,password'.split(',')
     // 遍历这个数组
-    fields.forEach(function(field){
-        if(body[field]){             // 取出传参中对应的属性值
-            user[field] = xss(body[field], trim()) // 刷新用户对应的属性值
+    fields.forEach(function(value){
+        if(info[value]){             // 取出传参中对应的属性值
+            user[value] = xss(info[value].trim()) // 刷新用户对应的属性值
         }
-    })
+    },info)
     // 保存修改后的用户数据
     user = await user.save()
     // 返回修改成功后的用户信息

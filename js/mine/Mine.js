@@ -11,7 +11,7 @@ import CommonStyle from '../common/CommonStyle'
 import MineStyle from './Style'
 import Items from './Items'
 import Header from './Header'
-
+import NavigationService from '../navigator/NavigationService'
 let ic_about = require('../img/icon_mine_about.png')
 let ic_clean = require('../img/icon_mine_clean.png')
 let ic_download = require('../img/icon_mine_download.png')
@@ -55,7 +55,7 @@ class Mine extends Component<Props> {
                     userId={this.state.userId}
                     avatar={this.state.avatar}
                     onLogin={() => {
-                        console.log('点击了登录')
+                        NavigationService.navigate('Login')
                     }}
                     onClickAvatar={() => {
                         console.log('点击了头像')
@@ -74,8 +74,8 @@ class Mine extends Component<Props> {
                 <Items key={index}
                        itemIcon={items[index].icon}
                        itemText={items[index].name}
-                       onClick={() => {
-                           console.log('点击了')
+                       onClick={(text) => {
+                           console.log('点击了' + text)
                        }}/>
             )
         }

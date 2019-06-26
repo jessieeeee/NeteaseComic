@@ -25,7 +25,7 @@ class Items extends Component<Props> {
         return (
             <TouchableOpacity style={MineStyle.styles.itemView} onPress={() => {
                 if (this.props.onClick){
-                    this.props.onClick()
+                    this.props.onClick(this.props.itemText)
                 }
             }}>
                 <View style={MineStyle.styles.leftView}>

@@ -12,7 +12,13 @@ mongoose.connect('mongodb://localhost/test',{ useNewUrlParser: true });
 exports.signup = (async (ctx, next) =>{
     let phoneNumber = xss(ctx.request.body.phoneNumber.trim())
     let password = xss(ctx.request.body.password.trim())
-
+    if(!phoneNumber || !password) {
+        ctx.body = {
+            success: false,
+            msg: '账号或密码不为空'
+        }
+        return
+    }
     // 查用户是否存在
     let user = await Users.findOne({
         phoneNumber: phoneNumber
@@ -81,6 +87,13 @@ exports.login = (async (ctx, next) =>{
     let phoneNumber = xss(ctx.request.body.phoneNumber.trim())
     let password = xss(ctx.request.body.password.trim())
 
+    if(!phoneNumber || !password) {
+        ctx.body = {
+            success: false,
+            msg: '账号或密码错误'
+        }
+        return
+    }
     // 查用户是否存在
     let user = await Users.findOne({
         phoneNumber: phoneNumber,
@@ -103,23 +116,99 @@ exports.login = (async (ctx, next) =>{
         user = await user.save()
         ctx.body = {
             success: true,
-            accessToken: user.accessToken,
-            msg: '登录成功'
+            msg: {data: user}
         }
         await next()
     }
 })
 
+exports.checkVertifyCode = (async (ctx, next) =>{
+    let vertifyCode = xss(ctx.request.body.vertifyCode.trim())
+    let phoneNumber =  xss(ctx.request.body.phoneNumber.trim())
+    if(!vertifyCode || !phoneNumber) {
+        ctx.body = {
+            success: false,
+            msg: '手机号或验证码不为空'
+        }
+        return
+    }
+    if (vertifyCode == '123'){
+        // 通过手机号和验证码查找用户
+        let user = await User.findOne({
+            phoneNumber:phoneNumber,
+        }).exec()
+        // 找到了这个用户,设置通过标识
+        if(user){
+            ctx.body = {
+                success: true,
+                msg: '验证通过'
+            }
+            return
+        }
+    }
+    ctx.body = {
+        success: false,
+        msg: '验证失败'
+    }
+})
+
+
 /**
- * 更新用户信息
+ * 更新用户密码
  */
-exports.update = (async (ctx, next) =>{
+exports.updatePassword = (async (ctx, next) =>{
     let phoneNumber = xss(ctx.request.body.phoneNumber.trim())
     let oldPassword = xss(ctx.request.body.oldPassword.trim())
+    let newPassword = xss(ctx.request.body.newPassword)
+    if(!phoneNumber || !oldPassword || !newPassword) {
+        ctx.body = {
+            success: false,
+            msg: '账号或密码错误'
+        }
+        return
+    }
     // 查用户是否存在
     let user = await Users.findOne({
         phoneNumber: phoneNumber,
         password: oldPassword
+    }).exec()
+
+    // 这个用户不存在
+    if(!user){
+        ctx.body = {
+            success: false,
+            msg: '用户不存在'
+        }
+        return
+    }
+
+    user.password = newPassword
+    // 保存修改后的用户数据
+    user = await user.save()
+    // 返回修改成功后的用户信息
+    ctx.body = {
+        success: true,
+        msg: {data: user}
+    }
+    await next()
+})
+
+
+/**
+ * 更新用户信息
+ */
+exports.update = (async (ctx, next) =>{
+    let accessToken = xss(ctx.request.body.accessToken.trim())
+    if(!accessToken) {
+        ctx.body = {
+            success: false,
+            msg: '当前登录已失效'
+        }
+        return
+    }
+    // 查用户是否存在
+    let user = await Users.findOne({
+        accessToken: accessToken,
     }).exec()
 
     // 这个用户不存在
@@ -144,7 +233,7 @@ exports.update = (async (ctx, next) =>{
     // 返回修改成功后的用户信息
     ctx.body = {
         success: true,
-        data: user
+        msg: {data: user}
     }
     await next()
 })

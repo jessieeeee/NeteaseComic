@@ -9,6 +9,7 @@ const server_host = 'http://192.168.199.151:1234'
 const server_api = server_host + '/api'
 const netease = '/163'
 const tencent = '/tencent'
+const user = '/u'
 const object = {
     server: server_host,
     // 网易漫画
@@ -29,6 +30,12 @@ const object = {
         getComicContent: server_api + tencent + '/getComicContent',
         getComicContentLastOrNext: server_api + tencent + '/getComicContentLastOrNext',
         getComicComment: server_api + tencent + '/getComicComment'
+    },
+    // 用户管理
+    mine:{
+        login: server_api + user + '/login',
+        regist: server_api + user + '/signup',
+        update: server_api + user + '/update'
     }
 }
 export default object

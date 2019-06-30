@@ -5,11 +5,14 @@
  * @description : 登录界面
  */
 import React, {Component} from 'react'
-import {TouchableOpacity, Text, View} from 'react-native'
+import {TouchableOpacity, Text, View, TextInput} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
 import MineStyle from './Style'
 import Config from '../constant/Config'
-
+import NavigationService from '../navigator/NavigationService'
+import RegistAndFind from "./RegistAndFind"
+import {BaseComponent} from "../common/BaseComponent"
+import ServerApi from "../constant/ServerApi"
 class Login extends Component<Props> {
     constructor(props) {
         super(props)
@@ -28,6 +31,45 @@ class Login extends Component<Props> {
         )
     }
 
+    updatePassword(text){
+        this.setState({
+            password: text
+        })
+    }
+    updatePhoneNumber(text){
+        this.setState({
+            phoneNumber: text
+        })
+    }
+
+    componentDidMount() {
+        this.isMount = true
+    }
+
+    componentWillUnmount() {
+        this.isMount = false
+    }
+    /**
+     * 登录请求
+     */
+    login(){
+        let params = {
+            phoneNumber: this.state.phoneNumber,
+            password: this.state.password
+        }
+        this.props.request(ServerApi.mine.login, params, this.statusManager, (result) => {
+            if (this.isMount) {
+                if (result.data){
+                    console.log(result.data)
+                }else{
+                    console.log('登录失败')
+                }
+            }
+
+        }, (error) => {
+            console.log(error)
+        }, false)
+    }
     /**
      * 渲染内容
      * @returns {XML}
@@ -41,22 +83,49 @@ class Login extends Component<Props> {
                     borderColor: Config.gray,
                     marginTop: Config.screenW * 0.12
                 }]}>
-                    <Text style={MineStyle.styles.LoginText}>手机号</Text>
+                    <TextInput
+                        autoCapitalize="none"
+                        placeholder="手机号"
+                        keyboardType='numeric'
+                        autoCorrect={false}
+                        onChange={(event) => this.updatePhoneNumber(
+                            event.nativeEvent.text
+                        )}
+                        style={MineStyle.styles.LoginText}
+                    />
                 </View>
                 <View style={[MineStyle.styles.LoginItem, {
                     borderRadius: 2,
                     borderWidth: 0.4,
                     borderColor: Config.gray,
                 }]}>
-                    <Text style={MineStyle.styles.LoginText}>密码</Text>
+                    <TextInput
+                        autoCapitalize="none"
+                        placeholder="密码"
+                        keyboardType="email-address"
+                        autoCorrect={false}
+                        onChange={(event) => this.updatePassword(
+                            event.nativeEvent.text
+                        )}
+                        style={MineStyle.styles.LoginText}
+                    />
                 </View>
-                <View style={[MineStyle.styles.LoginItem, {marginTop: 0}]}>
+                <TouchableOpacity style={[MineStyle.styles.LoginItem, {marginTop: 0}]} onPress={() => {
+                    NavigationService.navigate('RegistAndFind', {type: RegistAndFind.typeFind})
+                }}>
                     <Text style={{position: 'absolute', right: 0, color: Config.normalTextColor}}>忘记密码？</Text>
-                </View>
-                <Text style={MineStyle.styles.LoginBtn}>登录</Text>
-                <View style={[MineStyle.styles.LoginItem, {justifyContent: 'center'}]}>
+                </TouchableOpacity>
+                <TouchableOpacity style={[MineStyle.styles.LoginBtnView, {backgroundColor: Config.themeColor}]} onPress={() => {
+                    console.log('点击了登录')
+                    this.login()
+                }}>
+                    <Text style={{color:'white'}}>登录</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[MineStyle.styles.LoginItem, {justifyContent: 'center'}]} onPress={() => {
+                    NavigationService.navigate('RegistAndFind', {type: RegistAndFind.typeRegist})
+                }}>
                     <Text style={{color: Config.normalTextColor}}>手机号快速注册</Text>
-                </View>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -73,10 +142,11 @@ class Login extends Component<Props> {
                 }}>
                     <Text style={MineStyle.styles.LoginBackText}>返回</Text>
                 </TouchableOpacity>
+
                 <Text style={MineStyle.styles.LoginTitle}>登录</Text>
             </View>
         )
     }
 }
 
-export default Login
+export default BaseComponent(Login)

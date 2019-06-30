@@ -130,22 +130,43 @@ const styles = StyleSheet.create({
         marginTop: Platform.OS === 'ios' ? dimensions.ios.itemMargin : dimensions.android.itemMargin,
     },
     LoginText:{
+        width: Platform.OS === 'ios' ? dimensions.ios.infoHeight : dimensions.android.infoHeight,
         position: 'absolute',
         left: Platform.OS === 'ios' ? dimensions.ios.textMargin : dimensions.android.textMargin,
         color:Config.gray,
         fontSize: Platform.OS === 'ios' ? dimensions.ios.infoFontSize : dimensions.android.infoFontSize,
+        textAlignVertical:'center'
     },
-    LoginBtn:{
+    LoginRightText:{
+        position: 'absolute',
+        right: Platform.OS === 'ios' ? dimensions.ios.textMargin : dimensions.android.textMargin,
+        color: 'white',
+        backgroundColor: Config.lightGray,
+        fontSize: Platform.OS === 'ios' ? dimensions.ios.infoFontSize : dimensions.android.infoFontSize,
+        padding:  Platform.OS === 'ios' ? dimensions.ios.textMargin : dimensions.android.textMargin,
+    },
+    LoginBtnView:{
         width: Platform.OS === 'ios' ? dimensions.ios.loginItem : dimensions.android.loginItem,
         height: Platform.OS === 'ios' ? dimensions.ios.loginItemHeight : dimensions.android.loginItemHeight,
-        borderRadius: 2,
-        backgroundColor: Config.themeColor,
-        color:'white',
+        marginTop: Platform.OS === 'ios' ? dimensions.ios.iconSize : dimensions.android.iconSize,
         textAlign:'center',
         alignItems:'center',
         justifyContent:'center',
         textAlignVertical: 'center',
-        marginTop: Platform.OS === 'ios' ? dimensions.ios.iconSize : dimensions.android.iconSize,
-    }
+        borderRadius: 2,
+
+    },
+
+    code: {
+        width: Platform.OS === 'ios' ? dimensions.ios.loginItemHeight : dimensions.android.loginItemHeight,
+        height: Platform.OS === 'ios' ? dimensions.ios.loginItemHeight : dimensions.android.loginItemHeight,
+        flexDirection: 'row',
+        alignItems:'center',
+        textAlign:'center',
+        textAlignVertical:'center',
+        color:Config.normalTextColor,
+        borderRightColor: Config.gray,
+        borderRightWidth: 0.4,
+    },
 })
 export default {dimensions, styles}

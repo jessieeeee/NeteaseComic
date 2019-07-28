@@ -5,7 +5,7 @@
  * @description : 登录界面
  */
 import React, {Component} from 'react'
-import {TouchableOpacity, Text, View, TextInput} from 'react-native'
+import {TouchableOpacity, Text, View, TextInput, AsyncStorage, DeviceEventEmitter} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
 import MineStyle from './Style'
 import Config from '../constant/Config'
@@ -13,6 +13,7 @@ import NavigationService from '../navigator/NavigationService'
 import RegistAndFind from "./RegistAndFind"
 import {BaseComponent} from "../common/BaseComponent"
 import ServerApi from "../constant/ServerApi"
+import StatusManager from '../util/StatusManager'
 class Login extends Component<Props> {
     constructor(props) {
         super(props)
@@ -20,6 +21,7 @@ class Login extends Component<Props> {
             phoneNumber: '',
             password: ''
         }
+        this.statusManager = new StatusManager()
     }
 
     render() {
@@ -57,10 +59,20 @@ class Login extends Component<Props> {
             phoneNumber: this.state.phoneNumber,
             password: this.state.password
         }
+        let that = this;
         this.props.request(ServerApi.mine.login, params, this.statusManager, (result) => {
             if (this.isMount) {
                 if (result.data){
-                    console.log(result.data)
+                    //存储
+                    AsyncStorage.setItem('userInfo', JSON.stringify(result.data), function (error) {
+                        if (error) {
+                            console.log('存储失败')
+                        }else {
+                            DeviceEventEmitter.emit("userInfo",result.data)
+                            that.props.navigation.goBack();
+                        }
+                    })
+
                 }else{
                     console.log('登录失败')
                 }

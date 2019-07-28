@@ -14,36 +14,21 @@ let defaultAvatar = require('../img/ic_default_avatar.png')
 
 class Header extends Component<Props> {
     static propTypes = {
-        userName: PropTypes.string, // 数据源,
-        userId: PropTypes.string, // 图标
-        avatar: PropTypes.string, // 文字
-        isLogin: PropTypes.bool, //是否登录
+        userInfo: PropTypes.object, // 数据源,
         onLogin: PropTypes.func, // 点击登录
         onClickAvatar: PropTypes.func, //点击头像
     }
 
-    static defaultProps = {
-        avatar: '', // 默认为空
-        userName: '', // 默认为空
-        userId: '', // 默认为空
-        isLogin: false
-    }
 
     constructor(props) {
         super(props)
         this.state = {
             viewRef: null
         }
+        this.avatar = defaultAvatar
     }
 
-    componentWillMount(){
-        // 如果登录了且设置了头像
-        if (this.props.isLogin && this.props.avatar) {
-            this.avatar = {uri: this.props.avatar}
-        } else {
-            this.avatar = defaultAvatar
-        }
-    }
+
     /**
      * 图片加载完成回调
      */
@@ -104,7 +89,7 @@ class Header extends Component<Props> {
     renderText() {
         return (
             <View>
-                {this.props.isLogin ? <Text style={MineStyle.styles.infoText}>{this.props.userName}</Text> :
+                {this.props.userInfo ? <Text style={MineStyle.styles.infoText}>{this.props.userInfo.nickname}</Text> :
                     <TouchableOpacity style = {MineStyle.styles.loginView} onPress={() => {
                         if (this.props.onLogin){
                             this.props.onLogin()
@@ -112,7 +97,7 @@ class Header extends Component<Props> {
                     }}>
                         <Text style={MineStyle.styles.loginText}>点击登录</Text>
                     </TouchableOpacity>}
-                {this.props.isLogin ? <Text style={MineStyle.styles.infoText}>{this.props.userId}</Text> : null}
+                {this.props.userInfo ? <Text style={MineStyle.styles.infoText}>{this.props.userInfo._id}</Text> : null}
             </View>
         )
     }

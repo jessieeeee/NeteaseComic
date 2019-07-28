@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     },
     infoText: {
         fontSize: Platform.OS === 'ios' ? dimensions.ios.infoFontSize : dimensions.android.infoFontSize,
-        color: Config.normalTextColor,
+        color: Config.lightGray,
         marginLeft: Platform.OS === 'ios' ? dimensions.ios.textMargin : dimensions.android.textMargin
     },
     loginView: {

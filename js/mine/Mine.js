@@ -6,8 +6,7 @@
  */
 
 import React, {Component} from 'react'
-import {ScrollView, View} from 'react-native'
-import CommonStyle from '../common/CommonStyle'
+import {ScrollView, View, AsyncStorage,DeviceEventEmitter} from 'react-native'
 import MineStyle from './Style'
 import Items from './Items'
 import Header from './Header'
@@ -26,12 +25,32 @@ class Mine extends Component<Props> {
     constructor(props) {
         super(props)
         this.state = {
-            isLogin: false,
-            userName: null,
-            userId: null,
-            avatar: null,
-
+            userInfo: null,
         }
+    }
+
+    componentDidMount(){
+        let that = this
+        AsyncStorage.getItem('userInfo', function (error, result) {
+            if (error) {
+                console.log('读取失败')
+            }else {
+                console.log(result)
+                that.setState({
+                    userInfo: JSON.parse(result),
+                })
+            }
+        })
+        this.subscription = DeviceEventEmitter.addListener('userInfo', (userInfo) => {
+            that.setState({
+                userInfo:userInfo
+            })
+
+        })
+    }
+
+    componentWillUnmount(){
+        this.subscription.remove();
     }
 
     render() {
@@ -50,10 +69,7 @@ class Mine extends Component<Props> {
      */
     renderInfo() {
         return (
-            <Header isLogin={this.state.isLogin}
-                    userName={this.state.userName}
-                    userId={this.state.userId}
-                    avatar={this.state.avatar}
+            <Header userInfo={this.state.userInfo}
                     onLogin={() => {
                         NavigationService.navigate('Login')
                     }}

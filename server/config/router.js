@@ -17,6 +17,8 @@ module.exports = function(){
     router.post('/u/login', bodyParser(), App.hasBody, User.login)
     router.post('/u/update', bodyParser(), App.hasBody, App.hasToken, User.update)
     router.post('/u/updatePassword', bodyParser(), App.hasBody, User.update)
+    router.post('/u/followComic', bodyParser(), App.hasBody, Comic163.followComic)
+
     // 抓取网易漫画接口
     router.post(netease + '/getComic', bodyParser(), Comic163.getComic)
     router.post(netease + '/getComicMore', bodyParser(), Comic163.getComicMore)
@@ -25,6 +27,7 @@ module.exports = function(){
     router.post(netease + '/getComicComment', bodyParser(), Comic163.getComicComment)
     router.post(netease + '/getComicDetailMore', bodyParser(), Comic163.getComicDetailMore)
     router.post(netease + '/getComicContentLastOrNext', bodyParser(), Comic163.getComicContentLastOrNext)
+
     // 抓取腾讯漫画接口
     router.post(tencent + '/getComic', bodyParser(), ComicTencent.getComic)
     router.post(tencent + '/getComicDetail', bodyParser(), ComicTencent.getComicDetail)

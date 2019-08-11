@@ -5,6 +5,7 @@ let xss = require('xss')
 let sms = require('../service/sms')
 let mongoose = require('mongoose')
 let Users = mongoose.model("users")
+let FollowComic = mongoose.model("follow_comic")
 mongoose.connect('mongodb://localhost/test',{ useNewUrlParser: true });
 /**
  * 注册
@@ -238,5 +239,45 @@ exports.update = (async (ctx, next) =>{
     await next()
 })
 
+// 收藏功能
+exports.followComic = (async (ctx, next) => {
+    //请求的参数
+    const body = ctx.request.body
+    for (let key in body) {
+        console.log("body 参数 key is: ", key, " , value is: ", body[key])
+    }
+    //收藏操作
+    if (body.follow){
+        let followComic = new FollowComic(body)
+        try {
+           await followComic.save()
+        } catch (error){
+            console.log(error)
+            // 出错返回
+            ctx.body = {
+                success: false,
+            }
+            return
+        }
+    }
+    // 删除操作
+    else{
+        let followComic =await FollowComic.findOneAndRemove({
+            cover: body.cover
+        }).exec()
+        if (!followComic){
+            // 出错返回
+            ctx.body = {
+                success: false,
+            }
+            return
+        }
+    }
+    ctx.body = {
+        success: true,
+        msg: result
+    }
+
+})
 
 

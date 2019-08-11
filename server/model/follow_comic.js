@@ -1,10 +1,12 @@
 'use strict'
 let mongoose = require('mongoose')
 
-let MessagesSchema = new mongoose.Schema({
-    text: String,
-    user: Object,
-    chatId: String,
+let FollowComicSchema = new mongoose.Schema({
+    follower: String,
+    title: String,
+    author: String,
+    category: String,
+    cover: String,
     createdAt:{
         type:Date,
         default:Date.now()
@@ -14,7 +16,7 @@ let MessagesSchema = new mongoose.Schema({
         default:Date.now()
     }
 })
-MessagesSchema.pre('save', function(next) {
+FollowComicSchema.pre('save', function(next) {
     if(this.isNew){ // 如果这是个新的数据
         this.createAt = this.updateAt = Date.now() // 设置当前时间
     } else {
@@ -23,5 +25,5 @@ MessagesSchema.pre('save', function(next) {
     next()
 })
 
-let MessageModel = mongoose.model('messages', MessagesSchema)
-module.export = MessageModel
+let FollowComicModel = mongoose.model('messages', FollowComicSchema)
+module.export = FollowComicModel

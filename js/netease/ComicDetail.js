@@ -4,7 +4,7 @@
  * @description : 漫画详情展示
  */
 import React, {Component} from 'react'
-import {View, Image, findNodeHandle, ScrollView} from 'react-native'
+import {View, Image, findNodeHandle, AsyncStorage} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
 import ServerApi from "../constant/ServerApi"
 import NetUtil from "../util/NetUtil"
@@ -48,6 +48,16 @@ class ComicDetail extends Component<Props> {
         this.isMount = true
         console.log(this.props.navigation.getParam('link', ''))
         this.getDetail(true)
+        AsyncStorage.getItem('userInfo', function (error, result) {
+            if (error) {
+                console.log('读取失败')
+            }else {
+                console.log(result)
+                this.setState({
+                    userInfo: JSON.parse(result),
+                })
+            }
+        })
     }
 
     componentWillUnmount() {
@@ -120,6 +130,26 @@ class ComicDetail extends Component<Props> {
         }, 3000)
     }
 
+
+    followComic(){
+        let params = this.state.data
+        params.follower = this.state.userInfo.phoneNumber
+        params.follow = !this.follow
+
+        NetUtil.post(ServerApi.netease.getDetailMore, params, (result) => {
+            if (this.isMount && result === 'success') {
+                this.setState({
+                    follow: params.follow
+                })
+            } else {
+                if (this.isMount) {
+
+                }
+            }
+        }, (error) => {
+            console.log(error)
+        })
+    }
     /**
      * 正常显示渲染
      * @returns {*}
@@ -150,10 +180,7 @@ class ComicDetail extends Component<Props> {
                 <DetailHeader follow={this.state.follow} onBack={() => {
                     this.props.navigation.goBack()
                 }} onFollow={() => {
-                    this.follow = !this.follow
-                    this.setState({
-                        follow: this.follow
-                    })
+                    this.followComic()
                 }}/>
                 {/*渲染漫画信息*/}
                 {this.state.data ? <DetailInfo data={this.state.data}/> : null}

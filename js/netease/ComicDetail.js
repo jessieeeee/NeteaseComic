@@ -136,7 +136,7 @@ class ComicDetail extends Component<Props> {
         params.follower = this.state.userInfo.phoneNumber
         params.follow = !this.follow
 
-        NetUtil.post(ServerApi.netease.getDetailMore, params, (result) => {
+        NetUtil.post(ServerApi.mine.followComic, params, (result) => {
             if (this.isMount && result === 'success') {
                 this.setState({
                     follow: params.follow

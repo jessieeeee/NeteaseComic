@@ -35,7 +35,9 @@ const object = {
     mine:{
         login: server_api + user + '/login',
         regist: server_api + user + '/signup',
-        update: server_api + user + '/update'
+        update: server_api + user + '/update',
+        follow: server_api + user + '/followComic',
+        updatePassword: server_api + user + '/updatePassword',
     }
 }
 export default object

@@ -25,5 +25,5 @@ FollowComicSchema.pre('save', function(next) {
     next()
 })
 
-let FollowComicModel = mongoose.model('messages', FollowComicSchema)
+let FollowComicModel = mongoose.model('follow_comic', FollowComicSchema)
 module.export = FollowComicModel

@@ -36,7 +36,8 @@ const object = {
         login: server_api + user + '/login',
         regist: server_api + user + '/signup',
         update: server_api + user + '/update',
-        follow: server_api + user + '/followComic',
+        followComic: server_api + user + '/followComic',
+        isFollow: server_api + user + '/isFollow',
         updatePassword: server_api + user + '/updatePassword',
     }
 }

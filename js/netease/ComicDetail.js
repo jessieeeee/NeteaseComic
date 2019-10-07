@@ -47,17 +47,16 @@ class ComicDetail extends Component<Props> {
     componentDidMount() {
         this.isMount = true
         console.log(this.props.navigation.getParam('link', ''))
-        this.getDetail(true)
+        let that = this
         AsyncStorage.getItem('userInfo', function (error, result) {
             if (error) {
                 console.log('读取失败')
             }else {
                 console.log(result)
-                this.setState({
-                    userInfo: JSON.parse(result),
-                })
+                that.userInfo= JSON.parse(result)
             }
         })
+        this.getDetail(true)
     }
 
     componentWillUnmount() {
@@ -77,6 +76,7 @@ class ComicDetail extends Component<Props> {
                     data: result,
                     loadMore: result.loadMore
                 })
+                this.isFollow(result)
             }
 
         }, (error) => {
@@ -130,21 +130,31 @@ class ComicDetail extends Component<Props> {
         }, 3000)
     }
 
+    isFollow(data){
+        data.follower = this.userInfo.phoneNumber
 
+        NetUtil.post(ServerApi.mine.isFollow, data, (result) => {
+            if (this.isMount) {
+                console.log('查询成功')
+                this.setState({
+                    follow: true
+                })
+            }
+        }, (error) => {
+            console.log(error)
+        })
+    }
     followComic(){
         let params = this.state.data
-        params.follower = this.state.userInfo.phoneNumber
-        params.follow = !this.follow
+        params.follower = this.userInfo.phoneNumber
+        params.follow = !this.state.follow
 
         NetUtil.post(ServerApi.mine.followComic, params, (result) => {
-            if (this.isMount && result === 'success') {
+            if (this.isMount) {
+                console.log('收藏成功')
                 this.setState({
                     follow: params.follow
                 })
-            } else {
-                if (this.isMount) {
-
-                }
             }
         }, (error) => {
             console.log(error)

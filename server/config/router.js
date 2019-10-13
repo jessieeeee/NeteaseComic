@@ -19,6 +19,7 @@ module.exports = function(){
     router.post('/u/updatePassword', bodyParser(), App.hasBody, User.update)
     router.post('/u/followComic', bodyParser(), App.hasBody, User.followComic)
     router.post('/u/isFollow', bodyParser(), App.hasBody, User.isFollow)
+    router.post('/u/getAllFollow', bodyParser(), App.hasBody, User.getAllFollow)
 
     // 抓取网易漫画接口
     router.post(netease + '/getComic', bodyParser(), Comic163.getComic)

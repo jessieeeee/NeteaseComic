@@ -263,6 +263,28 @@ exports.isFollow = (async (ctx, next) => {
     }
 })
 
+// 查询所有收藏
+exports.getAllFollow = (async (ctx, next) => {
+    //请求的参数
+    const body = ctx.request.body
+    for (let key in body) {
+        console.log("body 参数 key is: ", key, " , value is: ", body[key])
+    }
+    let followComic =await FollowComic.findAll({
+        follower: body.follower
+    }).exec()
+    if (!followComic){
+        // 出错返回
+        ctx.body = {
+            success: false,
+        }
+        return
+    }
+    ctx.body = {
+        success: true,
+        msg: followComic
+    }
+})
 // 收藏功能
 exports.followComic = (async (ctx, next) => {
     //请求的参数

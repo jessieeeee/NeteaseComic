@@ -18,7 +18,7 @@
     "koa-router": "^7.4.0",
     "koa-session": "^5.10.1",
     "lodash": "^4.17.11",
-    "mongoose": "^5.4.19",
+    "mongoose": "^5.7.5",
     "puppeteer": "^1.13.0",
     "sha1": "^1.1.1",
     "socket.io": "^2.2.0",

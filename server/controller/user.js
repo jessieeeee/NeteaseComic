@@ -259,7 +259,7 @@ exports.isFollow = (async (ctx, next) => {
     }
     ctx.body = {
         success: true,
-        msg: followComic
+        msg: {data: followComic}
     }
 })
 

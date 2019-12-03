@@ -13,8 +13,8 @@ const bodyParser = require('koa-bodyparser')
 let walk = function(modelPath) {
     fs.readdirSync(modelPath)
     .forEach(file => {
-        var filePath = path.join(modelPath, '/' + file)
-        var stat = fs.statSync(filePath)
+        let filePath = path.join(modelPath, '/' + file)
+        let stat = fs.statSync(filePath)
         if (stat.isFile()){
           if (/(.*)\.(js|coffee)/.test(file)) {
               console.log(filePath)

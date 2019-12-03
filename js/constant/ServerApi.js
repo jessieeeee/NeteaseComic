@@ -39,6 +39,7 @@ const object = {
         followComic: server_api + user + '/followComic',
         isFollow: server_api + user + '/isFollow',
         updatePassword: server_api + user + '/updatePassword',
+        getAllFollow: server_api + user + '/getAllFollow'
     }
 }
 export default object

@@ -5,7 +5,7 @@
  */
 
 // 服务器主机ip
-const server_host = 'http://192.168.199.151:1234'
+const server_host = 'http://192.168.199.248:1234'
 const server_api = server_host + '/api'
 const netease = '/163'
 const tencent = '/tencent'

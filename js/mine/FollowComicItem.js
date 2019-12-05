@@ -8,6 +8,8 @@ import {Text, View, Image,TouchableOpacity} from 'react-native'
 import PropTypes from 'prop-types'
 import NavigationService from '../navigator/NavigationService'
 import NeteaseStyle from './Style'
+import Config from "../constant/Config"
+import TencentStyle from "../tencent/Style"
 
 class FollowComicItem extends Component<Props> {
 
@@ -22,20 +24,22 @@ class FollowComicItem extends Component<Props> {
     }
 
     render() {
+        console.log('渲染item'+'宽度'+this.props.size + JSON.stringify(this.props.data))
         return (
-            <View style={{width: this.props.size * 0.9, height: this.props.size * 0.4}}>
-                <TouchableOpacity style={NeteaseStyle.styles.itemView} onPress={() => {
-                    NavigationService.navigate('NeteaseDetail',{link:this.props.data.link})
-                }}>
+            <TouchableOpacity style={{width: this.props.size * 0.9, height: this.props.size * 0.5,alignItems:'center',flexDirection:'row'}} onPress={() => {
+                NavigationService.navigate('NeteaseDetail',{link:this.props.data.link})
+            }}>
                     <Image source={{uri: this.props.data.cover}} style={{
-                        width: this.props.size * 0.4,
-                        height: this.props.size * 0.5
+                        width: this.props.size * 0.3,
+                        height: this.props.size * 0.42
                     }}/>
-                    <Text numberOfLines={1} style={NeteaseStyle.styles.title}>{this.props.data.title}</Text>
-                    <Text numberOfLines={1} style={NeteaseStyle.styles.chapter}>{'最新:' + this.props.data.chapter}</Text>
-                    <Text numberOfLines={1} style={NeteaseStyle.styles.clickNum}>{this.props.data.clickNum}</Text>
-                </TouchableOpacity>
-            </View>
+                    <View style={{marginLeft: Config.screenW * 0.1,alignItems:'center',justifyContent:'center'}}>
+                    <Text numberOfLines={1} style={TencentStyle.styles.title}>{this.props.data.title}</Text>
+                    <Text numberOfLines={1} style={TencentStyle.styles.author}>{this.props.data.author}</Text>
+                    <Text numberOfLines={1} style={TencentStyle.styles.category}>{this.props.data.category}</Text>
+                    </View>
+
+            </TouchableOpacity>
         )
     }
 }

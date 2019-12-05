@@ -5,7 +5,7 @@
  * @description : 我的收藏界面
  */
 import React, {Component} from 'react'
-import {TouchableOpacity, Text, View, TextInput, AsyncStorage} from 'react-native'
+import {TouchableOpacity, Text, View, TextInput, AsyncStorage, FlatList} from 'react-native'
 import CommonStyle from '../common/CommonStyle'
 import MineStyle from './Style'
 import Config from '../constant/Config'
@@ -13,7 +13,6 @@ import NavigationService from '../navigator/NavigationService'
 import {BaseComponent} from "../common/BaseComponent"
 import ServerApi from "../constant/ServerApi"
 import StatusManager from '../util/StatusManager'
-import PullFlatList from "../widget/PullFlatList"
 import FollowComicItem from './FollowComicItem'
 let cellW = Config.screenW // 单个item的宽度
 class MyFollow extends Component<Props> {
@@ -23,8 +22,6 @@ class MyFollow extends Component<Props> {
             follows: null //收藏列表数据
         }
         this.statusManager = new StatusManager()
-        this.onRefresh = this.onRefresh.bind(this)
-
     }
 
     render() {
@@ -61,19 +58,14 @@ class MyFollow extends Component<Props> {
      */
     getMyFollows(userInfo){
         let params = {
-            follower: userInfo,
+            follower: userInfo.phoneNumber,
         }
         let that = this
         this.props.request(ServerApi.mine.getAllFollow, params, this.statusManager, (result) => {
             if (this.isMount) {
-                if (result.data){
-                    this.setState({
-                        follows: result.data
-                    })
-
-                }else{
-                    console.log('获取收藏列表失败')
-                }
+                this.setState({
+                    follows: result
+                })
             }
 
         }, (error) => {
@@ -87,9 +79,9 @@ class MyFollow extends Component<Props> {
      */
     renderContent() {
         return (
-            <View>
+            <View style={CommonStyle.styles.container}>
                 {this.state.follows ?
-                    <PullFlatList ref={(ref) => {
+                    <FlatList ref={(ref) => {
                         this.listView = ref
                     }}
                                   data={this.state.follows}
@@ -97,28 +89,14 @@ class MyFollow extends Component<Props> {
                                   renderItem={({item}) => (
                                       <FollowComicItem size={cellW} data={item}/>
                                   )}
-                                  onUp={() => {
-                                  }}
-                                  onDown={() => {
-                                  }}
-                                  keyExtractor={item => item.id}
+                                  keyExtractor={item => item._id}
                                   numColumns={1}
-                                  onPullRelease={this.onRefresh}
                                   style={CommonStyle.styles.listView}
                     /> : null}
             </View>
         )
     }
 
-    /**
-     * 下拉刷新回调
-     */
-    onRefresh(resolve) {
-        this.getMyFollows(this.state.userInfo)
-        setTimeout(() => {
-            resolve()
-        }, 3000)
-    }
     /**
      * 渲染顶部bar
      * @returns {XML}

@@ -92,6 +92,11 @@ class Mine extends Component<Props> {
                        itemText={items[index].name}
                        onClick={(text) => {
                            console.log('点击了' + text)
+                           switch (text) {
+                               case  '我的收藏':
+                                   NavigationService.navigate('MyFollow')
+                                   break
+                           }
                        }}/>
             )
         }

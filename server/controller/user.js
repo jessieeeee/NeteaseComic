@@ -270,7 +270,7 @@ exports.getAllFollow = (async (ctx, next) => {
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let followComic =await FollowComic.findAll({
+    let followComic =await FollowComic.find({
         follower: body.follower
     }).exec()
     if (!followComic){

@@ -31,7 +31,7 @@ exports.init = async function () {
         // 启动了一个Chrome实例
         browser = await puppeteer.launch({
             headless: true,
-            executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+            executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
             })
     }
     // 浏览器中创建一个新的页面

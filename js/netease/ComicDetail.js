@@ -76,7 +76,9 @@ class ComicDetail extends Component<Props> {
                     data: result,
                     loadMore: result.loadMore
                 })
-                this.isFollow(result)
+                if (this.userInfo){
+                    this.isFollow(result)
+                }
             }
 
         }, (error) => {
@@ -190,7 +192,11 @@ class ComicDetail extends Component<Props> {
                 <DetailHeader follow={this.state.follow} onBack={() => {
                     this.props.navigation.goBack()
                 }} onFollow={() => {
-                    this.followComic()
+                    if (this.userInfo){
+                        this.followComic()
+                    }else{
+                        NavigationService.navigate('Login')
+                    }
                 }}/>
                 {/*渲染漫画信息*/}
                 {this.state.data ? <DetailInfo data={this.state.data}/> : null}

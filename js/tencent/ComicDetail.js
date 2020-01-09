@@ -66,6 +66,9 @@ class ComicDetail extends Component<Props>{
                     data: result,
                     loadMore: result.loadMore
                 })
+                if (this.userInfo){
+                    this.isFollow(result)
+                }
             }
 
         }, (error) => {
@@ -119,6 +122,37 @@ class ComicDetail extends Component<Props>{
         }, 3000)
     }
 
+    isFollow(data){
+        data.follower = this.userInfo.phoneNumber
+
+        NetUtil.post(ServerApi.mine.isFollow, data, (result) => {
+            if (this.isMount) {
+                console.log('查询成功')
+                this.setState({
+                    follow: true
+                })
+            }
+        }, (error) => {
+            console.log(error)
+        })
+    }
+    followComic(){
+        let params = this.state.data
+        params.follower = this.userInfo.phoneNumber
+        params.follow = !this.state.follow
+
+        NetUtil.post(ServerApi.mine.followComic, params, (result) => {
+            if (this.isMount) {
+                console.log('收藏成功')
+                this.setState({
+                    follow: params.follow
+                })
+            }
+        }, (error) => {
+            console.log(error)
+        })
+    }
+
     renderNormal(){
         return (
             <PullScrollView style={{flex: 1, backgroundColor: 'white'}}
@@ -144,10 +178,11 @@ class ComicDetail extends Component<Props>{
                 <DetailHeader follow={this.state.follow} onBack={() => {
                     this.props.navigation.goBack()
                 }} onFollow={() => {
-                    this.follow = !this.follow
-                    this.setState({
-                        follow: this.follow
-                    })
+                    if (this.userInfo){
+                        this.followComic()
+                    }else{
+                        NavigationService.navigate('Login')
+                    }
                 }}/>
                 {/*渲染漫画信息*/}
                 {this.state.data ? <DetailInfo data={this.state.data} /> : null}

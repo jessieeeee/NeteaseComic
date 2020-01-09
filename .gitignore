@@ -55,3 +55,6 @@ buck-out/
 # Bundle artifact
 *.jsbundle
 /package-lock.json
+/yarn.lock
+/server/yarn.lock
+/server/package-lock.json

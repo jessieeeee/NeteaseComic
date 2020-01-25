@@ -20,7 +20,7 @@ exports.viewPort = {
 }
 const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
 let browser = null // 全局的浏览器实例
-exports.neteaseUrl = 'https://163.bilibili.com' //网易漫画地址
+exports.neteaseUrl = 'http://manga.bilibili.com/' //网易漫画地址
 exports.tencentUrl = 'http://ac.qq.com' //腾讯漫画地址
 /**
  * 初始化抓取客户端

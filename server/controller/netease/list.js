@@ -17,12 +17,12 @@ tc　8热血　16恋爱　15后宫　2恐怖　24治愈　11玄幻　26唯美　
 exports.getComic = async function () {
     page = await Spider.init()
     await Spider.switchPc(page)
-    let url = Spider.neteaseUrl + '/category?sort=2&sf=1'
+    let url = Spider.neteaseUrl + '/classify#/?from=manga_homepage&styles=-1&areas=-1&status=-1&prices=1&orders=0'
     // 跳转到目标网站
     await page.goto(url)
     console.log('catch------>',url)
     // 等待
-    await page.waitFor(200)
+    await page.waitFor(800)
     return await this.getListResult(page)
 }
 
@@ -40,22 +40,51 @@ exports.getComicMore = async function () {
 }
 
 exports.getListResult = async function (page) {
-    let targetUrl = Spider.neteaseUrl
-    return await page.evaluate((targetUrl) => {
-        let data = []
-        // document.querySelector('.f-ib.arrow-next.sprite-icon_2-page-next').click()
-        let elements = document.querySelectorAll('.comic-item') // 获取所有漫画元素
-        for (let element of elements) { // 循环
-            let title = element.querySelector('.comic-info .title').innerText // 获取标题
-            let chapter = element.querySelector('.comic-info span').innerText　// 获取章节
-            let clickNum = element.querySelector('.comic-info div.muted').innerText //　获取点击量
-            let link = element.querySelector('.comic-info a').getAttribute('href')
-            link = targetUrl + link
-            let cover = element.querySelector('.cover img').getAttribute('src')
-            // let id = link.replace('https://manhua.163.com/source/','')
-            let id = link.substring(link.lastIndexOf('/')+1,link.length)
-            data.push({ id, title, chapter, clickNum, link, cover }) // 存入数组
-        }
-        return data
-    }, targetUrl)
+    // 封面
+    let images = await page.$$eval('div.cover-image',imgs => {
+        const temp = []
+        imgs.forEach(async img => {
+            temp.push(img.getAttribute('style')
+                .replace('background-image: url(','')
+                .replace(/\"/g, "")
+                .replace('); border-radius: 0px;', "")
+                .substring(2))
+        })
+        return temp
+    })
+    // 标题
+    let texts = await page.$$eval('div.manga-title',txts => {
+        const temp = []
+        txts.forEach(async text => {
+            temp.push(text.getAttribute('title'))
+        })
+        return temp
+    })
+    // 连接
+    let links = await page.$$eval('div.text-info-section a', ls => {
+        const temp = []
+        ls.forEach(async a => {
+            temp.push(a.getAttribute('href'))
+        })
+        return temp
+    })
+    // 子标题
+    let supportTexts = await page.$$eval('div.supporting-text',supportTxts => {
+        const temp = []
+        supportTxts.forEach(async text => {
+            temp.push(text.getAttribute('title'))
+        })
+        return temp
+    })
+    // 封装后返回
+    let data = []
+    for(let i = 0; i< images.length; i++) {
+        let temp = {}
+        temp.image = images[i]
+        temp.text = texts[i]
+        temp.supportText = supportTexts[i]
+        temp.link = Spider.neteaseUrl + links[i]
+        data.push(temp)
+    }
+    return data
 }

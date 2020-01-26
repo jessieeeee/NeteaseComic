@@ -30,7 +30,7 @@ exports.init = async function () {
     if (!browser) {
         // 启动了一个Chrome实例
         browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
             })
     }

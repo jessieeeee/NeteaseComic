@@ -16,7 +16,7 @@ tc　8热血　16恋爱　15后宫　2恐怖　24治愈　11玄幻　26唯美　
  */
 exports.getComic = async function () {
     page = await Spider.init()
-    await Spider.switchPc(page)
+    await Spider.switchMobile(page)
     let url = Spider.neteaseUrl + '/classify#/?from=manga_homepage&styles=-1&areas=-1&status=-1&prices=1&orders=0'
     // 跳转到目标网站
     await page.goto(url)
@@ -41,13 +41,13 @@ exports.getComicMore = async function () {
 
 exports.getListResult = async function (page) {
     // 封面
-    let images = await page.$$eval('div.cover-image',imgs => {
+    let images = await page.$$eval('div.manga-cover',imgs => {
         const temp = []
         imgs.forEach(async img => {
             temp.push(img.getAttribute('style')
                 .replace('background-image: url(','')
                 .replace(/\"/g, "")
-                .replace('); border-radius: 0px;', "")
+                .replace(');','')
                 .substring(2))
         })
         return temp
@@ -56,12 +56,12 @@ exports.getListResult = async function (page) {
     let texts = await page.$$eval('div.manga-title',txts => {
         const temp = []
         txts.forEach(async text => {
-            temp.push(text.getAttribute('title'))
+            temp.push(text.innerText)
         })
         return temp
     })
     // 连接
-    let links = await page.$$eval('div.text-info-section a', ls => {
+    let links = await page.$$eval('a.manga-card', ls => {
         const temp = []
         ls.forEach(async a => {
             temp.push(a.getAttribute('href'))
@@ -69,10 +69,10 @@ exports.getListResult = async function (page) {
         return temp
     })
     // 子标题
-    let supportTexts = await page.$$eval('div.supporting-text',supportTxts => {
+    let supportTexts = await page.$$eval('div.manga-info',supportTxts => {
         const temp = []
         supportTxts.forEach(async text => {
-            temp.push(text.getAttribute('title'))
+            temp.push(text.innerText)
         })
         return temp
     })
@@ -83,7 +83,7 @@ exports.getListResult = async function (page) {
         temp.image = images[i]
         temp.text = texts[i]
         temp.supportText = supportTexts[i]
-        temp.link = Spider.neteaseUrl + links[i]
+        temp.link = links[i]
         data.push(temp)
     }
     return data

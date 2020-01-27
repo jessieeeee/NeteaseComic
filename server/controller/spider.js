@@ -20,6 +20,7 @@ exports.viewPort = {
 }
 const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
 let browser = null // 全局的浏览器实例
+let page = null // 缓存上一个页面
 exports.neteaseUrl = 'http://manga.bilibili.com/' //网易漫画地址
 exports.tencentUrl = 'http://ac.qq.com' //腾讯漫画地址
 /**
@@ -35,9 +36,13 @@ exports.init = async function () {
             })
     }
     // 浏览器中创建一个新的页面
-    return await browser.newPage()
+    page = await browser.newPage()
+    return page
 }
 
+exports.lastPage = function(){
+    return page
+}
 /**
  * 切换到pc设备
  * @param page

@@ -109,33 +109,41 @@ exports.getComicDetail = async function (url) {
         temp.commentText = commInfos[i]
         commentItem.push(temp)
     }
+
+
     return {cover,title,author,style,id,timeInfo,evaluate,data,commentItem}
 }
 
 // 获取漫画详情所有章节
-exports.getComicDetailMore = async function (url){
-    let targetUrl = Spider.neteaseUrl
-    let page = await Spider.init()
-    await Spider.switchMobile(page)
-    // 跳转到目标网站
-    await page.goto(url)
-    console.log('catch------>', url)
+exports.getComicDetailMore = async function (){
+    let page = Spider.lastPage()
+
+    let moreBtn = await page.$('div.episode-item')
+    if (moreBtn){
+        moreBtn.click()
+    }
     // 等待
     await page.waitFor(200)
-    await page.evaluate(() => {
-        document.querySelector('.js-flag.load-more').click()
+    let links = await page.$$eval('a.episode-item', ls => {
+        const temp = []
+        ls.forEach(async link => {
+            temp.push(link.getAttribute('href'))
+        })
+        return temp
     })
-    await page.waitFor(2000)
-    let result = await page.evaluate((targetUrl) => {
-        let data = []
-        let elements = document.querySelectorAll('a.m-chapter-item')
-        for (let element of elements) { // 循环
-            let order = element.querySelector('div.f-toe').innerText // 获取序号
-            let link = element.getAttribute('href') //　获取链接
-            link = targetUrl + link
-            data.push({ order, link }); // 存入数组
-        }
-        return data
-    },targetUrl)
-    return result.splice(12, result.length)
+    let items = await page.$$eval('a.episode-item div.item-body', texts => {
+        const temp = []
+        texts.forEach(async text => {
+            temp.push(text.innerText)
+        })
+        return temp
+    })
+    let data = []
+    for (let i = 0; i< links.length; i++){
+        let temp = {}
+        temp.link = links[i]
+        temp.text = items[i]
+        data.push(temp)
+    }
+    return data.splice(7, data.length)
 }

@@ -17,7 +17,7 @@ tc　8热血　16恋爱　15后宫　2恐怖　24治愈　11玄幻　26唯美　
 exports.getComic = async function () {
     page = await Spider.init()
     await Spider.switchMobile(page)
-    let url = Spider.neteaseUrl + '/classify#/?from=manga_homepage&styles=-1&areas=-1&status=-1&prices=1&orders=0'
+    let url = Spider.neteaseUrl + 'm/classify?status=-1&areas=-1&styles=-1&orders=0&prices=1'
     // 跳转到目标网站
     await page.goto(url)
     console.log('catch------>',url)
@@ -31,12 +31,32 @@ exports.getComic = async function () {
  * @returns {Promise<void>}
  */
 exports.getComicMore = async function () {
-    await page.evaluate(() => {
-        document.querySelector('.f-ib.arrow-next.sprite-icon_2-page-next').click() // 点击章节按钮
-    })
-    // 等待
-    await page.waitFor(500)
-    return await this.getListResult(page)
+    let step = 2000
+    let lastResult = [];
+    let i = 1;
+    let tryNum = 0;
+    // 自动滚动，使懒加载图片加载
+    while(true){
+        // 每次滚动一个张图片的高度
+        await page.evaluate(`window.scrollTo(0, ${i * step})`)
+        console.log('滚动步长'+ i * step)
+        // 为确保懒加载触发，需要等待一下
+        await page.waitFor(800)
+        let result = await this.getListResult(page)
+        console.log('当前结果长度'+ result.length)
+        if (result.length === lastResult.length){
+            if (tryNum <= 3){
+                tryNum ++;
+                lastResult = result
+                i ++
+            }else{
+                return lastResult
+            }
+        }else{
+            lastResult = result
+            i ++
+        }
+    }
 }
 
 exports.getListResult = async function (page) {

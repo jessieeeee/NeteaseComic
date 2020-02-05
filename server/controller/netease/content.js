@@ -20,17 +20,32 @@ async function getResponseMsg(page,url){
         page.on('response',
             function (response){
                 let url = response.url().toString()
+                let tokenStart = url.indexOf('?token=')
+                let tsStart = url.indexOf('&ts=')
                 // 捕获目标url
                 if (url.indexOf('manga.hdslb.com/bfs/manga/') !== -1
-                    && url.indexOf('?token=') !== -1){
-                    let suffix = url.substring(url.indexOf('?token=') - 3,url.indexOf('?token='))
-                    // 过滤图片信息
-                    if (suffix === 'jpg'){
-                        console.log(response.url())
-                        let data = response.url().toString();
-                        let imgWidth = 660
-                        let imgHeight = 1320
-                        resolve({data, imgWidth, imgHeight})
+                    && tokenStart !== -1
+                    && tsStart !== -1){
+                    // 尾部参数请求的格式
+                    let imgParamStart = url.indexOf('@')
+                    if (imgParamStart !== -1){
+                        // 图片本身的格式
+                        let suffix = url.substring(imgParamStart - 3, imgParamStart)
+                        // 请求图片的参数
+                        let imgParam = url.substring(imgParamStart, tokenStart)
+                        let imgWidthEnd = imgParam.indexOf('w')
+                        // 请求图片的宽度
+                        let imgWidth = imgParam.substring(1, imgWidthEnd)
+                        let imgFormatStart = imgParam.indexOf('.')
+                        // 请求图片的格式
+                        let imgFormat = imgParam.substring(imgFormatStart + 1,tokenStart)
+                        // 过滤图片信息
+                        if (suffix === imgFormat){
+                            console.log(response.url())
+                            let data = response.url().toString();
+                            let imgHeight = 1320
+                            resolve({data, imgWidth, imgHeight})
+                        }
                     }
                 }
             }

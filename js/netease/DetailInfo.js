@@ -13,6 +13,7 @@ class DetailInfo extends Component<Props> {
 
     static propTypes = {
         data: PropTypes.object, // 数据源,
+        cover: PropTypes.string
     }
 
     static defaultProps = {
@@ -23,7 +24,7 @@ class DetailInfo extends Component<Props> {
         return (
             <View style={CommonStyle.styles.detailView}>
                 <View style={CommonStyle.styles.infoView}>
-                    <Image source={{uri: this.props.data.cover}} style={CommonStyle.styles.infoCover}/>
+                    <Image source={{uri: this.props.cover}} style={CommonStyle.styles.infoCover}/>
                     <View style={CommonStyle.styles.infoRightView}>
                         <View style={CommonStyle.styles.infoTextView}>
                             <Text numberOfLines={1}

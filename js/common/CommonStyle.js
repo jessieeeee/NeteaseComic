@@ -25,9 +25,9 @@ const dimensions = {
         chapterTextMargin: Config.screenW * 0.016,
         btnWidth: Config.screenW * 0.6,
         btnHeight: Config.screenW * 0.08,
-        introMargin: Config.screenW * 0.08,
-        infoCoverW: Config.screenW * 0.3,
-        infoCoverH: Config.screenW * 0.42,
+        introMargin: Config.screenW * 0.1,
+        infoCoverW: Config.screenW * 0.4,
+        infoCoverH: Config.screenW * 0.6,
         infoMargin: Config.screenW * 0.04,
         readTextW: Config.screenW * 0.4,
         readTextH: Config.screenW * 0.08,
@@ -53,9 +53,9 @@ const dimensions = {
         chapterTextMargin: Config.screenW * 0.016,
         btnWidth: Config.screenW * 0.6,
         btnHeight: Config.screenW * 0.08,
-        introMargin: Config.screenW * 0.08,
-        infoCoverW: Config.screenW * 0.3,
-        infoCoverH: Config.screenW * 0.42,
+        introMargin: Config.screenW * 0.09,
+        infoCoverW: Config.screenW * 0.4,
+        infoCoverH: Config.screenW * 0.6,
         infoMargin: Config.screenW * 0.04,
         readTextW: Config.screenW * 0.4,
         readTextH: Config.screenW * 0.08,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
         width: Config.screenW,
-        height: Config.screenW * 0.44
+        height: Config.screenW * 0.63
     },
 
     absolute: {

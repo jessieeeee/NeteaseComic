@@ -29,7 +29,7 @@ async function getComicItems(page) {
     for (let i = 0; i < links.length; i++) {
         let temp = {}
         temp.link = links[i]
-        temp.text = items[i]
+        temp.order = items[i]
         data.push(temp)
     }
     return data
@@ -110,9 +110,9 @@ exports.getComicDetail = async function (url) {
             .replace('background-image: url(','')
             .replace(/\"/g, "")
             .replace(');','')
-            .substring(2)
+            .substring(2).toString()
     })
-
+    cover = Spider.HTTP + cover
     let title = await page.$eval('div.comic-title', text => {
         return text.innerText
     })
@@ -120,23 +120,33 @@ exports.getComicDetail = async function (url) {
     let author = await page.$eval('span.comic-author-name', text => {
         return text.innerText
     })
-    let style = await page.$eval('span.comic-style', text => {
+    let category = await page.$eval('span.comic-style', text => {
         return text.innerText
     })
     let id = await page.$eval('span.comic-id', text => {
         return text.innerText
     })
-    let timeInfo = await page.$eval('p.time-info', text => {
+    let updateTime = await page.$eval('p.time-info', text => {
         return text.innerText
     })
-    let evaluate = await page.$eval('div.evaluate span', text => {
+
+    let introMore = await page.$('div.evaluate span.folder-icon')
+    if (introMore){
+        introMore.click()
+    }
+    // 等待
+    await page.waitFor(200)
+    let intro = await page.$eval('div.evaluate span', text => {
         return text.innerText
     })
     let data = await getComicItems(page)
     let commentItem = await getCommentItems(page)
-
-
-    return {cover,title,author,style,id,timeInfo,evaluate,data,commentItem}
+    let moreBtn = await page.$('div.episode-item')
+    let loadMore = false
+    if (moreBtn){
+        loadMore = true
+    }
+    return {cover,title,author,category,id,updateTime,intro,data,commentItem,loadMore}
 }
 
 /**

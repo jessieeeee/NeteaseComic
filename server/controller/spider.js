@@ -27,6 +27,7 @@ let browser = null // 全局的浏览器实例
 let page = null // 缓存上一个页面
 exports.neteaseUrl = 'http://manga.bilibili.com/' //网易漫画地址
 exports.tencentUrl = 'http://ac.qq.com' //腾讯漫画地址
+exports.HTTP = 'https://'
 /**
  * 初始化抓取客户端
  * @returns {Promise<void>}

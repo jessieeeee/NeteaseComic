@@ -100,9 +100,10 @@ exports.getListResult = async function (page) {
     let data = []
     for(let i = 0; i< images.length; i++) {
         let temp = {}
-        temp.image = images[i]
-        temp.text = texts[i]
-        temp.supportText = supportTexts[i]
+        temp.id = i
+        temp.cover = Spider.HTTP + images[i].toString()
+        temp.title = texts[i]
+        temp.chapter = supportTexts[i]
         temp.link = links[i]
         data.push(temp)
     }

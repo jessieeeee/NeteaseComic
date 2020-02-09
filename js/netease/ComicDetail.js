@@ -186,7 +186,7 @@ class ComicDetail extends Component<Props> {
                         style={CommonStyle.styles.detailAbsolute}
                         viewRef={this.state.viewRef}
                         blurType="dark"
-                        blurAmount={2}
+                        blurAmount={1}
                     /> : null}
                 {/*渲染头部*/}
                 <DetailHeader follow={this.state.follow} onBack={() => {
@@ -199,7 +199,7 @@ class ComicDetail extends Component<Props> {
                     }
                 }}/>
                 {/*渲染漫画信息*/}
-                {this.state.data ? <DetailInfo data={this.state.data}/> : null}
+                {this.state.data ? <DetailInfo data={this.state.data}  cover={this.props.navigation.getParam('cover', '')}/> : null}
                 {/*渲染可看漫画章节*/}
                 {this.state.data ?
                     <DetailChapters data={this.state.data}

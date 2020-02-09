@@ -22,18 +22,19 @@ class ComicItem extends Component<Props> {
     }
 
     render() {
+        console.log('图片地址'+this.props.data.cover)
         return (
-            <View style={{width: this.props.size * 0.97, height: this.props.size * 1.8}}>
+            <View style={{width: this.props.size , height: this.props.size * 1.64}}>
                 <TouchableOpacity style={NeteaseStyle.styles.itemView} onPress={() => {
-                    NavigationService.navigate('NeteaseDetail',{link:this.props.data.link})
+                    NavigationService.navigate('NeteaseDetail',{link:this.props.data.link, cover:this.props.data.cover})
                 }}>
                     <Image source={{uri: this.props.data.cover}} style={{
-                        width: this.props.size * 0.94,
-                        height: this.props.size * 1.3
+                        width: this.props.size * 0.86,
+                        height: this.props.size * 1.3,
                     }}/>
                     <Text numberOfLines={1} style={NeteaseStyle.styles.title}>{this.props.data.title}</Text>
                     <Text numberOfLines={1} style={NeteaseStyle.styles.chapter}>{'最新:' + this.props.data.chapter}</Text>
-                    <Text numberOfLines={1} style={NeteaseStyle.styles.clickNum}>{this.props.data.clickNum}</Text>
+                    {/*<Text numberOfLines={1} style={NeteaseStyle.styles.clickNum}>{this.props.data.clickNum}</Text>*/}
                 </TouchableOpacity>
             </View>
         )

@@ -81,7 +81,7 @@ class NeteasePage extends Component<Props> {
                                   keyExtractor={item => item.id}
                                   numColumns={numColumns}
                                   onPullRelease={this.onRefresh}
-                                  onLoadMore={() => this.onLoadMore()}
+                                  // onLoadMore={() => this.onLoadMore()}
                                   loadMoreState={this.state.loadingState}
                                   onRetry={() => this.onLoadMore()}
                                   style={CommonStyle.styles.listView}

@@ -91,6 +91,7 @@ exports.getComicContent = (async (ctx, next) => {
             success: true,
             msg: result
         }
+        content.startGetMore()
     }
 })
 

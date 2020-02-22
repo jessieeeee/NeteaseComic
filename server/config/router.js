@@ -28,7 +28,7 @@ module.exports = function(){
     router.post(netease + '/getComicContent', bodyParser(), Comic163.getComicContent)
     router.post(netease + '/getComicComment', bodyParser(), Comic163.getComicComment)
     router.post(netease + '/getComicDetailMore', bodyParser(), Comic163.getComicDetailMore)
-    router.post(netease + '/getComicContentLastOrNext', bodyParser(), Comic163.getComicContentLastOrNext)
+    router.post(netease + '/startGetMoreTask', bodyParser(), Comic163.startGetMoreTask)
 
     // 抓取腾讯漫画接口
     router.post(tencent + '/getComic', bodyParser(), ComicTencent.getComic)

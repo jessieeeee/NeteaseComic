@@ -16,6 +16,7 @@ import LottieView from 'lottie-react-native'
 import PropTypes from 'prop-types'
 import LoadMore from './LoadMore'
 import Refresh from './Refresh'
+import LoadMoreState from "./LoadMoreState"
 const defaultDuration = 300 //默认时长
 /**
  * 提示文字的显示状态
@@ -188,8 +189,10 @@ export default class PullFlatList extends Component {
         // console.log('内容高度' + contentHeight)
         // console.log('判断条件' + (y + height))
         if (y + height >= contentHeight - 20) {
-            console.log('触发加载更多')
-            this.props.onLoadMore && this.props.onLoadMore()
+            if (this.props.loadMoreState !== LoadMoreState.state.noMore){
+                console.log('触发加载更多'+ this.props.loadMoreState +": "+ LoadMoreState.state.noMore)
+                this.props.onLoadMore && this.props.onLoadMore()
+            }
         }
         let x = e.nativeEvent.contentOffset.x
         if (isVerticalGesture(x,y) && this.last - y > 4){

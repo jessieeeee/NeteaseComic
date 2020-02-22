@@ -3,9 +3,12 @@
  * @email : lyj1246505807@gmail.com
  * @description : 获取腾讯漫画内容
  */
-let websocket = require('../websocketutil')
 let Spider = require('../spider')
 let page
+let imgHeight = 0
+let imagesLen = 0
+let i = 0
+let data = []
 //　获取漫画内容
 exports.getComicContent = async function (url) {
     page = await Spider.init()
@@ -27,27 +30,24 @@ exports.scrollPage = async function (distance) {
     }
     await page.mouse.up()
 }
-exports.getImgs = async function () {
-    // 等待
-    await page.waitFor(500)
 
-    // 获取图片数目和高度
-    let imagesLen = await page.$$eval('#comicContain img[data-h]', imgs => imgs.length);
-    let imgHeight = await page.$eval('#comicContain img[data-h]', img => img.getAttribute('data-h'));
-    let imgWidth = await page.$eval('#comicContain img[data-w]', img => img.getAttribute('data-w'));
-    console.log('图片数量为' + imagesLen)
+// 获取更多
+exports.startGetMore = async function(){
     // 自动滚动，使懒加载图片加载
     const step = 1;
-    for (let i = 1; i <= imagesLen / step; i++) {
+    for (i = 1; i <= imagesLen / step; i++) {
         // 每次滚动一个张图片的高度
         await this.scrollPage(i * imgHeight * step)
-        websocket.curSocket.emit('catch',{index:i,length:imagesLen})
         console.log('滚动步长'+ i * imgHeight * step)
         // 为确保懒加载触发，需要等待一下
         await page.waitFor(500)
     }
-    // 获取图片url
-    let data = await page.$$eval('#comicContain img[data-h]', imgs => {
+    await getImgUrls()
+}
+
+async function getImgUrls() {
+// 获取图片url
+    data = await page.$$eval('#comicContain img[data-h]', imgs => {
         const images = []
         imgs.forEach(async img => {
             if (img.src.lastIndexOf('.gif') !== img.src.length - 4) {
@@ -56,6 +56,20 @@ exports.getImgs = async function () {
         })
         return images
     })
+}
+
+exports.getImgs = async function () {
+    // 等待
+    await page.waitFor(500)
+
+    // 获取图片数目和高度
+    imagesLen = await page.$$eval('#comicContain img[data-h]', imgs => imgs.length);
+    imgHeight = await page.$eval('#comicContain img[data-h]', img => img.getAttribute('data-h'));
+    let imgWidth = await page.$eval('#comicContain img[data-w]', img => img.getAttribute('data-w'));
+    console.log('图片数量为' + imagesLen)
+
+    await getImgUrls()
+
     let nextBtnText = await page.$eval('#mainControlNext', node => node.innerText)
     let loadMore = false
 

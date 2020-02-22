@@ -20,7 +20,8 @@ const object = {
         getDetailMore:server_api + netease + '/getComicDetailMore',
         getComicContent: server_api + netease + '/getComicContent',
         getComicContentLastOrNext: server_api + netease + '/getComicContentLastOrNext',
-        getComicComment: server_api + netease + '/getComicComment'
+        getComicComment: server_api + netease + '/getComicComment',
+        startGetMoreTask: server_api + netease + '/startGetMoreTask',
     },
     //　腾讯漫画
     tencent:{

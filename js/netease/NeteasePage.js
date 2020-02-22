@@ -28,13 +28,13 @@ class NeteasePage extends Component<Props> {
 
     constructor(props) {
         super(props)
-        this.lastNum = 0 //上一次的数据个数
         this.state = {
             data: null,
             welcome: true,
             btnState: ControlBtn.States.Default,
             loadingState: LoadMoreState.state.tip //默认显示加载更多提示
         }
+        this.loadMore = true
         // 初始化状态界面管理器
         this.statusManager = new StatusManager()
         this.onRefresh = this.onRefresh.bind(this)
@@ -50,6 +50,14 @@ class NeteasePage extends Component<Props> {
             //调用事件通知
             DeviceEventEmitter.emit('showBar', null);
         }, 2000)
+
+        this.subscription = DeviceEventEmitter.addListener('Netease', ()=>{
+            this.startGetMoreTask(false)
+        })
+    }
+
+    componentWillUnmount(){
+        this.subscription.remove();
     }
 
     /**
@@ -81,7 +89,7 @@ class NeteasePage extends Component<Props> {
                                   keyExtractor={item => item.id}
                                   numColumns={numColumns}
                                   onPullRelease={this.onRefresh}
-                                  // onLoadMore={() => this.onLoadMore()}
+                                  onLoadMore={() => this.onLoadMore()}
                                   loadMoreState={this.state.loadingState}
                                   onRetry={() => this.onLoadMore()}
                                   style={CommonStyle.styles.listView}
@@ -109,7 +117,18 @@ class NeteasePage extends Component<Props> {
             this.setState({
                 data: result,
             })
-            this.endRefresh(result)
+            this.endRefresh()
+        }, (error) => {
+            console.log(error)
+        }, showLoading)
+    }
+
+    /**
+     * 开启任务
+     */
+    startGetMoreTask(showLoading) {
+        this.props.request(ServerApi.netease.startGetMoreTask, null, this.statusManager, (result) => {
+            console.log("获取更多bilibili漫画")
         }, (error) => {
             console.log(error)
         }, showLoading)
@@ -124,10 +143,13 @@ class NeteasePage extends Component<Props> {
             loadingState: LoadMoreState.state.loading
         })
         NetUtil.post(ServerApi.netease.getComicMore, null, (result) => {
+            this.loadMore = result.loadMore.toString() === 'true'
+            this.endRefresh()
+            console.log('加载更多1'+result.loadMore)
             // 避免重复添加，比较最后一个数据
-            if (JSON.stringify(this.state.data[this.state.data.length - 1]) !== JSON.stringify(result[result.length-1])){
-                Array.prototype.push.apply(this.state.data, result)
-                this.endRefresh(result)
+            if (result.loadMore.toString() === 'true'){
+                console.log('加载更多2')
+                Array.prototype.push.apply(this.state.data, result.data)
             }
         }, (error) => {
             // 加载更多错误
@@ -138,17 +160,17 @@ class NeteasePage extends Component<Props> {
         })
     }
 
-    endRefresh(result) {
+    endRefresh() {
         // 如果当前的数据量小于上一次
-        if (result.length < this.lastNum) {
+        if (this.loadMore) {
             // 没有更多了
             this.setState({
-                loadingState: LoadMoreState.state.noMore
+                loadingState: LoadMoreState.state.tip
             })
         } else {
             // 继续加载更多提示
             this.setState({
-                loadingState: LoadMoreState.state.tip
+                loadingState: LoadMoreState.state.noMore
             })
         }
     }

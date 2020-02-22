@@ -5,7 +5,11 @@
  */
 let Spider = require('../spider')
 let page = null
-
+let curResult = []
+let sumResult = []
+let lastNum = 0
+let tryNum = 0
+let i = 1
 //　获取可看免费漫画
 /*
 sort　排序方式　1更新时间 2全站热门 3新作人气 4新作上架 5读者打赏
@@ -23,7 +27,59 @@ exports.getComic = async function () {
     console.log('catch------>',url)
     // 等待
     await page.waitFor(800)
-    return await this.getListResult(page)
+    lastNum = 0
+    let result = await this.getListResult(page)
+    lastNum = result.length
+    return result
+}
+
+exports.reset = function () {
+    tryNum = 0
+    sumResult = []
+    i = 1;
+}
+
+// 开始获取更多任务
+exports.startGetMore = async function () {
+    let step = 2000
+    // 自动滚动，使懒加载图片加载
+    while (true) {
+        // 每次滚动一个张图片的高度
+        await page.evaluate(`window.scrollTo(0, ${i * step})`)
+        console.log('滚动步长' + i * step)
+        // 为确保懒加载触发，需要等待一下
+        await page.waitFor(800)
+        let result = await this.getListResult(page)
+        console.log('当前结果长度' + result.length)
+        if (result.length === sumResult.length) {
+            if (tryNum <= 3) {
+                tryNum++;
+                console.log('尝试次数'+tryNum)
+                sumResult = result
+                i++
+            } else {
+                break
+            }
+        } else {
+            sumResult = result
+            i++
+        }
+    }
+}
+
+async function getCurComics() {
+    curResult = sumResult.concat()
+    curResult.splice(0, lastNum)
+    lastNum += curResult.length
+    let loadMore = true
+    if (tryNum > 3) {
+        loadMore = false
+    }
+    if (curResult.length === 0 && loadMore){
+        await page.waitFor(800)
+        await getCurComics()
+    }
+    return loadMore
 }
 
 /**
@@ -31,32 +87,9 @@ exports.getComic = async function () {
  * @returns {Promise<void>}
  */
 exports.getComicMore = async function () {
-    let step = 2000
-    let lastResult = [];
-    let i = 1;
-    let tryNum = 0;
-    // 自动滚动，使懒加载图片加载
-    while(true){
-        // 每次滚动一个张图片的高度
-        await page.evaluate(`window.scrollTo(0, ${i * step})`)
-        console.log('滚动步长'+ i * step)
-        // 为确保懒加载触发，需要等待一下
-        await page.waitFor(800)
-        let result = await this.getListResult(page)
-        console.log('当前结果长度'+ result.length)
-        if (result.length === lastResult.length){
-            if (tryNum <= 3){
-                tryNum ++;
-                lastResult = result
-                i ++
-            }else{
-                return lastResult
-            }
-        }else{
-            lastResult = result
-            i ++
-        }
-    }
+    let loadMore = await getCurComics()
+    let data = curResult
+    return {data,loadMore}
 }
 
 exports.getListResult = async function (page) {

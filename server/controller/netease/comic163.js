@@ -1,7 +1,6 @@
 let list = require('./list')
 let detail = require('./detail')
 let content = require('./content')
-let comment = require('./comment')
 // 抓取免费漫画列表
 exports.getComic = (async (ctx, next) => {
     //请求的参数
@@ -24,19 +23,6 @@ exports.getComic = (async (ctx, next) => {
     }
 })
 
-exports.startGetMoreTask = (async (ctx, next) => {
-    //请求的参数
-    const body = ctx.request.body
-    for (let key in body) {
-        console.log("body 参数 key is: ", key, " , value is: ", body[key])
-    }
-    list.startGetMore()
-    ctx.body = {
-        success: true,
-        msg: {}
-    }
-})
-
 // 抓取免费漫画列表下一页
 exports.getComicMore = (async (ctx, next) => {
     //请求的参数
@@ -54,6 +40,7 @@ exports.getComicMore = (async (ctx, next) => {
             success: true,
             msg: result
         }
+        list.startGetMore()
     }
 })
 
@@ -118,19 +105,20 @@ exports.getComicContent = (async (ctx, next) => {
             success: true,
             msg: result
         }
+        content.startGetMore()
     }
 
 })
 
 // 抓取漫画内容上一话和下一话
-exports.getComicContentLastOrNext = (async (ctx, next) => {
+exports.getComicContentMore = (async (ctx, next) => {
     //请求的参数
     const body = ctx.request.body
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
     let nextChapter = body.next
-    let result = await content.getComicContentLastOrNext(nextChapter)
+    let result = await content.getComicContentMore(nextChapter)
     if (!result.data ||result.data.length === 0 ){
         ctx.body = {
             success: false,
@@ -140,25 +128,11 @@ exports.getComicContentLastOrNext = (async (ctx, next) => {
             success: true,
             msg: result
         }
+        content.startGetMore()
     }
 
 })
-// 抓取漫画弹幕
-exports.getComicComment = (async (ctx, next) => {
-    //请求的参数
-    const body = ctx.request.body
-    for (let key in body) {
-        console.log("body 参数 key is: ", key, " , value is: ", body[key])
-    }
-    let link = body.link
-    let index = body.index
-    await comment.getComicComment(link, index)
-    ctx.body = {
-        success: true,
-        msg: true
-    }
 
-})
 
 
 

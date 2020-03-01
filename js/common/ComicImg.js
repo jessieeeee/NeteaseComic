@@ -22,14 +22,15 @@ class ComicImg extends Component<Props> {
 
     componentWillMount() {
         this.unmount = false
-        // this.meaureImg()
-        console.log('当前item' + JSON.stringify(this.props.imgWidth))
+        this.meaureImg()
+
     }
 
     componentWillUnmount(){
         this.unmount = true
     }
     render() {
+        console.log('当前item宽' +this.props.imgWidth + '高:' + this.props.imgHeight + 'url' + this.props.imgUrl )
         return (
                 <Image source={{uri: this.props.imgUrl}} style={{width: Config.screenW, height: this.getHeight()}}/>
                 // {/*<View style={CommonStyle.styles.imgPlaceholder}>*/}

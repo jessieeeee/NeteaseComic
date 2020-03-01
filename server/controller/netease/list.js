@@ -9,7 +9,7 @@ let curResult = []
 let sumResult = []
 let lastNum = 0
 let tryNum = 0
-let i = 1
+let index = 0
 //　获取可看免费漫画
 /*
 sort　排序方式　1更新时间 2全站热门 3新作人气 4新作上架 5读者打赏
@@ -36,17 +36,17 @@ exports.getComic = async function () {
 exports.reset = function () {
     tryNum = 0
     sumResult = []
-    i = 1;
+    index = 0
 }
 
 // 开始获取更多任务
 exports.startGetMore = async function () {
     let step = 2000
     // 自动滚动，使懒加载图片加载
-    while (true) {
+    for (let j = index; j < index + 10; j++){
         // 每次滚动一个张图片的高度
-        await page.evaluate(`window.scrollTo(0, ${i * step})`)
-        console.log('滚动步长' + i * step)
+        await page.evaluate(`window.scrollTo(0, ${j * step})`)
+        console.log('滚动步长' + j * step)
         // 为确保懒加载触发，需要等待一下
         await page.waitFor(800)
         let result = await this.getListResult(page)
@@ -56,15 +56,14 @@ exports.startGetMore = async function () {
                 tryNum++;
                 console.log('尝试次数'+tryNum)
                 sumResult = result
-                i++
             } else {
                 break
             }
         } else {
             sumResult = result
-            i++
         }
     }
+    index += 10
 }
 
 async function getCurComics() {

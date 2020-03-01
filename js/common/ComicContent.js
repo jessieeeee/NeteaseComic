@@ -12,7 +12,6 @@ import Config from '../constant/Config'
 import StatusManager from "../util/StatusManager"
 import {BaseComponent} from "./BaseComponent"
 import {observer} from "mobx-react/native"
-import SocketIOClient from 'socket.io-client';
 const USER_ID = "USER_ID"
 @observer
 class ComicContent extends Component<Props> {
@@ -24,33 +23,17 @@ class ComicContent extends Component<Props> {
         this.backward = this.backward.bind(this)
         this.forward = this.forward.bind(this)
 
-        this.socket = SocketIOClient(ServerApi.server); // 设置服务端的地址和端口号
         // 获取用户id
         AsyncStorage.getItem(USER_ID)
             .then((userId) => {
                 // 本地没有用户id
                 if (!userId) {
-                    // 发送空的用户id
-                    this.socket.emit('userJoined', null);
-                    // 监听userJoined消息，保存服务端给的用户id
-                    this.socket.on('userJoined', (userId) => {
-                        AsyncStorage.setItem(USER_ID, userId);
-                        this.setState({ userId });
-                    });
-                } else {
-                    // 发送本地保存的用户id
-                    this.socket.emit('userJoined', userId);
+                    AsyncStorage.setItem(USER_ID, userId);
+                    this.setState({ userId });
                 }
             })
             .catch((e) => alert(e));
 
-        this.socket.on('catch', (item) => {
-            console.log('当前抓取进度:' + '(' +item.index +'/' + item.length + ')' )
-            this.props.updateLoading('当前抓取进度:' + '(' +item.index +'/' + item.length + ')\n请耐心等待~')
-        })
-        this.socket.on('comment',(item) => {
-            console.log('收到弹幕:' + item.toString())
-        })
     }
 
     componentDidMount() {

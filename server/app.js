@@ -41,6 +41,4 @@ app.use(router.allowedMethods());
 
 let server = http.Server(app.callback())
 server.listen(1234)
-let webSocketUtil = require('./controller/websocketutil')
-webSocketUtil.init(server)
 console.log('listening:1234')

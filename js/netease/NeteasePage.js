@@ -52,7 +52,7 @@ class NeteasePage extends Component<Props> {
         }, 2000)
 
         this.subscription = DeviceEventEmitter.addListener('Netease', ()=>{
-            this.startGetMoreTask(false)
+            this.getListMore()
         })
     }
 

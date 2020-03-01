@@ -2,7 +2,6 @@
 let list = require('./list')
 let detail = require('./detail')
 let content = require('./content')
-let comment = require('./comment')
 
 // 抓取免费漫画列表
 exports.getComic = (async (ctx, next) => {

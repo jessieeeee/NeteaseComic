@@ -28,7 +28,7 @@ async function getComicItems(page) {
     let data = []
     for (let i = 0; i < links.length; i++) {
         let temp = {}
-        temp.link = links[i]
+        temp.link = Spider.neteaseUrl + links[i]
         temp.order = items[i]
         data.push(temp)
     }

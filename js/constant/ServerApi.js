@@ -5,7 +5,7 @@
  */
 
 // 服务器主机ip
-const server_host = 'http://192.168.199.151:1234'
+const server_host = 'http://192.168.0.248:1234'
 const server_api = server_host + '/api'
 const netease = '/163'
 const tencent = '/tencent'
@@ -27,8 +27,8 @@ const object = {
         getDetail:server_api + tencent + '/getComicDetail',
         getDetailMore:server_api + tencent + '/getComicDetailMore',
         getComicContent: server_api + tencent + '/getComicContent',
-        getComicContentLastOrNext: server_api + tencent + '/getComicContentLastOrNext',
-        getComicComment: server_api + tencent + '/getComicComment'
+        getComicContentMore: server_api + tencent + '/getComicContentMore',
+
     },
     // 用户管理
     mine:{

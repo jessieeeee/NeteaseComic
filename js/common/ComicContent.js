@@ -5,23 +5,26 @@
  */
 import React, {Component} from 'react'
 import {Text, View, Image, TouchableOpacity, AsyncStorage} from 'react-native'
-import ComicContentList from './ComicContentList'
+import ComicContentListItem from './ComicContentListItem'
 import CommonStyle from "./CommonStyle"
 import ServerApi from "../constant/ServerApi"
 import Config from '../constant/Config'
 import StatusManager from "../util/StatusManager"
 import {BaseComponent} from "./BaseComponent"
 import {observer} from "mobx-react/native"
+import Status from "../util/Status"
+import LoadMoreState from "../widget/LoadMoreState"
+import NetUtil from "../util/NetUtil"
 const USER_ID = "USER_ID"
 @observer
 class ComicContent extends Component<Props> {
 
     constructor(props) {
         super(props)
+        this.state = { loadingState: LoadMoreState.state.tip} //默认显示加载更多提示
         this.statusManager = new StatusManager()
         this.onRefresh = this.onRefresh.bind(this)
-        this.backward = this.backward.bind(this)
-        this.forward = this.forward.bind(this)
+        this.onLoadMore = this.onLoadMore.bind(this)
 
         // 获取用户id
         AsyncStorage.getItem(USER_ID)
@@ -39,11 +42,9 @@ class ComicContent extends Component<Props> {
     componentDidMount() {
         console.log('link',this.props.navigation.getParam('link', ''))
         console.log('platform',this.props.navigation.getParam('platform', ''))
-        console.log('page',this.props.navigation.getParam('page', 0))
-        console.log('count',this.props.navigation.getParam('count', 0))
         this.isMount = true
         this.getComicContent()
-        // this.getComments()
+
     }
 
     componentWillUnmount(){
@@ -57,27 +58,10 @@ class ComicContent extends Component<Props> {
         // 重置
         this.content && this.content.reset()
         this.getComicContent()
-        this.getComments()
+
     }
 
-    getComments(){
-        let params = {
-            link: this.props.navigation.getParam('link', ''),
-            index: 1
-        }
-        let url
-        if (this.props.navigation.getParam('platform', '') === Config.platformNetease) {
-            url = ServerApi.netease.getComicComment
-        }
-        else if (this.props.navigation.getParam('platform', '') === Config.platformTencent) {
-            url = ServerApi.tencent.getComicComment
-        }
-        this.props.request(url, params, this.statusManager, (result) => {
-            console.log('请求成功' + result)
-        }, (error) => {
-            console.log(error)
-        },true)
-    }
+
     /**
      * 获取免费漫画图片
      */
@@ -94,7 +78,10 @@ class ComicContent extends Component<Props> {
         }
         this.props.request(url, params, this.statusManager, (result) => {
             if (this.isMount) {
-                this.content.initPage(result)
+                this.setState({
+                    data:result
+                })
+                console.log('render2 --> ' + JSON.stringify( this.state))
             }
         }, (error) => {
             console.log(error)
@@ -104,7 +91,7 @@ class ComicContent extends Component<Props> {
     render() {
         return (
             <View style={CommonStyle.styles.container}>
-                {this.renderNormal()}
+                {this.state.data != null ?this.renderNormal(): null}
                 {/*/!*渲染状态界面*!/*/}
                 {this.props.displayStatus(this.statusManager)}
             </View>
@@ -123,63 +110,60 @@ class ComicContent extends Component<Props> {
      * @returns {*}
      */
     renderNormal() {
+        console.log('render --> ' + JSON.stringify( this.state))
         return (
-            <ComicContentList
-                ref={(c) => {this.content = c}}
+             <ComicContentListItem
+                data={this.state.data}
                 onRefresh={this.onRefresh}
-                page={this.props.navigation.getParam('page', 0)}
-                count={this.props.navigation.getParam('count',0)}
-                backward={this.backward}
-                forward={this.forward}
+                onLoadMore={this.onLoadMore}
+                loadingState={this.state.loadingState}
             />
         )
     }
 
-
-    /**
-     * 向后翻页
-     */
-    backward(){
-        this.getContentMore(true)
-    }
-
-    /**
-     * 向前翻页
-     */
-    forward(){
-        this.getContentMore(false)
-    }
-    /**
-     * 加载更多
-     * @param next
-     */
-    getContentMore(next) {
-        console.log(next ? '加载下一页' : '加载上一页')
-        let params = {
-            next: next
-        }
+    onLoadMore(){
+        // 展示加载更多
+        this.setState({
+            loadingState: LoadMoreState.state.loading
+        })
         let url
         if (this.props.navigation.getParam('platform', '') === Config.platformNetease) {
-            url = ServerApi.netease.getComicContentLastOrNext
+            url = ServerApi.netease.getComicContentMore
         }
         else if (this.props.navigation.getParam('platform', '') === Config.platformTencent) {
-            url = ServerApi.tencent.getComicContentLastOrNext
+            url = ServerApi.tencent.getComicContentMore
         }
-
-        this.props.request(url, params, this.statusManager, (result) => {
-           if(this.isMount){
-               if (next) {
-                   console.log('加载下一页成功')
-                   this.content.addPage(true,result)
-               }
-               else {
-                   console.log('加载上一页成功')
-                   this.content.addPage(false,result)
-               }
-           }
+        NetUtil.post(url, null, (result) => {
+            this.loadMore = result.loadMore.toString() === 'true'
+            this.endRefresh()
+            console.log('加载更多1'+result.loadMore)
+            // 避免重复添加，比较最后一个数据
+            if (result.loadMore.toString() === 'true'){
+                console.log('加载更多2')
+                Array.prototype.push.apply(this.state.data.data, result.data)
+            }
         }, (error) => {
+            // 加载更多错误
+            this.setState({
+                loadingState: LoadMoreState.state.error
+            })
             console.log(error)
-        },true)
+        })
+    }
+
+    endRefresh() {
+        // 如果当前的数据量小于上一次
+        if (this.loadMore) {
+            // 没有更多了
+            this.setState({
+                loadingState: LoadMoreState.state.tip
+            })
+        } else {
+            // 继续加载更多提示
+            this.setState({
+                loadingState: LoadMoreState.state.noMore
+            })
+        }
     }
 }
 

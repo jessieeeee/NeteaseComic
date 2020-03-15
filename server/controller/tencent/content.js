@@ -8,7 +8,8 @@ let page
 let imgHeight = 0
 let imagesLen = 0
 let i = 0
-let data = []
+let curResult = {}
+let lastNum = 0
 //　获取漫画内容
 exports.getComicContent = async function (url) {
     page = await Spider.init()
@@ -33,21 +34,39 @@ exports.scrollPage = async function (distance) {
 
 // 获取更多
 exports.startGetMore = async function(){
-    // 自动滚动，使懒加载图片加载
-    const step = 1;
-    for (i = 1; i <= imagesLen / step; i++) {
-        // 每次滚动一个张图片的高度
-        await this.scrollPage(i * imgHeight * step)
-        console.log('滚动步长'+ i * imgHeight * step)
-        // 为确保懒加载触发，需要等待一下
-        await page.waitFor(500)
+    if (curResult.loadMore){
+        // 自动滚动，使懒加载图片加载
+        const step = 1;
+        for (i = 1; i <= imagesLen / step; i++) {
+            // 每次滚动一个张图片的高度
+            await this.scrollPage(i * imgHeight * step)
+            console.log('滚动步长'+ i * imgHeight * step)
+            // 为确保懒加载触发，需要等待一下
+            await page.waitFor(500)
+            curResult.data = await getImgUrls()
+        }
+        curResult.loadMore = false
     }
-    await getImgUrls()
+}
+
+exports.getComicContentMore = async function () {
+    let temp = curResult.data.concat()
+    temp.splice(0, lastNum)
+    lastNum += temp.length
+    if (temp.length === 0 && curResult.loadMore){
+        await page.waitFor(800)
+        await this.getComicContentMore()
+    }
+    let data = temp
+    let imgWidth = curResult.imgWidth
+    let imgHeight = curResult.imgHeight
+    let loadMore = curResult.loadMore
+    return {data, imgWidth, imgHeight, loadMore}
 }
 
 async function getImgUrls() {
 // 获取图片url
-    data = await page.$$eval('#comicContain img[data-h]', imgs => {
+    return await page.$$eval('#comicContain img[data-h]', imgs => {
         const images = []
         imgs.forEach(async img => {
             if (img.src.lastIndexOf('.gif') !== img.src.length - 4) {
@@ -68,38 +87,15 @@ exports.getImgs = async function () {
     let imgWidth = await page.$eval('#comicContain img[data-w]', img => img.getAttribute('data-w'));
     console.log('图片数量为' + imagesLen)
 
-    await getImgUrls()
+    let data = await getImgUrls()
 
-    let nextBtnText = await page.$eval('#mainControlNext', node => node.innerText)
-    let loadMore = false
-
-    if (nextBtnText === '点击进入书末页') {
-        loadMore = false
-    } else if (nextBtnText === '点击进入下一话') {
-        loadMore = true
-    }
+    let loadMore = true
     imgHeight = parseInt(imgHeight)
     imgWidth = parseInt(imgWidth)
-    console.log({data, loadMore,imgWidth,imgHeight})
-    return {data, loadMore ,imgWidth ,imgHeight}
+    lastNum = data.length
+    curResult = {data, loadMore,imgWidth,imgHeight}
+    console.log(curResult)
+    return curResult
 
 }
 
-exports.getComicContentLastOrNext = async function (nextChapter) {
-    let result = await page.evaluate((nextChapter) => {
-        if (nextChapter === 'false') {
-            console.log('点击了上一话')
-            let prevChapterNode = document.querySelector('#prevChapter')
-            prevChapterNode.click()
-            return '点击了上一话' + nextChapter
-        } else {
-            console.log('点击了下一话')
-            let nextChapterNode = document.querySelector('#nextChapter')
-            nextChapterNode.click()
-            return '点击了下一话' + nextChapter
-        }
-    }, nextChapter)
-    console.log(result)
-
-    return this.getImgs()
-}

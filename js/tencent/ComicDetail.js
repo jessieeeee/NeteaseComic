@@ -195,8 +195,6 @@ class ComicDetail extends Component<Props>{
                         NavigationService.navigate('ComicContent', {
                             link: this.getLink(item.link),
                             platform: Config.platformTencent,
-                            page: this.state.data.data.length - index,
-                            count: this.state.data.data.length
                         })
                     }} onMore={() => {
                         this.getDetailMore()

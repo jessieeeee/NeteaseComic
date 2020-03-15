@@ -94,15 +94,15 @@ exports.getComicContent = (async (ctx, next) => {
     }
 })
 
+
 // 抓取漫画内容上一话和下一话
-exports.getComicContentLastOrNext = (async (ctx, next) => {
+exports.getComicContentMore = (async (ctx, next) => {
     //请求的参数
     const body = ctx.request.body
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let nextChapter = body.next
-    let result = await content.getComicContentLastOrNext(nextChapter)
+    let result = await content.getComicContentMore()
     if (!result.data ||result.data.length === 0 ){
         ctx.body = {
             success: false,
@@ -112,22 +112,9 @@ exports.getComicContentLastOrNext = (async (ctx, next) => {
             success: true,
             msg: result
         }
+        content.startGetMore()
     }
-})
-// 抓取漫画弹幕
-exports.getComicComment = (async (ctx, next) => {
-    //请求的参数
-    const body = ctx.request.body
-    for (let key in body) {
-        console.log("body 参数 key is: ", key, " , value is: ", body[key])
-    }
-    let link = body.link
-    let index = body.index
-    await comment.getComicComment('http://ac.qq.com/ComicView/index/id/542724/cid/263', 1)
-    ctx.body = {
-        success: true,
-        msg: true
-    }
+
 })
 
 

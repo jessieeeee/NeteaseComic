@@ -117,8 +117,7 @@ exports.getComicContentMore = (async (ctx, next) => {
     for (let key in body) {
         console.log("body 参数 key is: ", key, " , value is: ", body[key])
     }
-    let nextChapter = body.next
-    let result = await content.getComicContentMore(nextChapter)
+    let result = await content.getComicContentMore()
     if (!result.data ||result.data.length === 0 ){
         ctx.body = {
             success: false,

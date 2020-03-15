@@ -25,7 +25,6 @@ module.exports = function(){
     router.post(netease + '/getComic', bodyParser(), Comic163.getComic)
     router.post(netease + '/getComicMore', bodyParser(), Comic163.getComicMore)
     router.post(netease + '/getComicDetail', bodyParser(), Comic163.getComicDetail)
-    router.post(netease + '/getComicContent', bodyParser(), Comic163.getComicContent)
     router.post(netease + '/getComicDetailMore', bodyParser(), Comic163.getComicDetailMore)
     router.post(netease + '/getComicContent', bodyParser(), Comic163.getComicContent)
     router.post(netease + '/getComicContentMore', bodyParser(), Comic163.getComicContentMore)
@@ -34,8 +33,9 @@ module.exports = function(){
     router.post(tencent + '/getComic', bodyParser(), ComicTencent.getComic)
     router.post(tencent + '/getComicDetail', bodyParser(), ComicTencent.getComicDetail)
     router.post(tencent + '/getComicContent', bodyParser(), ComicTencent.getComicContent)
-    router.post(tencent + '/getComicComment',bodyParser(), ComicTencent.getComicComment)
     router.post(tencent + '/getComicDetailMore', bodyParser(), ComicTencent.getComicDetailMore)
-    router.post(tencent + '/getComicContentLastOrNext', bodyParser(), ComicTencent.getComicContentLastOrNext)
+    router.post(tencent + '/getComicContentMore', bodyParser(), ComicTencent.getComicContentMore)
+
+
     return router 
 }

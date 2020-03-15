@@ -123,16 +123,6 @@ class NeteasePage extends Component<Props> {
         }, showLoading)
     }
 
-    /**
-     * 开启任务
-     */
-    startGetMoreTask(showLoading) {
-        this.props.request(ServerApi.netease.startGetMoreTask, null, this.statusManager, (result) => {
-            console.log("获取更多bilibili漫画")
-        }, (error) => {
-            console.log(error)
-        }, showLoading)
-    }
 
     /**
      * 获取更多免费漫画列表

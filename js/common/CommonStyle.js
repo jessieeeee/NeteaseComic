@@ -34,6 +34,8 @@ const dimensions = {
         detailTitleFont: Config.screenW * 0.04,
         detailSubTitleFont: Config.screenW * 0.03,
         marginTop: Config.screenW * 0.01,
+        commentW: Config.screenW * 0.2,
+        commentH: Config.screenW * 0.12,
     },
     ios: {
         tabBarImageSize: Config.screenW * 0.08,
@@ -62,6 +64,8 @@ const dimensions = {
         detailTitleFont: Config.screenW * 0.04,
         detailSubTitleFont: Config.screenW * 0.03,
         marginTop: Config.screenW * 0.01,
+        commentW: Config.screenW * 0.2,
+        commentH: Config.screenW * 0.12,
     }
 }
 
@@ -153,6 +157,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: Platform.OS === 'ios' ? dimensions.ios.iconBarMargin : dimensions.android.iconBarMargin
     },
+    commentView:{
+        borderRadius: 6,
+        borderWidth: 0.4,
+        borderColor: Config.gray,
+        justifyContent: 'center',
+        margin: Platform.OS === 'ios' ? dimensions.ios.chapterTextMargin : dimensions.android.chapterTextMargin,
+        width: Platform.OS === 'ios' ? dimensions.ios.chapterTextW : dimensions.android.chapterTextW,
+        height: Platform.OS === 'ios' ? dimensions.ios.chapterTextH : dimensions.android.chapterTextH,
+    },
     chapterDetailText: {
         fontSize: Platform.OS === 'ios' ? dimensions.ios.detailSubTitleFont : dimensions.android.detailSubTitleFont,
         color: Config.gray,
@@ -206,6 +219,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    userHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     infoCover: {
         width: Platform.OS === 'ios' ? dimensions.ios.infoCoverW : dimensions.android.infoCoverW,

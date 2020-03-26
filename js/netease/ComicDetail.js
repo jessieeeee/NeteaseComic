@@ -19,6 +19,7 @@ import Status from "../util/Status"
 import {BaseComponent} from "../common/BaseComponent"
 import PullScrollView from '../widget/PullScrollView'
 import {observer} from "mobx-react/native"
+import ComicComment from "./ComicComment"
 
 @observer
 class ComicDetail extends Component<Props> {
@@ -200,6 +201,8 @@ class ComicDetail extends Component<Props> {
                 }}/>
                 {/*渲染漫画信息*/}
                 {this.state.data ? <DetailInfo data={this.state.data}  cover={this.props.navigation.getParam('cover', '')}/> : null}
+                {/*漫画评论*/}
+                {/*{this.state.data ? <ComicComment data = {this.state.data.comments}/> : null}*/}
                 {/*渲染可看漫画章节*/}
                 {this.state.data ?
                     <DetailChapters data={this.state.data}
